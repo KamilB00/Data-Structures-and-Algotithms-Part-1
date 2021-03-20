@@ -117,7 +117,6 @@ public:
             size--;
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
-        cout<<""<<endl;
     }
     void  removeAll(){
         int i  = size-1;
