@@ -117,6 +117,7 @@ public:
             size--;
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
+
     }
     void  removeAll(){
         int i  = size-1;
@@ -168,6 +169,7 @@ public:
 
             default:
                 cout<<"There is not such number on the list. Try Again !"<<endl;
+                cout<<"test change"<<endl;
         }
     }
 };
