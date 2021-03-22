@@ -63,10 +63,10 @@ public:
                 arr_dyn_new[i + 1] = temp;
             }
 
+            delete [] arr_dyn;
             arr_dyn = NULL;
             arr_dyn = arr_dyn_new;
             arr_dyn_new = NULL;
-
             delete[] arr_dyn_new;
         }
 
@@ -364,11 +364,12 @@ int main() {
         array->add();
     }
 
-    for (int i = 0; i < 100001; i++) {
+    for (int i = 0; i < 99950; i++) {
         array->remove();
     }
 
     array->show();
+    array->add(5);
     array->add();
     array->find(49998);
     array->show();
