@@ -1,9 +1,5 @@
 #include <iostream>
 
-//TODO:
-// - adding element in the middle SIZE > ELEMENT
-// - remove element
-// - find element
 
 using namespace std;
 
@@ -11,9 +7,9 @@ class Array {
 public:
 
     int size = 0;
-    int elements_inside = 0;
     int *arr_dyn = create(size);
     int *arr_dyn_new = NULL;
+    int value_add = 0;
 
     int *create(int size) {
         int *arr = new int[size];
@@ -24,121 +20,154 @@ public:
         int value = 0;
         int temp = 0;
         //adding element at the beginning,    SIZE == ELEMENTS
-        if (elements_inside == size) {
-            if (index == 0) {
-                size++;
 
-                arr_dyn_new = create(size);
+        if (index == 0) {
+            size++;
 
-                cout << "array[" << index << "] = ";
-                cin >> value;
+            arr_dyn_new = create(size);
 
-
-                arr_dyn_new[0] = value;
-
-                for (int i = 0; i < size; i++) {
-                    temp = arr_dyn[i];
-                    arr_dyn_new[i + 1] = temp;
-                }
+            cout << "array[" << index << "] = ";
+            cin >> value;
 
 
-                arr_dyn = NULL;
-                arr_dyn = arr_dyn_new;
-                arr_dyn_new = NULL;
+            arr_dyn_new[0] = value;
 
-                elements_inside++;
-
-                //delete[] arr_dyn;
-                delete[] arr_dyn_new;
+            for (int i = 0; i < size; i++) {
+                temp = arr_dyn[i];
+                arr_dyn_new[i + 1] = temp;
             }
-                //adding element in the middle,   SIZE == ELEMENTS
-            else if (index < size - 1 && index > 0) {
-                temp = 0;
-                size++;
-                arr_dyn_new = create(size);
 
-                cout << "array[" << index << "] = ";
-                cin >> value;
-
-                for (int i = 0; i < index; i++) {
-                    arr_dyn_new[i] = arr_dyn[i];
-                }
-                arr_dyn_new[index] = value;
-
-                for (int i = index; i < size; i++) {
-                    temp = arr_dyn[i];
-                    arr_dyn_new[i + 1] = temp;
-                }
-
-                arr_dyn = NULL;
-                arr_dyn = arr_dyn_new;
-                arr_dyn_new = NULL;
-
-                elements_inside++;
-
-              //  delete[] arr_dyn;
-                delete[] arr_dyn_new;
-            }
-            //adding element at the beginning,   SIZE > ELEMENTS
-        } else if (elements_inside < size) {
-            int temp = 0;
-            if (index == 0) {
-                cout << "array[" << index << "] = ";
-                cin >> value;
-
-                for (int i = 0; i < elements_inside; i++) {
-                    temp = arr_dyn[i];
-                    arr_dyn[0] = value;
-                    arr_dyn[i + 1] = temp;
-                }
-                elements_inside++;
-            }
+            arr_dyn = NULL;
+            delete[] arr_dyn;
+            arr_dyn = arr_dyn_new;
+            arr_dyn_new = NULL;
+            delete[] arr_dyn_new;
         }
+            //adding element in the middle,   SIZE == ELEMENTS
+        else if (index <= size - 1 && index > 0) {
+            temp = 0;
+            size++;
+            arr_dyn_new = create(size);
+
+            cout << "array[" << index << "] = ";
+            cin >> value;
+
+            for (int i = 0; i < index; i++) {
+
+                arr_dyn_new[i] = arr_dyn[i];
+            }
+            arr_dyn_new[index] = value;
+
+            for (int i = index; i < size; i++) {
+                temp = arr_dyn[i];
+                arr_dyn_new[i + 1] = temp;
+            }
+
+            arr_dyn = NULL;
+            arr_dyn = arr_dyn_new;
+            arr_dyn_new = NULL;
+
+            delete[] arr_dyn_new;
+        }
+
 
     }
 
     void add() {
-        int value = 0;
+        //int value = 0;
         //adding element at the end,   SIZE == ELEMENTS
-        if (elements_inside == size) {
-            size++;
-            arr_dyn_new = create(size);
 
-            for (int i = 0; i < size - 1; i++) {
-                arr_dyn_new[i] = arr_dyn[i];
-            }
+        size++;
+        arr_dyn_new = create(size);
 
-            cout << "array[" << elements_inside << "] = ";
-            cin >> value;
-            arr_dyn_new[size - 1] = value;
-
-            arr_dyn = NULL;
-
-            arr_dyn = arr_dyn_new;
-
-            arr_dyn_new = NULL;
-
-            elements_inside++;
-
-            delete[] arr_dyn_new;
-            //adding element at the end,   SIZE > ELEMENTS
-        } else if (elements_inside < size) {
-            cout << "There are less elements in the array than its size !! " << endl;
-
-            cout << "array[" << elements_inside << "] = ";
-            cin >> value;
-            arr_dyn[elements_inside] = value;
-            elements_inside++;
-            cout << "Element has been added | elements: " << elements_inside << " | size: " << size << " |" << endl;
-
+        for (int i = 0; i < size - 1; i++) {
+            arr_dyn_new[i] = arr_dyn[i];
         }
+
+         cout << "array[" << size - 1 << "] = ";
+        //cin >> value;
+        arr_dyn_new[size - 1] = value_add;
+        value_add++;
+
+        delete[]arr_dyn;
+        arr_dyn = NULL;
+        arr_dyn = arr_dyn_new;
+
+        arr_dyn_new = NULL;
+        delete[] arr_dyn_new;
+
+
     }
 
     void remove(int index) {
+        // remove from the beginning
+        if (size > 0) {
+            if (index == 0) {
+                size--;
+                arr_dyn_new = create(size);
+                for (int i = 1; i < size; i++) {
+                    arr_dyn_new[i - 1] = arr_dyn[i];
+                }
+                arr_dyn = NULL;
 
+                arr_dyn = arr_dyn_new;
+                arr_dyn_new = NULL;
+                delete[]arr_dyn;
+                delete[] arr_dyn_new;
+
+            }
+                //remove in the middle
+            else if (index <= size - 1 && index > 0) {
+                size--;
+                arr_dyn_new = create(size);
+                for (int i = 0; i < index; i++) {
+                    arr_dyn_new[i] = arr_dyn[i];
+                }
+                for (int i = index; i < size; i++) {
+                    arr_dyn_new[i] = arr_dyn[i + 1];
+                }
+                arr_dyn = NULL;
+
+                arr_dyn = arr_dyn_new;
+                arr_dyn_new = NULL;
+
+                delete[]arr_dyn;
+                delete[] arr_dyn_new;
+
+            }
+        } else {
+            cout << "Array is empty !" << endl;
+        }
     }
 
-    void find() {
+    // remove from the end
+    void remove() {
+
+        if (size > 0) {
+            size--;
+            arr_dyn_new = create(size); //size =4
+            for (int i = 0; i < size; i++) {
+                arr_dyn_new[i] = arr_dyn[i];
+            }
+
+            cout<<"Deleting ..."<<endl;
+
+            delete[]arr_dyn;
+            arr_dyn = NULL;
+            arr_dyn = arr_dyn_new;
+            arr_dyn_new = NULL;
+            delete[] arr_dyn_new;
+        } else {
+            cout << "Array is empty !" << endl;
+        }
+    }
+
+    void find(int index) {
+        if (size > index && index >= 0) {
+            cout << "Element at index " << index << " found: array[" << index << "] = " << arr_dyn[index] << endl;
+        } else {
+            cout << "No element with the index " << index << " found !" << endl;
+        }
 
     }
 
@@ -331,20 +360,17 @@ int main() {
     // menu->interface();
     Array *array = new Array();
 
-    array->add();
-    array->add();
-    array->add();
-    array->add();
+    for (int i = 0; i < 100000; i++) {
+        array->add();
+    }
 
-    //array->add(0);
-    array->add(2);
-    array->add(2);
+    for (int i = 0; i < 100001; i++) {
+        array->remove();
+    }
 
-
-//    array->add();
-//    array->add();
-//    array->add();
-
+    array->show();
+    array->add();
+    array->find(49998);
     array->show();
 
     return 0;
