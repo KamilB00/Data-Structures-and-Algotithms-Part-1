@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 
 using namespace std;
@@ -17,6 +18,7 @@ public:
     }
 
     void add(int index) {
+        auto start = std::chrono::steady_clock::now();
         int value = 0;
         int temp = 0;
         //adding element at the beginning,    SIZE == ELEMENTS
@@ -42,7 +44,13 @@ public:
             arr_dyn = arr_dyn_new;
             arr_dyn_new = NULL;
             delete[] arr_dyn_new;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
+            cout<<"elapsed Time: "<<elapsed_time<<endl;
+
         }
+
             //adding element in the middle,   SIZE == ELEMENTS
         else if (index <= size - 1 && index > 0) {
             temp = 0;
@@ -74,7 +82,7 @@ public:
     }
 
     void add() {
-        //int value = 0;
+        int value = 0;
         //adding element at the end,   SIZE == ELEMENTS
 
         size++;
@@ -85,7 +93,7 @@ public:
         }
 
          cout << "array[" << size - 1 << "] = ";
-        //cin >> value;
+        cin >> value;
         arr_dyn_new[size - 1] = value_add;
         value_add++;
 
@@ -309,19 +317,50 @@ public:
 
 class Menu {
 public:
+
+    void mode_interface(){
+        cout << "-----------------------------------------------" << endl;
+        cout << "     Welcome to Data Structures Time Analyzer " << endl;
+        cout << "-----------------------------------------------" << endl;
+        cout << "               1. Test Mode" << endl;
+        cout << "               2. Auto Mode" << endl;
+        cout << "               3. About" << endl;
+        cout << endl;
+        cout << " Press 0 to Exit" << endl;
+    }
+
+    void about_interface(){
+        cout << "-----------------------------------------------" << endl;
+        cout << "                     About " << endl;
+        cout << "-----------------------------------------------" << endl;
+        cout << "   Test Mode - allows you to fill a file"<<endl;
+        cout<<  "   with your own custom data" << endl;
+        cout << endl;
+        cout << "   Data need be implemented with specific pattern:"<<endl;
+        cout << "   [1-st line] number of elements "<<endl;
+        cout << "   [2-nd to n-th line] array element new line separated"<<endl;
+        cout << "       ------------------------------------" <<endl;
+        cout << "   Auto Mode - fills a file automatically with"<<endl;
+        cout<<  "   random numbers in range (-1000,1000)" << endl;
+        cout << endl;
+        cout << " Press 0 to Return" << endl;
+
+    }
+
     void interface() {
         int structure_number = 0;
         cout << "--------------------------------------------" << endl;
-        cout << "     Pick one Data Structure to test " << endl;
+        cout << "           Pick one Data Structure " << endl;
         cout << "--------------------------------------------" << endl;
         cout << "          1. Table" << endl;
         cout << "          2. Doubly Linked List" << endl;
         cout << "          3. Heap" << endl;
         cout << "          4. Red-Black Tree" << endl;
         cout << endl;
-        cout << " Press 0 to Exit" << endl;
+        cout << " Press 0 to Return" << endl;
 
         cin >> structure_number;
+
 
         switch (structure_number) {
             case 1:
@@ -331,11 +370,10 @@ public:
                 cout << "     -------------------------------------------" << endl;
                 cout << "     Which operations would you like to execute: " << endl;
                 cout << "     -------------------------------------------" << endl;
-                cout << "1. Add elements" << endl;
-                cout << "2. Remove element by index" << endl;
-                cout << "3. Remove all elements from list" << endl;
-                cout << "4. Find element by index" << endl;
-                cout << "4. Show list" << endl;
+                cout << "              1. Add elements" << endl;
+                cout << "              2. Remove element by index" << endl;
+                cout << "              3. Remove all elements from list" << endl;
+                cout << "              4. Find element by index" << endl;
 
             }
                 break;
@@ -359,20 +397,20 @@ int main() {
     //  Menu *menu = new Menu();
     // menu->interface();
     Array *array = new Array();
+//
+//    for (int i = 0; i < 100000; i++) {
+//        array->add();
+//    }
+//
+//    for (int i = 0; i < 99950; i++) {
+//        array->remove();
+//    }
 
-    for (int i = 0; i < 100000; i++) {
-        array->add();
-    }
-
-    for (int i = 0; i < 99950; i++) {
-        array->remove();
-    }
-
-    array->show();
-    array->add(5);
-    array->add();
-    array->find(49998);
-    array->show();
+    //array->show();
+    array->add(0);
+    //array->add();
+   // array->find(49998);
+ //   array->show();
 
     return 0;
 }
