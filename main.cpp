@@ -7,12 +7,33 @@
 using namespace std;
 
 class Array {
-public:
 
+public:
     int size = 0;
-    int *arr_dyn = create(size);
-    int *arr_dyn_new = NULL;
-    int value_add = 0;
+    int *arr_dyn = nullptr;
+    int *arr_dyn_new = nullptr;
+
+
+public:
+    Array() {
+        string amount;
+        string element;
+        fstream file;
+        file.open("data.txt", ios::in);
+
+        if (!file.good()) {
+            cout << "File data.txt does not exist !" << endl;
+        }
+        getline(file, amount);
+
+        arr_dyn = create(atoi(amount.c_str()));
+        size = atoi(amount.c_str());
+        for (int i = 0; i < size; i++) {
+            getline(file, element);
+            arr_dyn[i] = atoi(element.c_str());
+        }
+    }
+
 
     int *create(int size) {
         int *arr = new int[size];
@@ -20,11 +41,11 @@ public:
     }
 
     void add(int index) {
-        auto start = std::chrono::steady_clock::now();
+
         int value = 0;
         int temp = 0;
-        //adding element at the beginning,    SIZE == ELEMENTS
 
+        //adding element at the beginning
         if (index == 0) {
             size++;
 
@@ -32,8 +53,7 @@ public:
 
             cout << "array[" << index << "] = ";
             cin >> value;
-
-
+            auto start = std::chrono::steady_clock::now(); // START [ARRAY ADD AT INDEX 0]
             arr_dyn_new[0] = value;
 
             for (int i = 0; i < size; i++) {
@@ -41,19 +61,20 @@ public:
                 arr_dyn_new[i + 1] = temp;
             }
 
-            arr_dyn = NULL;
+            arr_dyn = nullptr;
             delete[] arr_dyn;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = NULL;
+            arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed Time: " << elapsed_time << endl;
+            cout << "elapsed time [Array add at index 0]: " << elapsed_time << " ns"
+                 << endl; //END [ARRAY ADD AT INDEX 0]
 
         }
 
-            //adding element in the middle,   SIZE == ELEMENTS
+            //adding element in the middle
         else if (index <= size - 1 && index > 0) {
             temp = 0;
             size++;
@@ -61,7 +82,7 @@ public:
 
             cout << "array[" << index << "] = ";
             cin >> value;
-
+            auto start = std::chrono::steady_clock::now();// START [ARRAY ADD TO MIDDLE]
             for (int i = 0; i < index; i++) {
 
                 arr_dyn_new[i] = arr_dyn[i];
@@ -74,10 +95,15 @@ public:
             }
 
             delete[] arr_dyn;
-            arr_dyn = NULL;
+            arr_dyn = nullptr;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = NULL;
+            arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [Array add to middle]: " << elapsed_time << " ns"
+                 << endl;//END [ARRAY ADD TO MIDDLE]
         }
 
 
@@ -85,49 +111,58 @@ public:
 
     void add() {
         int value = 0;
-        //adding element at the end,   SIZE == ELEMENTS
-
         size++;
         arr_dyn_new = create(size);
 
+        cout << "array[" << size - 1 << "] = ";
+        cin >> value;
+
+        //adding element at the end,   SIZE == ELEMENTS
+
+        auto start = std::chrono::steady_clock::now(); //START [ARRAY ADD TO END]
         for (int i = 0; i < size - 1; i++) {
             arr_dyn_new[i] = arr_dyn[i];
         }
 
-        cout << "array[" << size - 1 << "] = ";
-        cin >> value;
-        arr_dyn_new[size - 1] = value_add;
-        value_add++;
+        arr_dyn_new[size - 1] = value;
 
         delete[]arr_dyn;
-        arr_dyn = NULL;
+        arr_dyn = nullptr;
         arr_dyn = arr_dyn_new;
-
-        arr_dyn_new = NULL;
+        arr_dyn_new = nullptr;
         delete[] arr_dyn_new;
 
-
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [Array add to end]: " << elapsed_time << " ns" << endl; //END [ARRAY ADD TO END]
     }
 
     void remove(int index) {
         // remove from the beginning
         if (size > 0) {
             if (index == 0) {
+
+                auto start = std::chrono::steady_clock::now(); //START [ARRAY REMOVE FROM BEGINNING]
                 size--;
                 arr_dyn_new = create(size);
                 for (int i = 1; i < size; i++) {
                     arr_dyn_new[i - 1] = arr_dyn[i];
                 }
-                arr_dyn = NULL;
-
-                arr_dyn = arr_dyn_new;
-                arr_dyn_new = NULL;
                 delete[]arr_dyn;
+                arr_dyn = nullptr;
+                arr_dyn = arr_dyn_new;
+                arr_dyn_new = nullptr;
                 delete[] arr_dyn_new;
+
+                auto end = std::chrono::steady_clock::now();
+                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                cout << "elapsed time [Array remove from beginning]: " << elapsed_time << " ns"
+                     << endl; //END [ARRAY REMOVE FROM BEGINNING]
 
             }
                 //remove in the middle
             else if (index <= size - 1 && index > 0) {
+                auto start = std::chrono::steady_clock::now(); //START [ARRAY REMOVE FROM MIDDLE]
                 size--;
                 arr_dyn_new = create(size);
                 for (int i = 0; i < index; i++) {
@@ -136,14 +171,17 @@ public:
                 for (int i = index; i < size; i++) {
                     arr_dyn_new[i] = arr_dyn[i + 1];
                 }
-                arr_dyn = NULL;
-
-                arr_dyn = arr_dyn_new;
-                arr_dyn_new = NULL;
 
                 delete[]arr_dyn;
+                arr_dyn = nullptr;
+                arr_dyn = arr_dyn_new;
+                arr_dyn_new = nullptr;
                 delete[] arr_dyn_new;
 
+                auto end = std::chrono::steady_clock::now();
+                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                cout << "elapsed time [Array remove from middle]: " << elapsed_time << " ns"
+                     << endl; //END [ARRAY REMOVE FROM MIDDLE]
             }
         } else {
             cout << "Array is empty !" << endl;
@@ -152,21 +190,24 @@ public:
 
     // remove from the end
     void remove() {
-
         if (size > 0) {
+            auto start = std::chrono::steady_clock::now(); //START [ARRAY REMOVE FROM END]
             size--;
             arr_dyn_new = create(size); //size =4
             for (int i = 0; i < size; i++) {
                 arr_dyn_new[i] = arr_dyn[i];
             }
-
-            cout << "Deleting ..." << endl;
-
             delete[]arr_dyn;
-            arr_dyn = NULL;
+            arr_dyn = nullptr;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = NULL;
+            arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [Array remove from end]: " << elapsed_time << " ns"
+                 << endl; //END [ARRAY REMOVE FROM END]
+
         } else {
             cout << "Array is empty !" << endl;
         }
@@ -174,11 +215,35 @@ public:
 
     void find(int index) {
         if (size > index && index >= 0) {
+            auto start = std::chrono::steady_clock::now(); //START [ARRAY REMOVE FROM END]
             cout << "Element at index " << index << " found: array[" << index << "] = " << arr_dyn[index] << endl;
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [Array find by index]: " << elapsed_time << " ns"
+                 << endl; //END [ARRAY FIND BY INDEX]
+
         } else {
             cout << "No element with the index " << index << " found !" << endl;
         }
 
+    }
+
+    bool find(){
+        int value =0;
+        cout<<"Number in array you are looking for: ";
+        cin>>value;
+        auto start = std::chrono::steady_clock::now(); //START [ARRAY FIND BY VALUE]
+        for(int i=0;i<size;i++){
+            if (arr_dyn[i] == value){
+                return true;
+            }
+            else
+                return false;
+        }
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [Array find by value]: " << elapsed_time << " ns"
+             << endl; //END [ARRAY FIND BY VALUE]
     }
 
     void show() {
@@ -194,20 +259,20 @@ public:
 class Element {
 public:
     int data = 0;
-    Element *next = NULL;
-    Element *prev = NULL;
+    Element *next = nullptr;
+    Element *prev = nullptr;
 
     Element(int d) {
         this->data = d;
-        this->next = NULL;
-        this->prev = NULL;
+        this->next = nullptr;
+        this->prev = nullptr;
     }
 };
 
 class ListTwoDirection {
     int size = 0;
-    Element *first = NULL;
-    Element *last = NULL;
+    Element *first = nullptr;
+    Element *last = nullptr;
 
     Element *getPosition(unsigned long long int index) { //pozycja numerowna od 0
         Element *temp = first;
@@ -215,7 +280,7 @@ class ListTwoDirection {
         int i = 0;
 
         if (index < 0 || index > size) {
-            return NULL;
+            return nullptr;
         } else {
             while (i++ < pos) {
                 temp = temp->next;
@@ -229,8 +294,8 @@ public:
     void show() {
         Element *temp = first;
         int i = 0;
-        if (temp != NULL) {
-            while (temp != NULL) {
+        if (temp != nullptr) {
+            while (temp != nullptr) {
                 cout << i++ << ". " << temp->data << endl;
                 temp = temp->next;
             }
@@ -287,19 +352,19 @@ public:
             Element *temp = first;
             if (size > 1) {
                 first = temp->next;
-                first->prev = NULL;
+                first->prev = nullptr;
                 delete temp;
                 size--;
             } else {
-                first = NULL;
-                last = NULL;
+                first = nullptr;
+                last = nullptr;
                 delete temp;
                 size--;
             }
         } else if (index == size - 1) { //usuwanie z ostatniego
             Element *temp = last;
             last = last->prev;
-            last->next = NULL;
+            last->next = nullptr;
             delete temp;
             size--;
         }
@@ -446,25 +511,18 @@ public:
 
 int main() {
     Menu *menu = new Menu();
-    // menu->interface();
-    // Array *array = new Array();
-//
-//    for (int i = 0; i < 100000; i++) {
-//        array->add();
-//    }
-//
-//    for (int i = 0; i < 99950; i++) {
-//        array->remove();
-//    }
-    menu->about_interface();
+
     File *file = new File(20);
+    Array *array = new Array();
 
 
+    array->add(0);
+    array->add();
+    array->remove();
+    array->remove(2);
+    array->add(5);
     //array->show();
-    //array->add(0);
-    //array->add();
-    // array->find(49998);
-    //   array->show();
+
 
     return 0;
 }
