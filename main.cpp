@@ -1,5 +1,7 @@
 #include <iostream>
 #include <chrono>
+#include <fstream>
+#include <random>
 
 
 using namespace std;
@@ -46,8 +48,8 @@ public:
             delete[] arr_dyn_new;
 
             auto end = std::chrono::steady_clock::now();
-            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count());
-            cout<<"elapsed Time: "<<elapsed_time<<endl;
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed Time: " << elapsed_time << endl;
 
         }
 
@@ -71,7 +73,7 @@ public:
                 arr_dyn_new[i + 1] = temp;
             }
 
-            delete [] arr_dyn;
+            delete[] arr_dyn;
             arr_dyn = NULL;
             arr_dyn = arr_dyn_new;
             arr_dyn_new = NULL;
@@ -92,7 +94,7 @@ public:
             arr_dyn_new[i] = arr_dyn[i];
         }
 
-         cout << "array[" << size - 1 << "] = ";
+        cout << "array[" << size - 1 << "] = ";
         cin >> value;
         arr_dyn_new[size - 1] = value_add;
         value_add++;
@@ -158,7 +160,7 @@ public:
                 arr_dyn_new[i] = arr_dyn[i];
             }
 
-            cout<<"Deleting ..."<<endl;
+            cout << "Deleting ..." << endl;
 
             delete[]arr_dyn;
             arr_dyn = NULL;
@@ -273,7 +275,7 @@ public:
     void remove(unsigned long long int index) {
 
         if (index > size || index < 0) {
-            cout << "Podano nieprawidłowy index" << endl;
+            cout << "Incorrect index !" << endl;
         } else if (index > 0 && index < size - 1) { //usuwanie ze środka
             Element *temp = getPosition(index);
             temp->prev->next = temp->next;
@@ -315,10 +317,56 @@ public:
 
 };
 
+class File {
+public:
+
+    File() {
+        int amount = 0;
+        int lower = 0;
+        int upper = 0;
+        fstream file;
+        file.open("data.txt", ios::out);
+        cout << "How many numbers should be created ? :";
+        cin >> amount;
+        cout << "Lower Bounds: ";
+        cin >> lower;
+        cout << "Upper Bounds: ";
+        cin >> upper;
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(lower, upper);
+
+        for (int i = 0; i < amount; i++) {
+            file << (int) dis(gen) << endl;
+        }
+        file.close();
+
+    }
+
+    File(int amount) {
+
+        fstream file;
+        file.open("data.txt", ios::out);
+        file << amount << endl;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(-1000, 1000);
+
+        for (int i = 0; i < amount; i++) {
+            file << (int) dis(gen) << endl;
+        }
+        file.close();
+
+    }
+
+
+};
+
 class Menu {
 public:
 
-    void mode_interface(){
+    void mode_interface() {
         cout << "-----------------------------------------------" << endl;
         cout << "     Welcome to Data Structures Time Analyzer " << endl;
         cout << "-----------------------------------------------" << endl;
@@ -329,51 +377,55 @@ public:
         cout << " Press 0 to Exit" << endl;
     }
 
-    void about_interface(){
-        cout << "-----------------------------------------------" << endl;
-        cout << "                     About " << endl;
-        cout << "-----------------------------------------------" << endl;
-        cout << "   Test Mode - allows you to fill a file"<<endl;
-        cout<<  "   with your own custom data" << endl;
+    void about_interface() {
+        cout << "-----------------------------------------------------  " << endl;
+        cout << "                     About                             " << endl;
+        cout << "-----------------------------------------------------  " << endl;
+        cout << "   * Test Mode * - allows you to specify amount,       " << endl;
+        cout << "   lower bounds and upper bounds of randomly           " << endl;
+        cout << "   generated numbers                                   " << endl;
+        cout << "-----------------------------------------------------  " << endl;
+        cout << "   * Auto Mode * - fills a file automatically with     " << endl;
+        cout << "   random numbers in range (-1000,1000)                " << endl;
+        cout << "-----------------------------------------------------  " << endl;
+        cout << "   * Read Mode *  - program creates a file and allows  " << endl;
+        cout << "   you to fill it with your own data                   " << endl;
         cout << endl;
-        cout << "   Data need be implemented with specific pattern:"<<endl;
-        cout << "   [1-st line] number of elements "<<endl;
-        cout << "   [2-nd to n-th line] array element new line separated"<<endl;
-        cout << "       ------------------------------------" <<endl;
-        cout << "   Auto Mode - fills a file automatically with"<<endl;
-        cout<<  "   random numbers in range (-1000,1000)" << endl;
+        cout << "   [File Pattern]                                      " << endl;
+        cout << "   [1-st line] number of elements                      " << endl;
+        cout << "   [2-n to n-th line] elements of the array            " << endl;
+        cout << "   separated with new line                             " << endl;
+        cout << "-----------------------------------------------------  " << endl;
         cout << endl;
         cout << " Press 0 to Return" << endl;
-
     }
 
     void interface() {
         int structure_number = 0;
-        cout << "--------------------------------------------" << endl;
-        cout << "           Pick one Data Structure " << endl;
-        cout << "--------------------------------------------" << endl;
-        cout << "          1. Table" << endl;
-        cout << "          2. Doubly Linked List" << endl;
-        cout << "          3. Heap" << endl;
-        cout << "          4. Red-Black Tree" << endl;
+        cout << "--------------------------------------------  " << endl;
+        cout << "           Pick one Data Structure            " << endl;
+        cout << "--------------------------------------------  " << endl;
+        cout << "          1. Table                            " << endl;
+        cout << "          2. Doubly Linked List               " << endl;
+        cout << "          3. Heap                             " << endl;
+        cout << "          4. Red-Black Tree                   " << endl;
         cout << endl;
-        cout << " Press 0 to Return" << endl;
+        cout << " Press 0 to Return                            " << endl;
 
         cin >> structure_number;
-
 
         switch (structure_number) {
             case 1:
                 break;
             case 2: {
                 ListTwoDirection *list = new ListTwoDirection();
-                cout << "     -------------------------------------------" << endl;
-                cout << "     Which operations would you like to execute: " << endl;
-                cout << "     -------------------------------------------" << endl;
-                cout << "              1. Add elements" << endl;
-                cout << "              2. Remove element by index" << endl;
-                cout << "              3. Remove all elements from list" << endl;
-                cout << "              4. Find element by index" << endl;
+                cout << "     -------------------------------------------   " << endl;
+                cout << "     Which operations would you like to execute:   " << endl;
+                cout << "     -------------------------------------------   " << endl;
+                cout << "              1. Add elements                      " << endl;
+                cout << "              2. Remove element by index           " << endl;
+                cout << "              3. Remove all elements from list     " << endl;
+                cout << "              4. Find element by index             " << endl;
 
             }
                 break;
@@ -387,16 +439,15 @@ public:
 
             default:
                 cout << "There is not such number on the list. Try Again !" << endl;
-                cout << "test change" << endl;
-                cout << "changes made on test branch" << endl;
+
         }
     }
 };
 
 int main() {
-    //  Menu *menu = new Menu();
+    Menu *menu = new Menu();
     // menu->interface();
-    Array *array = new Array();
+    // Array *array = new Array();
 //
 //    for (int i = 0; i < 100000; i++) {
 //        array->add();
@@ -405,12 +456,15 @@ int main() {
 //    for (int i = 0; i < 99950; i++) {
 //        array->remove();
 //    }
+    menu->about_interface();
+    File *file = new File(20);
+
 
     //array->show();
-    array->add(0);
+    //array->add(0);
     //array->add();
-   // array->find(49998);
- //   array->show();
+    // array->find(49998);
+    //   array->show();
 
     return 0;
 }
