@@ -2,6 +2,7 @@
 #include <chrono>
 #include <fstream>
 #include <random>
+#include <iomanip>
 
 
 using namespace std;
@@ -12,7 +13,6 @@ public:
     int size = 0;
     int *arr_dyn = nullptr;
     int *arr_dyn_new = nullptr;
-
 
 public:
     Array() {
@@ -33,7 +33,6 @@ public:
             arr_dyn[i] = atoi(element.c_str());
         }
     }
-
 
     int *create(int size) {
         int *arr = new int[size];
@@ -228,21 +227,29 @@ public:
 
     }
 
-    bool find(){
-        int value =0;
-        cout<<"Number in array you are looking for: ";
-        cin>>value;
+    void find() {
+        int value = 0;
+        int present = 0;
+        cout << "Number in array you are looking for: ";
+        cin >> value;
         auto start = std::chrono::steady_clock::now(); //START [ARRAY FIND BY VALUE]
-        for(int i=0;i<size;i++){
-            if (arr_dyn[i] == value){
-                return true;
+
+        for (int i = 0; i < size; i++) {
+            if (arr_dyn[i] == value) {
+                present++;
             }
-            else
-                return false;
         }
+        if (present != 0) {
+            cout << value << " found in the array" << endl;
+        } else {
+            cout << "There is no such value in this array" << endl;
+        }
+
         auto end = std::chrono::steady_clock::now();
-        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [Array find by value]: " << elapsed_time << " ns"
+        long double elapsed_time = (long double) (std::chrono::duration_cast<std::chrono::nanoseconds>(
+                end - start).count());
+
+        cout << "elapsed time [Array find by value]: " << (long double) (elapsed_time) << " ns"
              << endl; //END [ARRAY FIND BY VALUE]
     }
 
@@ -413,15 +420,18 @@ public:
 
         fstream file;
         file.open("data.txt", ios::out);
+        cout << "File created successfully" << endl;
         file << amount << endl;
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution<> dis(-1000, 1000);
-
+        cout << "Please wait, values are being loaded to the file..." << endl;
         for (int i = 0; i < amount; i++) {
             file << (int) dis(gen) << endl;
         }
         file.close();
+
+        cout << "Filling accomplished successfully !" << endl;
 
     }
 
@@ -431,18 +441,53 @@ public:
 class Menu {
 public:
 
-    void mode_interface() {
+    int mode_interface() {
+        clearScreen();
+        int mode = 0;
         cout << "-----------------------------------------------" << endl;
         cout << "     Welcome to Data Structures Time Analyzer " << endl;
         cout << "-----------------------------------------------" << endl;
         cout << "               1. Test Mode" << endl;
         cout << "               2. Auto Mode" << endl;
         cout << "               3. About" << endl;
+        cout << "-----------------------------------------------" << endl;
         cout << endl;
         cout << " Press 0 to Exit" << endl;
+
+        do {
+            cin >> mode;
+            if (mode >= 0 && mode <= 3) {
+                switch (mode) {
+                    case 1: {
+                        File *file = new File();
+                        clearScreen();
+                        data_structures_interface();
+                    }
+                        break;
+                    case 2: {
+                        File *file = new File(100);
+                        clearScreen();
+                        data_structures_interface();
+                        break;
+                    }
+                    case 3: {
+                        clearScreen();
+                        about_interface();
+                        break;
+                    }
+                    default:
+                        exit(1);
+
+                }
+            } else {
+                cout << "Mode not found try again !" << endl;
+            }
+        } while (mode < 0 || mode > 3);
+
     }
 
     void about_interface() {
+        int choice = 0;
         cout << "-----------------------------------------------------  " << endl;
         cout << "                     About                             " << endl;
         cout << "-----------------------------------------------------  " << endl;
@@ -463,10 +508,47 @@ public:
         cout << "-----------------------------------------------------  " << endl;
         cout << endl;
         cout << " Press 0 to Return" << endl;
+
+        do {
+            cin >> choice;
+            if (choice == 0) {
+                mode_interface();
+            } else {
+                cout << "Sign not allowed here ! [Press 0 to Return] " << endl;
+            }
+        } while (choice != 0);
     }
 
-    void interface() {
-        int structure_number = 0;
+    int operations_interface(string name) {
+        int choice = 0;
+
+        cout << "     -------------------------------------------   " << endl;
+        cout << "             Operations on " << name << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << "              1. Add element                       " << endl;
+        cout << "              2. Add element by index              " << endl;
+        cout << "              3. Remove element                    " << endl;
+        cout << "              4. Remove element by index           " << endl;
+        cout << "              5. Find element by value             " << endl;
+        cout << "              6. Find element by index             " << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << endl;
+        cout << " Press 0 to Return                            " << endl;
+
+        do {
+            cin >> choice;
+            if (choice >= 0 && choice <= 6) {
+                return choice;
+            } else {
+                cout << "No operation found try again !" << endl;
+            }
+        } while (choice < 0 || choice > 6);
+    }
+
+    void data_structures_interface() {
+
+        int choice = 0;
+
         cout << "--------------------------------------------  " << endl;
         cout << "           Pick one Data Structure            " << endl;
         cout << "--------------------------------------------  " << endl;
@@ -474,55 +556,146 @@ public:
         cout << "          2. Doubly Linked List               " << endl;
         cout << "          3. Heap                             " << endl;
         cout << "          4. Red-Black Tree                   " << endl;
+        cout << "          5. AVL Tree                         " << endl;
+        cout << "--------------------------------------------  " << endl;
         cout << endl;
         cout << " Press 0 to Return                            " << endl;
 
-        cin >> structure_number;
 
-        switch (structure_number) {
-            case 1:
-                break;
-            case 2: {
-                ListTwoDirection *list = new ListTwoDirection();
-                cout << "     -------------------------------------------   " << endl;
-                cout << "     Which operations would you like to execute:   " << endl;
-                cout << "     -------------------------------------------   " << endl;
-                cout << "              1. Add elements                      " << endl;
-                cout << "              2. Remove element by index           " << endl;
-                cout << "              3. Remove all elements from list     " << endl;
-                cout << "              4. Find element by index             " << endl;
+        do {
+            cin >> choice;
+            if (choice >= 0 && choice <= 4) {
+                switch (choice) {
+                    case 0: {
+                        clearScreen();
+                        mode_interface();
+                    }
+                        // ARRAY DATA STRUCTURE
+                    case 1: {
+                        clearScreen();
+                        Array *array = new Array();
+                        char add_more = ' ';
 
+                        int operation = operations_interface("Array");
+                        do {
+                            switch (operation) {
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete array;
+                                    array = nullptr;
+
+                                }
+                                    //Array OPTIONS
+                                    //#1 Add to table
+                                case 1: {
+                                    do {
+                                            add_more = ' ';
+                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
+                                            cin >> add_more;
+
+                                            if (add_more == 'y') {
+                                                array->add();
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
+
+                                        } while (add_more == 'y');
+
+                                    break;
+                                }
+
+                                    //#2 Add to table by index
+                                case 2: {
+                                    //TODO Add element by index
+                                    do {
+                                        int index = 0;
+
+                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
+                                            cin >> add_more;
+
+                                            if (add_more == 'y') {
+                                                cout << "index: ";
+                                                cin >> index;
+                                                array->add(index);
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
+                                        } while (add_more == 'y');
+
+
+
+                                    break;
+                                }
+                                    //#3 Remove element
+                                case 3: {
+                                    //TODO Remove element
+                                    break;
+                                }
+                                    //#4 Remove element by index
+                                case 4: {
+                                    //TODO Remove element by index
+                                    break;
+                                }
+                                    //#5 Find element by value
+                                case 5: {
+                                    //TODO Find element by value
+                                    break;
+                                }
+                                    //#6 Find element by index
+                                case 6: {
+                                    //TODO Find element by index
+                                    break;
+                                }
+                                default:
+                                    cout << "No option found try again ! [Press 0 to Return]" << endl;
+
+                            }
+
+                        }while(operation = operations_interface("Array") );
+                        data_structures_interface();
+                        break;
+                    }
+                        //LIST DATA STRUCTURE
+                    case 2: {
+                        clearScreen();
+                        operations_interface("List");
+                        break;
+                    }
+                    case 3: {
+                        clearScreen();
+                        operations_interface("Heap");
+                        break;
+                    }
+                    case 4: {
+                        clearScreen();
+                        operations_interface("Red-Black Tree");
+                        break;
+                    }
+                    case 5: {
+                        clearScreen();
+                        operations_interface("AVL Tree");
+                        break;
+                    }
+
+                }
+            } else {
+                cout << "No structure found try again !" << endl;
             }
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 0:
-                exit(1);
-                break;
+        } while ((choice < 0 || choice > 4));
 
-            default:
-                cout << "There is not such number on the list. Try Again !" << endl;
+    }
 
-        }
+    void clearScreen() {
+        cout << "\033[2J\033[1;1H";
+//      system("clear");
     }
 };
 
+
 int main() {
     Menu *menu = new Menu();
-
-    File *file = new File(20);
-    Array *array = new Array();
-
-
-    array->add(0);
-    array->add();
-    array->remove();
-    array->remove(2);
-    array->add(5);
-    //array->show();
-
+    menu->mode_interface();
 
     return 0;
 }
