@@ -575,64 +575,85 @@ public:
                         clearScreen();
                         Array *array = new Array();
                         char add_more = ' ';
-                        switch (operations_interface("Table")) {
-                            case 0: {
-                                clearScreen();
-                                data_structures_interface();
-                                delete array;
-                            }
-                                //Array OPTIONS
-                                //#1 Add to table
-                            case 1: {
-                                do {
-                                    array->add();
-                                    add_more = ' ';
+
+                        int operation = operations_interface("Array");
+                        do {
+                            switch (operation) {
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete array;
+                                    array = nullptr;
+
+                                }
+                                    //Array OPTIONS
+                                    //#1 Add to table
+                                case 1: {
                                     do {
-                                        cout << "Do you want to add more numbers [y/n] ?  " << endl;
-                                        cin >> add_more;
+                                            add_more = ' ';
+                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
+                                            cin >> add_more;
 
-                                        if (add_more == 'y') {
-                                            array->add();
-                                        } else if (add_more != 'y' && add_more != 'n') {
-                                            cout << "No such option try again !" << endl;
-                                        }
+                                            if (add_more == 'y') {
+                                                array->add();
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
 
-                                    } while (add_more == 'y');
+                                        } while (add_more == 'y');
 
-                                } while (operations_interface("Table"));
-                                data_structures_interface();
-                                break;
+                                    break;
+                                }
+
+                                    //#2 Add to table by index
+                                case 2: {
+                                    //TODO Add element by index
+                                    do {
+                                        int index = 0;
+
+                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
+                                            cin >> add_more;
+
+                                            if (add_more == 'y') {
+                                                cout << "index: ";
+                                                cin >> index;
+                                                array->add(index);
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
+                                        } while (add_more == 'y');
+
+
+
+                                    break;
+                                }
+                                    //#3 Remove element
+                                case 3: {
+                                    //TODO Remove element
+                                    break;
+                                }
+                                    //#4 Remove element by index
+                                case 4: {
+                                    //TODO Remove element by index
+                                    break;
+                                }
+                                    //#5 Find element by value
+                                case 5: {
+                                    //TODO Find element by value
+                                    break;
+                                }
+                                    //#6 Find element by index
+                                case 6: {
+                                    //TODO Find element by index
+                                    break;
+                                }
+                                default:
+                                    cout << "No option found try again ! [Press 0 to Return]" << endl;
+
                             }
 
-                                //#2 Add to table by index
-                            case 2: {
-                                //TODO Add element by index
-                                break;
-                            }
-                                //#3 Remove element
-                            case 3: {
-                                //TODO Remove element
-                                break;
-                            }
-                                //#4 Remove element by index
-                            case 4: {
-                                //TODO Remove element by index
-                                break;
-                            }
-                                //#5 Find element by value
-                            case 5: {
-                                //TODO Find element by value
-                                break;
-                            }
-                                //#6 Find element by index
-                            case 6: {
-                                //TODO Find element by index
-                                break;
-                            }
-                            default:
-                                cout << "No option found try again ! [Press 0 to Return]" << endl;
-
-                        }
+                        }while(operation = operations_interface("Array") );
+                        data_structures_interface();
                         break;
                     }
                         //LIST DATA STRUCTURE
