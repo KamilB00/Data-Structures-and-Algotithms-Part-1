@@ -576,7 +576,7 @@ public:
 
         do {
             cin >> choice;
-            if (choice >= 0 && choice <= 4) {
+            if (choice >= 0 && choice <= 5) {
                 switch (choice) {
                     case 0: {
                         clearScreen();
@@ -592,6 +592,9 @@ public:
                         do {
                             int visit_count = 0;
                             switch (operation) {
+                                //Array OPTIONS
+
+                                //#0 Return to previous window
                                 case 0: {
                                     clearScreen();
                                     data_structures_interface();
@@ -599,7 +602,7 @@ public:
                                     array = nullptr;
 
                                 }
-                                    //Array OPTIONS
+
                                     //#1 Add to table
                                 case 1: {
                                     array->add();
@@ -683,35 +686,56 @@ public:
                     }
 
 
- //*******************************************************************************************************************
+//*******************************************************************************************************************
 
                         //LIST DATA STRUCTURE
                     case 2: {
+
                         clearScreen();
-                        operations_interface("List");
+                        ListTwoDirection *list = new ListTwoDirection();
+                       int  operation =  operations_interface("List");
+
+                        switch(operation){
+                            //List OPTIONS
+
+                            //#0 Return to previous screen
+                            case 0:
+                            {
+                                break;
+                            }
+
+                        }
+
                         break;
                     }
+//*******************************************************************************************************************
+
+                        //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
                         operations_interface("Heap");
                         break;
                     }
+//*******************************************************************************************************************
+                        //Red-Black Tree DATA STRUCTURE
                     case 4: {
                         clearScreen();
                         operations_interface("Red-Black Tree");
                         break;
                     }
+//*******************************************************************************************************************
+                        //AVL Tree DATA STRUCTURE
                     case 5: {
                         clearScreen();
                         operations_interface("AVL Tree");
                         break;
                     }
-
+//*******************************************************************************************************************
                 }
             } else {
                 cout << "No structure found try again !" << endl;
             }
-        } while ((choice < 0 || choice > 4));
+        } while ((choice < 0 || choice > 5));
 
     }
 
