@@ -201,7 +201,7 @@ public:
             arr_dyn = arr_dyn_new;
             arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
-
+            cout<<"Element deleted !"<<endl;
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
             cout << "elapsed time [Array remove from end]: " << elapsed_time << " ns"
@@ -396,23 +396,36 @@ public:
         int amount = 0;
         int lower = 0;
         int upper = 0;
-        fstream file;
-        file.open("data.txt", ios::out);
+
+
         cout << "How many numbers should be created ? :";
         cin >> amount;
-        cout << "Lower Bounds: ";
-        cin >> lower;
-        cout << "Upper Bounds: ";
-        cin >> upper;
 
+        do {
+            cout << "Lower Bounds: ";
+            cin >> lower;
+            cout << "Upper Bounds: ";
+            cin >> upper;
+
+            if (lower >= upper) {
+                cout << "Incorrect range, please try again !" << endl;
+            }
+        } while (lower >= upper);
+
+        fstream file;
+        file.open("data.txt", ios::out);
+        cout << "File created successfully" << endl;
+        file << amount << endl;
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_real_distribution<> dis(lower, upper);
 
+        cout << "Please wait, values are being loaded to the file..." << endl;
         for (int i = 0; i < amount; i++) {
             file << (int) dis(gen) << endl;
         }
         file.close();
+        cout << "Filling accomplished successfully !" << endl;
 
     }
 
@@ -432,7 +445,6 @@ public:
         file.close();
 
         cout << "Filling accomplished successfully !" << endl;
-
     }
 
 
@@ -578,6 +590,7 @@ public:
 
                         int operation = operations_interface("Array");
                         do {
+                            int visit_count = 0;
                             switch (operation) {
                                 case 0: {
                                     clearScreen();
@@ -589,7 +602,11 @@ public:
                                     //Array OPTIONS
                                     //#1 Add to table
                                 case 1: {
-                                    do {
+                                    array->add();
+                                    visit_count++;
+
+                                    if (visit_count > 0) {
+                                        do {
                                             add_more = ' ';
                                             cout << "Do you want to add more numbers [y/n] ?  " << endl;
                                             cin >> add_more;
@@ -601,16 +618,20 @@ public:
                                             }
 
                                         } while (add_more == 'y');
-
+                                    }
                                     break;
                                 }
 
                                     //#2 Add to table by index
                                 case 2: {
-                                    //TODO Add element by index
-                                    do {
-                                        int index = 0;
+                                    int index = 0;
+                                    visit_count++;
+                                    cout << "index: ";
+                                    cin >> index;
+                                    array->add(index);
 
+                                    if (visit_count > 0) {
+                                        do {
                                             cout << "Do you want to add more numbers [y/n] ?  " << endl;
                                             cin >> add_more;
 
@@ -622,40 +643,48 @@ public:
                                                 cout << "No such option try again !" << endl;
                                             }
                                         } while (add_more == 'y');
-
-
-
+                                    }
                                     break;
                                 }
                                     //#3 Remove element
                                 case 3: {
-                                    //TODO Remove element
+                                    array->remove();
                                     break;
                                 }
                                     //#4 Remove element by index
                                 case 4: {
-                                    //TODO Remove element by index
+                                    int index = 0;
+                                    cout << "Index of removing element: ";
+                                    cin >> index;
+                                    array->remove(index);
                                     break;
                                 }
                                     //#5 Find element by value
                                 case 5: {
-                                    //TODO Find element by value
+                                    array->find();
                                     break;
                                 }
                                     //#6 Find element by index
                                 case 6: {
-                                    //TODO Find element by index
+                                    int index =0;
+                                    cout<<"Index of the value: ";
+                                    cin>>index;
+
+                                    array->find(index);
                                     break;
                                 }
                                 default:
                                     cout << "No option found try again ! [Press 0 to Return]" << endl;
-
                             }
 
-                        }while(operation = operations_interface("Array") );
+                        } while (operation = operations_interface("Array"));
                         data_structures_interface();
                         break;
                     }
+
+
+ //*******************************************************************************************************************
+
                         //LIST DATA STRUCTURE
                     case 2: {
                         clearScreen();
