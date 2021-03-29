@@ -201,7 +201,7 @@ public:
             arr_dyn = arr_dyn_new;
             arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
-            cout<<"Element deleted !"<<endl;
+            cout << "Element deleted !" << endl;
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
             cout << "elapsed time [Array remove from end]: " << elapsed_time << " ns"
@@ -277,7 +277,16 @@ public:
 };
 
 class ListTwoDirection {
+
     int size = 0;
+
+public:
+    int get_size() {
+        this->size = size;
+        return size;
+    }
+
+
     Element *first = nullptr;
     Element *last = nullptr;
 
@@ -295,6 +304,24 @@ class ListTwoDirection {
             return temp;
         }
 
+    }
+
+    ListTwoDirection() {
+        string amount;
+        string element;
+        fstream file;
+        file.open("data.txt", ios::in);
+
+        if (!file.good()) {
+            cout << "File data.txt does not exist !" << endl;
+        }
+        getline(file, amount);
+
+
+        for (int i = 0; i < atoi(amount.c_str()); i++) {
+            getline(file, element);
+            add(atoi(element.c_str()), i);
+        }
     }
 
 public:
@@ -340,7 +367,7 @@ public:
             n->next = temp;
             n->prev = before;
         }
-        cout << "Element has been added on the position with index: " << index << endl;
+
         size++;
     }
 
@@ -376,7 +403,6 @@ public:
             size--;
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
-
     }
 
     void removeAll() {
@@ -603,7 +629,7 @@ public:
 
                                 }
 
-                                    //#1 Add to table
+                                    //#1 Add to array
                                 case 1: {
                                     array->add();
                                     visit_count++;
@@ -625,7 +651,7 @@ public:
                                     break;
                                 }
 
-                                    //#2 Add to table by index
+                                    //#2 Add to array by index
                                 case 2: {
                                     int index = 0;
                                     visit_count++;
@@ -669,9 +695,9 @@ public:
                                 }
                                     //#6 Find element by index
                                 case 6: {
-                                    int index =0;
-                                    cout<<"Index of the value: ";
-                                    cin>>index;
+                                    int index = 0;
+                                    cout << "Index of the value: ";
+                                    cin >> index;
 
                                     array->find(index);
                                     break;
@@ -693,14 +719,47 @@ public:
 
                         clearScreen();
                         ListTwoDirection *list = new ListTwoDirection();
-                       int  operation =  operations_interface("List");
+                        int operation = operations_interface("List");
 
-                        switch(operation){
+                        int visit_count = 0;
+                        char add_more = ' ';
+
+                        switch (operation) {
                             //List OPTIONS
 
                             //#0 Return to previous screen
-                            case 0:
-                            {
+                            case 0: {
+                                clearScreen();
+                                data_structures_interface();
+                                delete list;
+                                list = nullptr;
+                            }
+                                //#1 Add to list
+                            case 1: {
+                                int value = 0;
+
+                                cout << "list.add(" << list->get_size() << ") = " << endl;
+                                cin >> value;
+
+                                list->add(value, list->get_size());
+                                visit_count++;
+
+                                if (visit_count > 0) {
+                                    do {
+                                        add_more = ' ';
+                                        cout << "Do you want to add more numbers [y/n] ?  ";
+                                        cin >> add_more;
+
+                                        if (add_more == 'y') {
+                                            cout << "list.add(" << list->get_size() << ") = ";
+                                            cin>>value;
+                                            list->add(value, list->get_size());
+                                        } else if (add_more != 'y' && add_more != 'n') {
+                                            cout << "No such option try again !" << endl;
+                                        }
+
+                                    } while (add_more == 'y');
+                                }
                                 break;
                             }
 
