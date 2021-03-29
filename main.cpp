@@ -264,6 +264,7 @@ public:
 };
 
 class Element {
+
 public:
     int data = 0;
     Element *next = nullptr;
@@ -405,12 +406,56 @@ public:
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
     }
 
+public:
     void removeAll() {
         int i = size - 1;
         while (i >= 0) {
             remove(i);
             i--;
         }
+    }
+
+public:
+    void find() {
+        int value = 0;
+        Element *temp = first;
+        cout << "Value you are looking for: ";
+        cin >> value;
+        int found = 0;
+        do {
+            if (temp->data == value) {
+                cout << "Value " << value << " found in the list" << endl;
+                found++;
+            } else {
+                temp = temp->next;
+            }
+        } while ((found == 0) && (temp != nullptr));
+
+        if (found == 0) {
+            cout << "Value " << value << "was not found in the list " << endl;
+        }
+    }
+
+public :
+    void find(int index) {
+        int visit_count = 0;
+        Element *temp = first;
+
+        if (visit_count > 0) {
+            do {
+                cout << "Value index: ";
+                cin >> index;
+                if (index < 0 || index > size) {
+                    cout << "Incorrect index ! Try again" << endl;
+                }
+            } while (index > size || index < 0);
+        }
+
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
+        }
+        cout << "List value at index " << index << " = " << temp->data << endl;
+
     }
 
 };
@@ -721,50 +766,143 @@ public:
                         ListTwoDirection *list = new ListTwoDirection();
                         int operation = operations_interface("List");
 
-                        int visit_count = 0;
-                        char add_more = ' ';
+                        do {
+                            int visit_count = 0;
+                            char add_more = ' ';
+                            switch (operation) {
+                                //List OPTIONS
 
-                        switch (operation) {
-                            //List OPTIONS
+                                //#0 Return to previous screen
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete list;
+                                    list = nullptr;
+                                }
+                                    //#1 Add to list [LIST]
+                                case 1: {
+                                    int value = 0;
 
-                            //#0 Return to previous screen
-                            case 0: {
-                                clearScreen();
-                                data_structures_interface();
-                                delete list;
-                                list = nullptr;
-                            }
-                                //#1 Add to list
-                            case 1: {
-                                int value = 0;
+                                    cout << "list.add(" << list->get_size() << ") = ";
+                                    cin >> value;
 
-                                cout << "list.add(" << list->get_size() << ") = " << endl;
-                                cin >> value;
+                                    list->add(value, list->get_size());
+                                    visit_count++;
 
-                                list->add(value, list->get_size());
-                                visit_count++;
+                                    if (visit_count > 0) {
+                                        do {
+                                            add_more = ' ';
+                                            cout << "Do you want to add more numbers [y/n] ?  ";
+                                            cin >> add_more;
 
-                                if (visit_count > 0) {
+                                            if (add_more == 'y') {
+                                                cout << "list.add(" << list->get_size() << ") = ";
+                                                cin >> value;
+                                                list->add(value, list->get_size());
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
+
+                                        } while (add_more == 'y');
+                                    }
+                                    break;
+                                }
+                                    // #2 Add to list by index [LIST]
+                                case 2: {
+                                    int value = 0;
+                                    int index = 0;
+
+
                                     do {
-                                        add_more = ' ';
-                                        cout << "Do you want to add more numbers [y/n] ?  ";
-                                        cin >> add_more;
+                                        cout << "Index: ";
+                                        cin >> index;
 
-                                        if (add_more == 'y') {
-                                            cout << "list.add(" << list->get_size() << ") = ";
-                                            cin>>value;
-                                            list->add(value, list->get_size());
-                                        } else if (add_more != 'y' && add_more != 'n') {
-                                            cout << "No such option try again !" << endl;
+                                        if (index < 0 || index > list->get_size()) {
+                                            cout << "Incorrect index ! Try again" << endl;
                                         }
 
-                                    } while (add_more == 'y');
+                                    } while (index > list->get_size() || index < 0);
+
+                                    cout << "list.add(" << index << ") = ";
+                                    cin >> value;
+
+                                    list->add(value, index);
+                                    visit_count++;
+
+                                    if (visit_count > 0) {
+                                        do {
+                                            add_more = ' ';
+                                            cout << "Do you want to add more numbers [y/n] ?  ";
+                                            cin >> add_more;
+
+                                            if (add_more == 'y') {
+                                                do {
+                                                    cout << "Index: ";
+                                                    cin >> index;
+
+                                                    if (index < 0 || index > list->get_size()) {
+                                                        cout << "Incorrect index ! Try again" << endl;
+                                                    }
+                                                } while (index > list->get_size() || index < 0);
+
+                                                cout << "list.add(" << index << ") = ";
+                                                cin >> value;
+
+                                                list->add(value, index);
+                                            } else if (add_more != 'y' && add_more != 'n') {
+                                                cout << "No such option try again !" << endl;
+                                            }
+
+                                        } while (add_more == 'y');
+                                    }
+                                    break;
                                 }
-                                break;
+                                    //#3 Remove element [LIST]
+                                case 3: {
+                                    int index = list->get_size() - 1;
+                                    list->remove(index);
+                                    cout << "list.remove(" << index << ") Removed Successfully !" << endl;
+
+                                    break;
+                                }
+                                    //#4 Remove element by index [LIST]
+                                case 4: {
+                                    int index = 0;
+                                    if (index < 0 || index > list->get_size()) {
+                                        cout << "Incorrect index ! Try again" << endl;
+                                    }
+                                    do {
+                                        cout << "Index: ";
+                                        cin >> index;
+                                    } while (index > list->get_size() || index < 0);
+
+                                    list->remove(index);
+                                    cout << "list.remove(" << index << ") Removed successfully !" << endl;
+                                    break;
+                                }
+                                    // #5 Find element [LIST]
+                                case 5: {
+                                    list->find();
+                                    break;
+                                }
+                                    //#6 Find element by index [LIST]
+                                case 6: {
+                                    int index = 0;
+
+                                    do {
+                                        cout << "Value index: ";
+                                        cin >> index;
+                                        if (index < 0 || index > list->get_size()) {
+                                            cout << "Incorrect index ! Try again" << endl;
+                                        }
+                                    } while (index > list->get_size() || index < 0);
+
+                                    list->find(index);
+                                    break;
+                                }
+
                             }
-
-                        }
-
+                        } while (operation = operations_interface("List"));
                         break;
                     }
 //*******************************************************************************************************************
