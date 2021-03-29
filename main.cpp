@@ -345,21 +345,39 @@ public:
 public:
     void add(int d, unsigned long long int index) {
 
+
         Element *n = new Element(d);
 
         if (size == 0) { // nie ma ani jednego elementu
             last = first = n;
 
         } else if (index == 0) { // na początek
+
+            auto start = std::chrono::steady_clock::now(); //START [LIST ADD VALUE AT INDEX 0]
+
             first->prev = n;
             n->next = first;
             first = n;
 
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [List Add value at index 0]: " << elapsed_time << " ns"
+                 << endl; //END [LIST ADD VALUE AT INDEX 0]
+
         } else if (index == size) { // na końcu
+            auto start = std::chrono::steady_clock::now(); //START [LIST ADD VALUE AT THE END]
+
             last->next = n;
             n->prev = last;
             last = n;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [List Add value at the end]: " << elapsed_time << " ns"
+                 << endl; //END [LIST ADD VALUE AT THE END]
         } else {
+            auto start = std::chrono::steady_clock::now(); //START [LIST ADD VALUE IN THE END]
+
             Element *temp = getPosition(index);
             Element *before = temp->prev;
 
@@ -367,12 +385,17 @@ public:
             temp->prev = n;
             n->next = temp;
             n->prev = before;
-        }
 
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [List Add value in the middle]: " << elapsed_time << " ns"
+                 << endl; //END [LIST ADD VALUE IN THE MIDDLE]
+        }
         size++;
     }
 
     void remove(unsigned long long int index) {
+        auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM MIDDLE]
 
         if (index > size || index < 0) {
             cout << "Incorrect index !" << endl;
@@ -383,7 +406,14 @@ public:
             delete temp;
 
             size--;
-        } else if (index == 0) { // usuwanie z pierwszego
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [List remove value from middle]: " << elapsed_time << " ns"
+                 << endl; //END [LIST REMOVE VALUE FROM MIDDLE]
+
+        } else if (index == 0) { // deleting from index 0
+            auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM INDEX 0]
             Element *temp = first;
             if (size > 1) {
                 first = temp->next;
@@ -395,15 +425,29 @@ public:
                 last = nullptr;
                 delete temp;
                 size--;
+
+                auto end = std::chrono::steady_clock::now();
+                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                cout << "elapsed time [List remove value from index 0]: " << elapsed_time << " ns"
+                     << endl; //END [LIST REMOVE VALUE FROM INDEX 0]
             }
-        } else if (index == size - 1) { //usuwanie z ostatniego
+        } else if (index == size - 1) { //deleting from last index
+            auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE LAST]
+
             Element *temp = last;
             last = last->prev;
             last->next = nullptr;
             delete temp;
             size--;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [List remove value last]: " << elapsed_time << " ns"
+                 << endl; //END [LIST REMOVE VALUE LAST]
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
+
+
     }
 
 public:
@@ -416,28 +460,41 @@ public:
     }
 
 public:
-    void find() {
+    void find() { // find by value
+
+
         int value = 0;
         Element *temp = first;
         cout << "Value you are looking for: ";
         cin >> value;
         int found = 0;
+
+        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
         do {
+
             if (temp->data == value) {
                 cout << "Value " << value << " found in the list" << endl;
                 found++;
             } else {
+
                 temp = temp->next;
             }
+
         } while ((found == 0) && (temp != nullptr));
 
         if (found == 0) {
-            cout << "Value " << value << "was not found in the list " << endl;
+            cout << "Value " << value << " was not found in the list " << endl;
         }
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [List find by value]: " << elapsed_time << " ns"
+             << endl; //END [LIST FIND BY VALUE]
     }
 
 public :
     void find(int index) {
+
         int visit_count = 0;
         Element *temp = first;
 
@@ -451,11 +508,17 @@ public :
             } while (index > size || index < 0);
         }
 
+        auto start = std::chrono::steady_clock::now(); //START [LIST VALUE BY INDEX]
+
         for (int i = 0; i < index; i++) {
             temp = temp->next;
         }
         cout << "List value at index " << index << " = " << temp->data << endl;
 
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [List find by value]: " << elapsed_time << " ns"
+             << endl; //END [LIST FIND BY INDEX]
     }
 
 };
@@ -702,7 +765,12 @@ public:
                                     visit_count++;
                                     cout << "index: ";
                                     cin >> index;
-                                    array->add(index);
+
+                                    if(index<0 || index > array->size){
+                                        cout<<"Incorrect index !"<<endl;
+                                    }else{
+                                        array->add(index);
+                                    }
 
                                     if (visit_count > 0) {
                                         do {
@@ -712,7 +780,12 @@ public:
                                             if (add_more == 'y') {
                                                 cout << "index: ";
                                                 cin >> index;
-                                                array->add(index);
+
+                                                if(index<0 || index > array->size){
+                                                    cout<<"Incorrect index !"<<endl;
+                                                }else{
+                                                    array->add(index);
+                                                }
                                             } else if (add_more != 'y' && add_more != 'n') {
                                                 cout << "No such option try again !" << endl;
                                             }
@@ -859,50 +932,71 @@ public:
                                 }
                                     //#3 Remove element [LIST]
                                 case 3: {
-                                    int index = list->get_size() - 1;
-                                    list->remove(index);
-                                    cout << "list.remove(" << index << ") Removed Successfully !" << endl;
 
+                                   int index = list->get_size() - 1;
+
+                                   if(list->get_size() > 0) {
+
+                                       list->remove(index);
+                                       cout << "list.remove(" << index << ") Removed Successfully !" << endl;
+                                   }
+                                   else {
+                                       cout<<"List is empty !"<<endl;
+                                   }
                                     break;
                                 }
                                     //#4 Remove element by index [LIST]
                                 case 4: {
                                     int index = 0;
-                                    if (index < 0 || index > list->get_size()) {
-                                        cout << "Incorrect index ! Try again" << endl;
-                                    }
-                                    do {
-                                        cout << "Index: ";
-                                        cin >> index;
-                                    } while (index > list->get_size() || index < 0);
+                                   if(list->get_size() > 0) {
+                                       do {
+                                           cout << "Index: ";
+                                           cin >> index;
 
-                                    list->remove(index);
-                                    cout << "list.remove(" << index << ") Removed successfully !" << endl;
+                                           if (index < 0 || index > list->get_size()) {
+                                               cout << "Incorrect index ! Try again" << endl;
+                                           }
+                                       } while (index > list->get_size() || index < 0);
+
+                                       list->remove(index);
+                                       cout << "list.remove(" << index << ") Removed successfully !" << endl;
+                                   }
+                                   else {
+                                       cout<<"List is empty !"<<endl;
+                                   }
                                     break;
                                 }
                                     // #5 Find element [LIST]
                                 case 5: {
-                                    list->find();
+                                    if(list->get_size() > 0) {
+                                        list->find();
+                                    }
+                                    else {
+                                        cout<<"List is empty nothing to find !"<<endl;
+                                    }
                                     break;
                                 }
                                     //#6 Find element by index [LIST]
                                 case 6: {
-                                    int index = 0;
+                                    if(list->get_size() > 0) {
+                                        int index = 0;
+                                        do {
+                                            cout << "Value index: ";
+                                            cin >> index;
+                                            if (index < 0 || index > list->get_size()) {
+                                                cout << "Incorrect index ! Try again" << endl;
+                                            }
+                                        } while (index > list->get_size() || index < 0);
 
-                                    do {
-                                        cout << "Value index: ";
-                                        cin >> index;
-                                        if (index < 0 || index > list->get_size()) {
-                                            cout << "Incorrect index ! Try again" << endl;
-                                        }
-                                    } while (index > list->get_size() || index < 0);
-
-                                    list->find(index);
+                                        list->find(index);
+                                    }else {
+                                        cout<<"List is empty nothing to find !"<<endl;
+                                    }
                                     break;
                                 }
-
                             }
                         } while (operation = operations_interface("List"));
+                        data_structures_interface();
                         break;
                     }
 //*******************************************************************************************************************
