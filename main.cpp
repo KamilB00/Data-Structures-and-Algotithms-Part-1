@@ -8,7 +8,6 @@
 using namespace std;
 
 class Array {
-
 public:
     int size = 0;
     int *arr_dyn = nullptr;
@@ -1005,6 +1004,8 @@ public:
                     case 3: {
                         clearScreen();
                         operations_interface("Heap");
+
+
                         break;
                     }
 //*******************************************************************************************************************
