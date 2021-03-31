@@ -430,7 +430,6 @@ public:
                         // int operation = operations_interface("Heap");
                         Heap *heap = new Heap();
 
-                        heap->create_max_heap(10);
                         heap->show();
 
                         break;
