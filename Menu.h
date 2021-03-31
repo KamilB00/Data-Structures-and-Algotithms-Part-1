@@ -8,7 +8,7 @@
 #include "Array.h"
 #include "ListTwoDirection.h"
 #include "File.h"
-
+#include "Heap.h"
 
 class Menu {
 public:
@@ -192,9 +192,9 @@ public:
                                     cout << "index: ";
                                     cin >> index;
 
-                                    if(index<0 || index > array->size){
-                                        cout<<"Incorrect index !"<<endl;
-                                    }else{
+                                    if (index < 0 || index > array->size) {
+                                        cout << "Incorrect index !" << endl;
+                                    } else {
                                         array->add(index);
                                     }
 
@@ -207,9 +207,9 @@ public:
                                                 cout << "index: ";
                                                 cin >> index;
 
-                                                if(index<0 || index > array->size){
-                                                    cout<<"Incorrect index !"<<endl;
-                                                }else{
+                                                if (index < 0 || index > array->size) {
+                                                    cout << "Incorrect index !" << endl;
+                                                } else {
                                                     array->add(index);
                                                 }
                                             } else if (add_more != 'y' && add_more != 'n') {
@@ -361,20 +361,19 @@ public:
 
                                     int index = list->get_size() - 1;
 
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
 
                                         list->remove(index);
                                         cout << "list.remove(" << index << ") Removed Successfully !" << endl;
-                                    }
-                                    else {
-                                        cout<<"List is empty !"<<endl;
+                                    } else {
+                                        cout << "List is empty !" << endl;
                                     }
                                     break;
                                 }
                                     //#4 Remove element by index [LIST]
                                 case 4: {
                                     int index = 0;
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         do {
                                             cout << "Index: ";
                                             cin >> index;
@@ -386,25 +385,23 @@ public:
 
                                         list->remove(index);
                                         cout << "list.remove(" << index << ") Removed successfully !" << endl;
-                                    }
-                                    else {
-                                        cout<<"List is empty !"<<endl;
+                                    } else {
+                                        cout << "List is empty !" << endl;
                                     }
                                     break;
                                 }
                                     // #5 Find element [LIST]
                                 case 5: {
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         list->find();
-                                    }
-                                    else {
-                                        cout<<"List is empty nothing to find !"<<endl;
+                                    } else {
+                                        cout << "List is empty nothing to find !" << endl;
                                     }
                                     break;
                                 }
                                     //#6 Find element by index [LIST]
                                 case 6: {
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         int index = 0;
                                         do {
                                             cout << "Value index: ";
@@ -415,8 +412,8 @@ public:
                                         } while (index > list->get_size() || index < 0);
 
                                         list->find(index);
-                                    }else {
-                                        cout<<"List is empty nothing to find !"<<endl;
+                                    } else {
+                                        cout << "List is empty nothing to find !" << endl;
                                     }
                                     break;
                                 }
@@ -430,8 +427,11 @@ public:
                         //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
-                        operations_interface("Heap");
+                        // int operation = operations_interface("Heap");
+                        Heap *heap = new Heap();
 
+                        heap->create_max_heap(10);
+                        heap->show();
 
                         break;
                     }
