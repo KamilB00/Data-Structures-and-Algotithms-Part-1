@@ -21,7 +21,8 @@ public:
         cout << "-----------------------------------------------" << endl;
         cout << "               1. Test Mode" << endl;
         cout << "               2. Auto Mode" << endl;
-        cout << "               3. About" << endl;
+        cout << "               3. Read Mode" << endl;
+        cout << "               4. About" << endl;
         cout << "-----------------------------------------------" << endl;
         cout << endl;
         cout << " Press 0 to Exit" << endl;
@@ -43,6 +44,17 @@ public:
                         break;
                     }
                     case 3: {
+                        clearScreen();
+                        fstream file;
+                        file.open("data.txt", ios::in);
+
+                        if (!file.good()) {
+                            cout << "File data.txt does not exist !" << endl;
+                        }
+                        data_structures_interface();
+                        break;
+                    }
+                    case 4: {
                         clearScreen();
                         about_interface();
                         break;
@@ -427,10 +439,58 @@ public:
                         //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
-                        // int operation = operations_interface("Heap");
                         Heap *heap = new Heap();
+                        int operation = operations_interface("Heap");
 
-                        heap->show();
+                        do {
+                            int visit_count = 0;
+                            char add_more = ' ';
+                            switch (operation) {
+                                //Heap OPTIONS
+
+                                //#0 Return to previous screen
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete heap;
+                                    heap = nullptr;
+                                }
+                                    //#1 Add to heap [HEAP]
+                                case 1: {
+
+                                    break;
+                                }
+                                    // #2 Add to heap by index [HEAP]
+                                case 2: {
+                                   break;
+                                }
+                                    //#3 Remove element [HEAP]
+                                case 3: {
+                                    int index = 0;
+                                    cout<<"Index: ";
+                                    cin>>index;
+                                    heap->remove(index);
+
+                                    heap->show();
+                                    break;
+                                }
+                                    //#4 Remove element by index [HEAP]
+                                case 4: {
+
+                                    break;
+                                }
+                                    // #5 Find element [HEAP]
+                                case 5: {
+
+                                    break;
+                                }
+                                    //#6 Find element by index [HEAP]
+                                case 6: {
+                                   break;
+                                }
+                            }
+                        } while (operation = operations_interface("Heap"));
+                        data_structures_interface();
 
                         break;
                     }

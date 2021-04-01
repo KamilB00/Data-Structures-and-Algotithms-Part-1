@@ -9,11 +9,11 @@
 #include <math.h>
 
 class Heap {
-    int size =0;
+    int size = 0;
     int *items = nullptr;
-
+    int *items_new = nullptr;
 public:
-    Heap(){
+    Heap() {
         string amount;
         string element;
         fstream file;
@@ -24,7 +24,7 @@ public:
         }
         getline(file, amount);
 
-         items = new int [(atoi(amount.c_str()))];
+        items = new int[(atoi(amount.c_str()))];
 
         size = atoi(amount.c_str());
         for (int i = 0; i < size; i++) {
@@ -36,7 +36,7 @@ public:
 
 public:
     int get_parent_index(int child_index) {
-        return  (int) ceil((child_index - 2) / 2.0);
+        return (int) ceil((child_index - 2) / 2.0);
     }
 
 public:
@@ -86,7 +86,7 @@ public:
         items[parent_index] = items[child_index];
         items[child_index] = temp;
 
-        cout<<"Swaped parent index "<<parent_index<<" with child index "<<child_index<<endl;
+        cout << "Swaped parent index " << parent_index << " with child index " << child_index << endl;
     }
 
 public:
@@ -97,31 +97,79 @@ public:
             index = get_parent_index(index);
         }
     }
-public:
-    void create_max_heap(int size){
-        int sum = 0;
-        int p = 0;
 
-        while(sum < size){
-            sum += pow(2,p);
-            p++;
+public:
+    void create_max_heap(int size) {
+
+        for (int i = 0; i < size; i++) {
+            heapify_up(i);
         }
-        sum -= pow(2,p-1);
-       for(int i=sum; i<size;i++){
-           heapify_up(i);
-       }
 
     }
 
 public:
     void heapify_down(int index) {
+        bool not_terminate = true;
+
+        while (has_left_child(index) && not_terminate) {
+            if(left_child(index) > right_child(index)){
+                swap(index, get_left_child_index(index));
+                index = get_left_child_index(index);
+            }else if(left_child(index) < right_child(index)){
+                swap(index, get_right_child_index(index));
+                index = get_right_child_index(index);
+            }
+            else if(left_child(index) == right_child(index) && items[index] < left_child(index)){
+                swap(index, get_left_child_index(index));
+                index = get_left_child_index(index);
+            }
+            else {
+                not_terminate = false;
+            }
+        }
 
     }
+
 public:
-   void show(){
-        for(int i=0;i<size;i++){
-            cout<<items[i]<<" ,";
+    int *create_arr(int size) {
+        int *arr = new int[size];
+        return arr;
+    }
+
+public:
+    void remove(int index) {
+
+        if (size > 0) {
+            size--;
+            items_new = create_arr(size);
+
+            for (int i = 0; i < index; i++) {
+                items_new[i] = items[i];
+            }
+            items_new[index] = items[size];
+
+            for (int i = index + 1; i < size; i++) {
+                items_new[i] = items[i];
+            }
+            delete[]items;
+            items = nullptr;
+            items = items_new;
+            items_new = nullptr;
+            delete[] items_new;
+
+            heapify_down(index);
         }
+
+
+
+    }
+
+public:
+    void show() {
+        for (int i = 0; i < size; i++) {
+            cout << items[i] << " ";
+        }
+        cout << endl;
     }
 
 
