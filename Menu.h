@@ -8,7 +8,7 @@
 #include "Array.h"
 #include "ListTwoDirection.h"
 #include "File.h"
-
+#include "Heap.h"
 
 class Menu {
 public:
@@ -21,7 +21,8 @@ public:
         cout << "-----------------------------------------------" << endl;
         cout << "               1. Test Mode" << endl;
         cout << "               2. Auto Mode" << endl;
-        cout << "               3. About" << endl;
+        cout << "               3. Read Mode" << endl;
+        cout << "               4. About" << endl;
         cout << "-----------------------------------------------" << endl;
         cout << endl;
         cout << " Press 0 to Exit" << endl;
@@ -43,6 +44,17 @@ public:
                         break;
                     }
                     case 3: {
+                        clearScreen();
+                        fstream file;
+                        file.open("data.txt", ios::in);
+
+                        if (!file.good()) {
+                            cout << "File data.txt does not exist !" << endl;
+                        }
+                        data_structures_interface();
+                        break;
+                    }
+                    case 4: {
                         clearScreen();
                         about_interface();
                         break;
@@ -192,9 +204,9 @@ public:
                                     cout << "index: ";
                                     cin >> index;
 
-                                    if(index<0 || index > array->size){
-                                        cout<<"Incorrect index !"<<endl;
-                                    }else{
+                                    if (index < 0 || index > array->size) {
+                                        cout << "Incorrect index !" << endl;
+                                    } else {
                                         array->add(index);
                                     }
 
@@ -207,9 +219,9 @@ public:
                                                 cout << "index: ";
                                                 cin >> index;
 
-                                                if(index<0 || index > array->size){
-                                                    cout<<"Incorrect index !"<<endl;
-                                                }else{
+                                                if (index < 0 || index > array->size) {
+                                                    cout << "Incorrect index !" << endl;
+                                                } else {
                                                     array->add(index);
                                                 }
                                             } else if (add_more != 'y' && add_more != 'n') {
@@ -361,20 +373,19 @@ public:
 
                                     int index = list->get_size() - 1;
 
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
 
                                         list->remove(index);
                                         cout << "list.remove(" << index << ") Removed Successfully !" << endl;
-                                    }
-                                    else {
-                                        cout<<"List is empty !"<<endl;
+                                    } else {
+                                        cout << "List is empty !" << endl;
                                     }
                                     break;
                                 }
                                     //#4 Remove element by index [LIST]
                                 case 4: {
                                     int index = 0;
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         do {
                                             cout << "Index: ";
                                             cin >> index;
@@ -386,25 +397,23 @@ public:
 
                                         list->remove(index);
                                         cout << "list.remove(" << index << ") Removed successfully !" << endl;
-                                    }
-                                    else {
-                                        cout<<"List is empty !"<<endl;
+                                    } else {
+                                        cout << "List is empty !" << endl;
                                     }
                                     break;
                                 }
                                     // #5 Find element [LIST]
                                 case 5: {
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         list->find();
-                                    }
-                                    else {
-                                        cout<<"List is empty nothing to find !"<<endl;
+                                    } else {
+                                        cout << "List is empty nothing to find !" << endl;
                                     }
                                     break;
                                 }
                                     //#6 Find element by index [LIST]
                                 case 6: {
-                                    if(list->get_size() > 0) {
+                                    if (list->get_size() > 0) {
                                         int index = 0;
                                         do {
                                             cout << "Value index: ";
@@ -415,8 +424,8 @@ public:
                                         } while (index > list->get_size() || index < 0);
 
                                         list->find(index);
-                                    }else {
-                                        cout<<"List is empty nothing to find !"<<endl;
+                                    } else {
+                                        cout << "List is empty nothing to find !" << endl;
                                     }
                                     break;
                                 }
@@ -430,8 +439,58 @@ public:
                         //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
-                        operations_interface("Heap");
+                        Heap *heap = new Heap();
+                        int operation = operations_interface("Heap");
 
+                        do {
+                            int visit_count = 0;
+                            char add_more = ' ';
+                            switch (operation) {
+                                //Heap OPTIONS
+
+                                //#0 Return to previous screen
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete heap;
+                                    heap = nullptr;
+                                }
+                                    //#1 Add to heap [HEAP]
+                                case 1: {
+
+                                    break;
+                                }
+                                    // #2 Add to heap by index [HEAP]
+                                case 2: {
+                                   break;
+                                }
+                                    //#3 Remove element [HEAP]
+                                case 3: {
+                                    int index = 0;
+                                    cout<<"Index: ";
+                                    cin>>index;
+                                    heap->remove(index);
+
+                                    heap->show();
+                                    break;
+                                }
+                                    //#4 Remove element by index [HEAP]
+                                case 4: {
+
+                                    break;
+                                }
+                                    // #5 Find element [HEAP]
+                                case 5: {
+
+                                    break;
+                                }
+                                    //#6 Find element by index [HEAP]
+                                case 6: {
+                                   break;
+                                }
+                            }
+                        } while (operation = operations_interface("Heap"));
+                        data_structures_interface();
 
                         break;
                     }
