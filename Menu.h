@@ -457,7 +457,8 @@ public:
                                 }
                                     //#1 Add to heap [HEAP]
                                 case 1: {
-
+                                            heap->add();
+                                            heap->show();
                                     break;
                                 }
                                     // #2 Add to heap by index [HEAP]

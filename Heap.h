@@ -159,9 +159,63 @@ public:
 
             heapify_down(index);
         }
+        else {
+            cout<<"Heap is empty !"<<endl;
+        }
 
+    }
 
+public:
+    void add(){
+        int value = 0;
+        size++;
+        items_new = create_arr(size);
 
+        cout << "heap.add(" << size - 1 << ") = ";
+        cin >> value;
+
+        for (int i = 0; i < size - 1; i++) {
+            items_new[i] = items[i];
+        }
+
+        items_new[size - 1] = value;
+
+        delete[]items;
+        items = nullptr;
+       items = items_new;
+       items_new = nullptr;
+        delete[] items_new;
+
+        heapify_up(size-1);
+    }
+public:
+    void find(){
+        int value = 0;
+        int present = 0;
+        cout<<"Number you are looking for :"<<endl;
+        cin>>value;
+
+        for(int i=0;i<size;i++){
+            if(items[i] == value){
+                present++;
+            }
+        }
+        if(present > 0){
+            cout<<"Number "<<value<<" is in the heap"<<endl;
+        }
+        else{
+            cout<<"Number was not found"<<endl;
+        }
+    }
+
+public:
+    void find (int index){
+        if(index >0 && index < size) {
+            cout << "Number at index " << index << " : " << items[index] << endl;
+        }
+        else{
+            cout<<"There is no such index"<<endl;
+        }
     }
 
 public:
