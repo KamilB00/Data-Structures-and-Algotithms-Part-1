@@ -126,6 +126,7 @@ public:
         cout << "              3. Remove element by index           " << endl;
         cout << "              4. Find element by value             " << endl;
         cout << "              5. Find element by index             " << endl;
+        cout << "              6. Show heap                         " << endl;
         cout << "     -------------------------------------------   " << endl;
         cout << endl;
         cout << " Press 0 to Return                            " << endl;

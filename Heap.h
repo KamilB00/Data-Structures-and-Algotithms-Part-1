@@ -13,7 +13,6 @@ class Heap {
     int *items = nullptr;
     int *items_new = nullptr;
 
-
 public:
     Heap() {
         string amount;
@@ -170,7 +169,6 @@ public:
             cout << "Heap is empty !" << endl;
         }
 
-
     }
 
 public:
@@ -247,7 +245,7 @@ public:
 public:
     void show() {
         for (int i = 0; i < size; i++) {
-            cout << items[i] << " ";
+            cout <<"heap ["<<i<<"] : "<< items[i] << endl;
         }
         cout << endl;
     }
