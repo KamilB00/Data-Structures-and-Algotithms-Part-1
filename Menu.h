@@ -103,8 +103,38 @@ public:
         } while (choice != 0);
     }
 
-    int operations_interface(string name) {
+    int select_option() {
         int choice = 0;
+        do {
+            cin >> choice;
+            if (choice >= 0 && choice <= 6) {
+                return choice;
+            } else {
+                cout << "No operation found try again !" << endl;
+            }
+        } while (choice < 0 || choice > 6);
+    };
+
+    int operations_interface_tree(string name) {
+
+
+        cout << "     -------------------------------------------   " << endl;
+        cout << "             Operations on " << name << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << "              1. Add element                       " << endl;
+        cout << "              2. Remove element                    " << endl;
+        cout << "              3. Remove element by index           " << endl;
+        cout << "              4. Find element by value             " << endl;
+        cout << "              5. Find element by index             " << endl;
+        cout << "              6. Show heap                         " << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << endl;
+        cout << " Press 0 to Return                            " << endl;
+
+        return select_option();
+    }
+
+    int operations_interface(string name) {
 
         cout << "     -------------------------------------------   " << endl;
         cout << "             Operations on " << name << endl;
@@ -119,14 +149,7 @@ public:
         cout << endl;
         cout << " Press 0 to Return                            " << endl;
 
-        do {
-            cin >> choice;
-            if (choice >= 0 && choice <= 6) {
-                return choice;
-            } else {
-                cout << "No operation found try again !" << endl;
-            }
-        } while (choice < 0 || choice > 6);
+        return select_option();
     }
 
     void data_structures_interface() {
@@ -266,7 +289,6 @@ public:
                         data_structures_interface();
                         break;
                     }
-
 
 //*******************************************************************************************************************
 
@@ -440,7 +462,7 @@ public:
                     case 3: {
                         clearScreen();
                         Heap *heap = new Heap();
-                        int operation = operations_interface("Heap");
+                        int operation = operations_interface_tree("Heap");
 
                         do {
                             int visit_count = 0;
@@ -457,39 +479,65 @@ public:
                                 }
                                     //#1 Add to heap [HEAP]
                                 case 1: {
+                                    heap->add();
 
                                     break;
                                 }
-                                    // #2 Add to heap by index [HEAP]
+                                    //#2 Remove element [HEAP]
                                 case 2: {
-                                   break;
+
+                                    heap->remove(heap->get_size() - 1);
+                                    break;
                                 }
-                                    //#3 Remove element [HEAP]
+                                    //#3 Remove element by index [HEAP]
                                 case 3: {
                                     int index = 0;
-                                    cout<<"Index: ";
-                                    cin>>index;
+                                    cout << "Index: ";
+                                    cin >> index;
                                     heap->remove(index);
-
-                                    heap->show();
                                     break;
                                 }
-                                    //#4 Remove element by index [HEAP]
+                                    // #4 Find element [HEAP]
                                 case 4: {
+                                    heap->find();
 
                                     break;
                                 }
-                                    // #5 Find element [HEAP]
+                                    //#5 Find element by index [HEAP]
                                 case 5: {
+                                    int index = 0;
+                                    cout << "Index: ";
+                                    cin >> index;
 
+                                    if(index > 0 && index < heap->get_size()){
+                                        heap->find(index);
+                                    }
                                     break;
                                 }
-                                    //#6 Find element by index [HEAP]
-                                case 6: {
-                                   break;
+                                    //#6 Show heap [HEAP]
+                                case 6:
+                                {
+                                    char show = 'y';
+                                    if(heap->get_size() > 100){
+                                        cout<<"There are "<<heap->get_size()<<" values in the heap do you want to continue ? [y/n]"<<endl;
+
+                                        cin>>show;
+
+                                       while(show != 'y' || show != 'n'){
+                                           cout<<"Incorrect character. Try again !"<<endl;
+                                           cin>>show;
+                                       }
+                                         if(show == 'y'){
+                                             heap->show();
+                                         }
+                                    }
+                                    else {
+                                        heap->show();
+                                    }
+                                 break;
                                 }
                             }
-                        } while (operation = operations_interface("Heap"));
+                        } while (operation = operations_interface_tree("Heap"));
                         data_structures_interface();
 
                         break;
@@ -498,6 +546,7 @@ public:
                         //Red-Black Tree DATA STRUCTURE
                     case 4: {
                         clearScreen();
+
                         operations_interface("Red-Black Tree");
                         break;
                     }
