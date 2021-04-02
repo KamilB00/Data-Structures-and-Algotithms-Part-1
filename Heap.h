@@ -12,6 +12,8 @@ class Heap {
     int size = 0;
     int *items = nullptr;
     int *items_new = nullptr;
+
+
 public:
     Heap() {
         string amount;
@@ -58,11 +60,6 @@ public:
     bool has_left_child(int index) {
         return get_left_child_index(index) < size;
     }
-
-//public:
-//    bool has_right_child(int index) {
-//        return get_right_child_index(index) < size;
-//    }
 
 public:
     int parent(int index) {
@@ -143,6 +140,7 @@ public:
     void remove(int index) {
 
         if (size > 0) {
+            auto start = std::chrono::steady_clock::now();// START [HEAP REMOVE]
             size--;
             items_new = create_arr(size);
 
@@ -162,14 +160,22 @@ public:
 
             heapify_down(index);
             cout<<"heap["<<index<<"] has been removed !"<<endl;
+
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            cout << "elapsed time [Heap find by value]: " << elapsed_time << " ns"
+                 << endl;//END [HEAP REMOVE]
+
         } else {
             cout << "Heap is empty !" << endl;
         }
+
 
     }
 
 public:
     void add() {
+
         int value = 0;
         size++;
         items_new = create_arr(size);
@@ -177,6 +183,7 @@ public:
         cout << "heap.add(" << size - 1 << ") = ";
         cin >> value;
 
+        auto start = std::chrono::steady_clock::now();// START [HEAP ADD]
         for (int i = 0; i < size - 1; i++) {
             items_new[i] = items[i];
         }
@@ -190,6 +197,12 @@ public:
         delete[] items_new;
 
         heapify_up(size - 1);
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [Heap add]: " << elapsed_time << " ns"
+             << endl;//END [HEAP ADD]
+
     }
 
 public:
@@ -198,7 +211,7 @@ public:
         int present = 0;
         cout << "Number you are looking for :" << endl;
         cin >> value;
-
+        auto start = std::chrono::steady_clock::now();// START [HEAP FIND BY VALUE]
         for (int i = 0; i < size; i++) {
             if (items[i] == value) {
                 present++;
@@ -209,15 +222,26 @@ public:
         } else {
             cout << "Number was not found" << endl;
         }
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [Heap find by value]: " << elapsed_time << " ns"
+             << endl;//END [HEAP FIND BY VALUE]
     }
 
 public:
     void find(int index) {
+        auto start = std::chrono::steady_clock::now();// START [HEAP FIND BY INDEX]
         if (index > 0 && index < size) {
             cout << "Number at index " << index << " : " << items[index] << endl;
         } else {
             cout << "There is no such index" << endl;
         }
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        cout << "elapsed time [Heap find by index]: " << elapsed_time << " ns"
+             << endl;//END [HEAP FIND BY INDEX]
+
     }
 
 public:

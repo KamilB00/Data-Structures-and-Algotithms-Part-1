@@ -85,6 +85,7 @@ public:
             cout << "array[" << index << "] = ";
             cin >> value;
             auto start = std::chrono::steady_clock::now();// START [ARRAY ADD TO MIDDLE]
+
             for (int i = 0; i < index; i++) {
 
                 arr_dyn_new[i] = arr_dyn[i];
