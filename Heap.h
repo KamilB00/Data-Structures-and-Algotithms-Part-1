@@ -6,7 +6,7 @@
 #define DATASTRUCTURES_HEAP_H
 
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 class Heap {
     int size = 0;
@@ -59,10 +59,10 @@ public:
         return get_left_child_index(index) < size;
     }
 
-public:
-    bool has_right_child(int index) {
-        return get_right_child_index(index) < size;
-    }
+//public:
+//    bool has_right_child(int index) {
+//        return get_right_child_index(index) < size;
+//    }
 
 public:
     int parent(int index) {
@@ -112,28 +112,31 @@ public:
         bool not_terminate = true;
 
         while (has_left_child(index) && not_terminate) {
-            if(left_child(index) > right_child(index)){
+            if (left_child(index) > right_child(index)) {
                 swap(index, get_left_child_index(index));
                 index = get_left_child_index(index);
-            }else if(left_child(index) < right_child(index)){
+            } else if (left_child(index) < right_child(index)) {
                 swap(index, get_right_child_index(index));
                 index = get_right_child_index(index);
-            }
-            else if(left_child(index) == right_child(index) && items[index] < left_child(index)){
+            } else if (left_child(index) == right_child(index) && items[index] < left_child(index)) {
                 swap(index, get_left_child_index(index));
                 index = get_left_child_index(index);
-            }
-            else {
+            } else {
                 not_terminate = false;
             }
         }
-
     }
 
 public:
     int *create_arr(int size) {
         int *arr = new int[size];
         return arr;
+    }
+
+public:
+    int get_size(){
+        this->size = size;
+        return size;
     }
 
 public:
@@ -158,15 +161,15 @@ public:
             delete[] items_new;
 
             heapify_down(index);
-        }
-        else {
-            cout<<"Heap is empty !"<<endl;
+            cout<<"heap["<<index<<"] has been removed !"<<endl;
+        } else {
+            cout << "Heap is empty !" << endl;
         }
 
     }
 
 public:
-    void add(){
+    void add() {
         int value = 0;
         size++;
         items_new = create_arr(size);
@@ -182,39 +185,38 @@ public:
 
         delete[]items;
         items = nullptr;
-       items = items_new;
-       items_new = nullptr;
+        items = items_new;
+        items_new = nullptr;
         delete[] items_new;
 
-        heapify_up(size-1);
+        heapify_up(size - 1);
     }
+
 public:
-    void find(){
+    void find() {
         int value = 0;
         int present = 0;
-        cout<<"Number you are looking for :"<<endl;
-        cin>>value;
+        cout << "Number you are looking for :" << endl;
+        cin >> value;
 
-        for(int i=0;i<size;i++){
-            if(items[i] == value){
+        for (int i = 0; i < size; i++) {
+            if (items[i] == value) {
                 present++;
             }
         }
-        if(present > 0){
-            cout<<"Number "<<value<<" is in the heap"<<endl;
-        }
-        else{
-            cout<<"Number was not found"<<endl;
+        if (present > 0) {
+            cout << "Number " << value << " is in the heap" << endl;
+        } else {
+            cout << "Number was not found" << endl;
         }
     }
 
 public:
-    void find (int index){
-        if(index >0 && index < size) {
+    void find(int index) {
+        if (index > 0 && index < size) {
             cout << "Number at index " << index << " : " << items[index] << endl;
-        }
-        else{
-            cout<<"There is no such index"<<endl;
+        } else {
+            cout << "There is no such index" << endl;
         }
     }
 
@@ -225,7 +227,6 @@ public:
         }
         cout << endl;
     }
-
 
 };
 
