@@ -558,8 +558,7 @@ public:
                                     cin>>data;
 
                                     rbt->insert(data);
-                                    rbt->show(rbt->root);
-
+                                    rbt->show();
                                     break;
                                 }
                                 case 2:
