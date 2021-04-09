@@ -24,8 +24,15 @@ class RedBlackTree {
 public:
     Node *root = nullptr;
 
+    int nodesCounter = 0;
     Node *getNewNode(int data) {
         Node *newNode = new Node(data);
+
+        if(nodesCounter == 0){
+            root = newNode;
+        }
+
+        nodesCounter++;
         return newNode;
     }
 
@@ -34,6 +41,7 @@ public:
         cout<<"Value of a node: "<<endl;
         cin>>value;
         insert(root, getNewNode(value));
+        evaluateTree(root);
     }
 
     Node *insert(Node *root_node, Node *ptr) {
@@ -45,12 +53,10 @@ public:
             return ptr;
         }
 
-        evaluateRoot(root_node);
-
         if (ptr->data < root_node->data) {   // adding to left subtree
             root_node->left = insert(root_node->left, ptr);
             root_node->left->parent = root_node;
-        } else if (ptr->data > root_node->data) { // adding to right subtree
+        } else if (ptr->data >= root_node->data) { // adding to right subtree
             root_node->right = insert(root_node->right, ptr);
             root_node->right->parent = root_node;
         }
@@ -230,33 +236,40 @@ public:
 
 
       Node* temp = NULL;
-     if(rootVisitCounter < 2){
+
+
 
           string result = (node->isRed) ? "RED" : "BLACK";
-          cout<<node->data<<" ["<<result<<" ]"<<endl;
+          cout<<node->data<<" ["<<result<<"]"<<endl;
 
 
       if(node->left != NULL){
           preOrderTraversal(node->left);
       }
       else if (node->right != NULL){
-        preOrderTraversal(node);
+        preOrderTraversal(node->right);
       }
 
         if (node->left == NULL && node->right == NULL) {
 
             do {
+
                 temp = node; //setting actual node value
                 node = node->parent; //setting parent value to be current node
-                if (node == root)
-                    rootVisitCounter++;
 
-            } while (node->right == NULL || temp == node->right);
+                if(node == root && node->right == NULL) {
+                    node = NULL;
+                }
 
-            preOrderTraversal(node->right);
+            } while ( node != NULL && (node->right == NULL || node->right == temp ) );
+
+            if(node != NULL) {
+                preOrderTraversal(node->right);
+            }
+
+
+
         }
-    }
-
 
     }
 
@@ -268,11 +281,7 @@ public:
     }
 
     void show() {
-        cout << "Current Root: " << root->data << endl;
-        if (root->left != nullptr)
-            cout << "Lewy: " << root->left->data << endl;
-        if (root->right != nullptr)
-            cout << "Prawy: " << root->right->data << endl;
+       preOrderTraversal(root);
     }
 
 };

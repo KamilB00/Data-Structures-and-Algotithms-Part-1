@@ -553,11 +553,7 @@ public:
                             switch (operation) {
                                 case 1:
                                 {
-                                    int data = 0;
-                                    cout<<"Value: ";
-                                    cin>>data;
-
-                                    rbt->insert(data);
+                                    rbt->add();
                                     rbt->show();
                                     break;
                                 }
