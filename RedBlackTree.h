@@ -4,6 +4,7 @@
 
 #ifndef DATASTRUCTURES_REDBLACKTREE_H
 #define DATASTRUCTURES_REDBLACKTREE_H
+#include <string>
 
 class Node {
 public:
@@ -28,10 +29,15 @@ public:
         return newNode;
     }
 
-
+    void add(){
+        int value =0;
+        cout<<"Value of a node: "<<endl;
+        cin>>value;
+        insert(root, getNewNode(value));
+    }
 
     Node *insert(Node *root_node, Node *ptr) {
-        // root_node - korzeń
+        // root_node - korzeń główny
         // ptr - to co dodajemy do drzewa
 
 
@@ -52,7 +58,7 @@ public:
         return root_node;
     }
 
-    void rotateLeft(Node *&root, Node *&ptr) {
+    void rotateLeft(Node *&root_node, Node *&ptr) {
         // ptr - to co przekazuje (5)
         // ptr_right - prawy potomek tego co przekazuje (10)
 
@@ -64,7 +70,7 @@ public:
         }
         ptr_right->parent = ptr->parent;
         if (ptr->parent == NULL) {
-            root = ptr_right;
+            root_node = ptr_right;
         } else if (ptr == ptr->parent->left) {
             ptr->parent->left = ptr_right; // podpinanie do rodzica z lewej
         } else {
@@ -74,7 +80,7 @@ public:
         ptr->parent = ptr_right;
     }
 
-    void rotateRight(Node *&root, Node *&ptr) {
+    void rotateRight(Node *&root_node, Node *&ptr) {
         Node *ptr_left = ptr->left;
         ptr->left = ptr_left->right;
 
@@ -83,7 +89,7 @@ public:
         }
         ptr_left->parent = ptr->parent;
         if (ptr->parent == NULL) {
-            root = ptr_left;
+            root_node = ptr_left;
         } else if (ptr == ptr->parent->left) {
             ptr->parent->left = ptr_left;
         } else {
@@ -101,9 +107,47 @@ public:
         return root_node->parent->right;
     }
 
-    void evaluateRoot(Node* node){
-        if(!hasParent(node)){
+    void evaluateRoot(Node *node) {
+        if (!hasParent(node)) {
             root = node;
+        }
+    }
+
+    void evaluateTree(Node *node) {
+        Node *temp = nullptr;
+
+        if (!root->isRed) {
+            temp = node->right;
+            if (node->isRed && temp->isRed && hasParent(node)) {
+                if (isLeftAuntRed(node)) {
+                    cout<<"LEFT AUNT IS RED"<<endl;
+
+                } else {
+                    cout<<"LEFT AUNT IS BLACK"<<endl;
+
+                }
+            }
+
+            temp = node->left;
+
+            if (node->isRed && temp->isRed && hasParent(node)) {
+                if (node->isRed && temp->isRed && hasParent(node)) {
+                    if (isRightAuntRed(node)) {
+                        cout<<"RIGHT AUNT IS RED"<<endl;
+
+                    } else {
+                        cout<<"RIGHT AUNT IS BLACK"<<endl;
+
+                    }
+                }
+            }
+
+
+        } else if (root->isRed) {
+            evaluateRoot(root);
+            evaluateTree(node);
+        } else {
+            cout << "Tree is Valid " << endl;
         }
     }
 
@@ -176,13 +220,45 @@ public:
         //      BLACK  BLACK
 
         //ONLY ONE NODE IN THE TREE
-        if (root_node->parent == NULL) {
-            root_node->isRed = false;
-        }
 
 
     }
 
+    int rootVisitCounter = 0;
+    Node* preOrderTraversal(Node* node){
+      //  NLR
+
+
+      Node* temp = NULL;
+     if(rootVisitCounter < 2){
+
+          string result = (node->isRed) ? "RED" : "BLACK";
+          cout<<node->data<<" ["<<result<<" ]"<<endl;
+
+
+      if(node->left != NULL){
+          preOrderTraversal(node->left);
+      }
+      else if (node->right != NULL){
+        preOrderTraversal(node);
+      }
+
+        if (node->left == NULL && node->right == NULL) {
+
+            do {
+                temp = node; //setting actual node value
+                node = node->parent; //setting parent value to be current node
+                if (node == root)
+                    rootVisitCounter++;
+
+            } while (node->right == NULL || temp == node->right);
+
+            preOrderTraversal(node->right);
+        }
+    }
+
+
+    }
 
     bool find(Node *root, int data) {
         if (root == NULL) return false;
