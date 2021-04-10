@@ -79,8 +79,8 @@ public:
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
 
-            cout << "elapsed time [Array add at index 0]: " << elapsed_time << " ns"
-                 << endl; //END [ARRAY ADD AT INDEX 0]
+            timer->calculate_average_elapsed_time(elapsed_time,"ADD_TO_ARRAYLIST_BEGINNING");
+            timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
 
         }
 
@@ -113,8 +113,8 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [Array add to middle]: " << elapsed_time << " ns"
-                 << endl;//END [ARRAY ADD TO MIDDLE]
+            timer->calculate_average_elapsed_time(elapsed_time,"ADD_TO_ARRAYLIST_MIDDLE");
+            timer->showAvgTime("ADD_TO_ARRAYLIST_MIDDLE");
         }
 
 
@@ -145,8 +145,8 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        timer->addToArrayList_Beginning(elapsed_time,"ADD_TO_ARRAYLIST_BEGINNING");
-        timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
+        timer->calculate_average_elapsed_time(elapsed_time,"ADD_TO_ARRAYLIST_END");
+        timer->showAvgTime("ADD_TO_ARRAYLIST_END");
 
     }
 
@@ -169,8 +169,9 @@ public:
 
                 auto end = std::chrono::steady_clock::now();
                 double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                cout << "elapsed time [Array remove from beginning]: " << elapsed_time << " ns"
-                     << endl; //END [ARRAY REMOVE FROM BEGINNING]
+                timer->calculate_average_elapsed_time(elapsed_time,"REMOVE_FROM_ARRAYLIST_BEGINNING");
+                timer->showAvgTime("REMOVE_FROM_ARRAYLIST_BEGINNING");
+
 
             }
                 //remove in the middle
@@ -193,8 +194,8 @@ public:
 
                 auto end = std::chrono::steady_clock::now();
                 double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                cout << "elapsed time [Array remove from middle]: " << elapsed_time << " ns"
-                     << endl; //END [ARRAY REMOVE FROM MIDDLE]
+               timer->calculate_average_elapsed_time(elapsed_time,"REMOVE_FROM_ARRAYLIST_MIDDLE");
+               timer->showAvgTime("REMOVE_FROM_ARRAYLIST_MIDDLE");
             }
         } else {
             cout << "Array is empty !" << endl;
@@ -218,8 +219,9 @@ public:
             cout << "Element deleted !" << endl;
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [Array remove from end]: " << elapsed_time << " ns"
-                 << endl; //END [ARRAY REMOVE FROM END]
+           timer->calculate_average_elapsed_time(elapsed_time,"REMOVE_FROM_ARRAYLIST_END");
+           timer->showAvgTime("REMOVE_FROM_ARRAYLIST_END");
+
 
         } else {
             cout << "Array is empty !" << endl;
@@ -232,8 +234,8 @@ public:
             cout << "Element at index " << index << " found: array[" << index << "] = " << arr_dyn[index] << endl;
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [Array find by index]: " << elapsed_time << " ns"
-                 << endl; //END [ARRAY FIND BY INDEX]
+            timer->calculate_average_elapsed_time(elapsed_time,"FIND_IN_ARRAYLIST_BY_INDEX");
+            timer->showAvgTime("FIND_IN_ARRAYLIST_BY_INDEX");
 
         } else {
             cout << "No element with the index " << index << " found !" << endl;
@@ -260,11 +262,11 @@ public:
         }
 
         auto end = std::chrono::steady_clock::now();
-        long double elapsed_time = (long double) (std::chrono::duration_cast<std::chrono::nanoseconds>(
-                end - start).count());
+        long double elapsed_time = (long double) (std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
 
-        cout << "elapsed time [Array find by value]: " << (long double) (elapsed_time) << " ns"
-             << endl; //END [ARRAY FIND BY VALUE]
+        timer->calculate_average_elapsed_time(elapsed_time,"FIND_IN_ARRAYLIST_BY_VALUE");
+        timer->showAvgTime("FIND_IN_ARRAYLIST_BY_VALUE");
+
     }
 
     void show() {

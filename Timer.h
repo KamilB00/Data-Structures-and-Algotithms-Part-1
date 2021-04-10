@@ -30,7 +30,8 @@ public:
     double avg_time_removeFromArrayList_Beginning = 0;
     double avg_time_removeFromArrayList_Middle = 0;
     double avg_time_removeFromArrayList_End = 0;
-    double avg_time_findInArrayList = 0;
+    double avg_time_findInArrayList_by_index = 0;
+    double avg_time_findInArrayList_by_value = 0;
 
     double avg_time_addToLinkedList_Beginning = 0;
     double avg_time_addToLinkedList_Middle = 0;
@@ -69,6 +70,9 @@ public:
 
     double elapsed_time_total_arr_7 = 0;
     double visit_counter_arr_7 = 0;
+
+    double elapsed_time_total_arr_8 = 0;
+    double visit_counter_arr_8 = 0;
 
     double elapsed_time_total_list_1 = 0;
     double visit_counter_list_1 = 0;
@@ -124,9 +128,9 @@ public:
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromArrayList_Middle << " ns" << endl;
         } else if (operation == "REMOVE_FROM_ARRAYLIST_END") {
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromArrayList_End << " ns" << endl;
-        } else if (operation == "FIND_IN_ARRAYLIST") {
+        } else if (operation == "FIND_IN_ARRAYLIST_BY_INDEX") {
 
-            cout << "Average Time [" << operation << "] : " << avg_time_findInArrayList << " ns" << endl;
+            cout << "Average Time [" << operation << "] : " << avg_time_findInArrayList_by_index << " ns" << endl;
 
         }
             //LINKED LIST
@@ -169,8 +173,7 @@ public:
 
 
 public:
-    void addToArrayList_Beginning(double elapsed_time, string operation
-    ) {
+    void calculate_average_elapsed_time(double elapsed_time, string operation) {
 
         //ARRAY LIST
         if (operation == "ADD_TO_ARRAYLIST_BEGINNING") { //1
@@ -200,10 +203,15 @@ public:
             visit_counter_arr_6++;
             elapsed_time_total_arr_6 += elapsed_time;
             avg_time_removeFromArrayList_End = (elapsed_time_total_arr_6 / visit_counter_arr_6);
-        } else if (operation == "FIND_IN_ARRAYLIST") { //7
+        } else if (operation == "FIND_IN_ARRAYLIST_BY_INDEX") { //7
             visit_counter_arr_7++;
             elapsed_time_total_arr_7 += elapsed_time;
-            avg_time_findInArrayList = (elapsed_time_total_arr_7 / visit_counter_arr_7);
+            avg_time_findInArrayList_by_index = (elapsed_time_total_arr_7 / visit_counter_arr_7);
+        }
+        else if (operation == "FIND_IN_ARRAYLIST_BY_VALUE") { //8
+            visit_counter_arr_8++;
+            elapsed_time_total_arr_8 += elapsed_time;
+            avg_time_findInArrayList_by_value = (elapsed_time_total_arr_8 / visit_counter_arr_8);
         }
             //LINKED LIST
         else if (operation == "ADD_TO_LINKEDLIST_BEGINNING") { //1
