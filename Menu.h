@@ -9,6 +9,7 @@
 #include "ListTwoDirection.h"
 #include "File.h"
 #include "Heap.h"
+#include "RedBlackTree.h"
 
 class Menu {
 public:
@@ -546,8 +547,30 @@ public:
                         //Red-Black Tree DATA STRUCTURE
                     case 4: {
                         clearScreen();
+                        int operation = operations_interface("Red-Black Tree");
+                        RedBlackTree *rbt = new RedBlackTree();
+                        do{
+                            switch (operation) {
+                                case 1:
+                                {
+                                    rbt->add();
+                                    rbt->show();
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    //Remove value from R-B-tree
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    //Find value in R-B-tree
+                                    break;
+                                }
+                            }
 
-                        operations_interface("Red-Black Tree");
+                        }while(operation =  operations_interface("Red-Black Tree"));
+
                         break;
                     }
 //*******************************************************************************************************************

@@ -197,7 +197,6 @@ public:
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
 
-
     }
 
 public:
