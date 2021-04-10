@@ -9,8 +9,10 @@
 #include <fstream>
 #include <random>
 #include <iomanip>
+#include "Timer.h"
 
 using namespace std;
+
 class Array {
 public:
     int size = 0;
@@ -18,7 +20,12 @@ public:
     int *arr_dyn_new = nullptr;
 
 public:
+    Timer *timer = new Timer();
+
+public:
     Array() {
+
+
         string amount;
         string element;
         fstream file;
@@ -71,6 +78,7 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+
             cout << "elapsed time [Array add at index 0]: " << elapsed_time << " ns"
                  << endl; //END [ARRAY ADD AT INDEX 0]
 
@@ -137,7 +145,8 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [Array add to end]: " << elapsed_time << " ns" << endl; //END [ARRAY ADD TO END]
+        timer->addToArrayList_Beginning(elapsed_time);
+        //cout << "elapsed time [Array add to end]: " << elapsed_time << " ns" << endl; //END [ARRAY ADD TO END]
     }
 
     void remove(int index) {
