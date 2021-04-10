@@ -8,6 +8,17 @@
 using namespace std;
 class Timer {
 
+    static Timer *instance;
+    Timer(){
+
+    }
+public:
+    static Timer *getInstance(){
+        if(!instance)
+            instance = new Timer;
+        return instance;
+    }
+
     double avg_time_addToArrayList_Beginning = 0;
     double avg_time_addToArrayList_Middle = 0;
     double avg_time_addToArrayList_End = 0;
@@ -89,78 +100,7 @@ class Timer {
     double elapsed_time_total_RB_3 = 0;
     double visit_counter_RB_3 = 0;
 
-   void addToArrayList_Beginning(double elapsed_time, string structure) {
-
-        //ARRAY LIST
-        if(structure == "ADD_TO_ARRAYLIST_BEGINNING"){ //1
-            visit_counter_arr_1++;
-            elapsed_time_total_arr_1 += elapsed_time;
-            avg_time_addToArrayList_Beginning = (elapsed_time_total_arr_1/visit_counter_arr_1);
-        }else if(structure == "ADD_TO_ARRAYLIST_MIDDLE"){ //2
-            visit_counter_arr_2++;
-            elapsed_time_total_arr_2 +=elapsed_time;
-            avg_time_addToArrayList_Middle = (elapsed_time_total_arr_2/visit_counter_arr_2);
-        }else if(structure == "ADD_TO_ARRAYLIST_END"){ //3
-
-        }
-        else if(structure == "REMOVE_FROM_ARRAYLIST_BEGINNING"){ //4
-
-        }
-        else if(structure == "REMOVE_FROM_ARRAYLIST_MIDDLE"){ //5
-
-        }
-        else if(structure == "REMOVE_FROM_ARRAYLIST_END"){ //6
-
-        }
-        else if(structure == "FIND_IN_ARRAYLIST"){ //7
-
-        }
-        //LINKED LIST
-        else if(structure == "ADD_TO_LINKEDLIST_BEGINNING"){ //1
-
-        }
-        else if(structure == "ADD_TO_LINKEDLIST_MIDDLE"){ //2
-
-        }
-        else if(structure == "ADD_TO_LINKEDLIST_END"){ //3
-
-        }
-        else if(structure == "REMOVE_FROM_LINKEDLIST_BEGINNING"){ //4
-
-        }
-        else if(structure == "REMOVE_FROM_LINKEDLIST_MIDDLE"){ //5
-
-        }
-        else if(structure == "REMOVE_FROM_LINKEDLIST_END"){ //6
-
-        }
-        else if(structure == "FIND_IN_LINKEDLIST"){ //7
-
-        }
-        //HEAP
-        else if(structure == "ADD_TO_HEAP"){ //1
-
-        }
-        else if(structure == "REMOVE_FROM_HEAP"){ //2
-
-        }
-        else if(structure == "FIND_IN_HEAP"){ //3
-
-        }
-        //RED BLACK TREE
-        else if(structure == "ADD_TO_RED_BLACK_TREE"){ //1
-
-        }
-        else if(structure == "REMOVE_FROM_RED_BLACK_TREE"){ //2
-
-        }
-        else if(structure == "FIND_IN_RED_BLACK_TREE"){ //3
-
-        }
-
-
-    }
-
+public:
     void showAvgTime(string structure){
         if(structure == "ADD_TO_ARRAYLIST_BEGINNING"){ //1
             cout<<"Average Time ["<<structure<<"] : "<< avg_time_addToArrayList_Beginning<<" ns"<<endl;
@@ -226,7 +166,78 @@ class Timer {
    }
 
 
+public:
+    void addToArrayList_Beginning(double elapsed_time, string structure) {
 
+         //ARRAY LIST
+         if(structure == "ADD_TO_ARRAYLIST_BEGINNING"){ //1
+             visit_counter_arr_1++;
+             elapsed_time_total_arr_1 += elapsed_time;
+             avg_time_addToArrayList_Beginning = (elapsed_time_total_arr_1/visit_counter_arr_1);
+         }else if(structure == "ADD_TO_ARRAYLIST_MIDDLE"){ //2
+             visit_counter_arr_2++;
+             elapsed_time_total_arr_2 +=elapsed_time;
+             avg_time_addToArrayList_Middle = (elapsed_time_total_arr_2/visit_counter_arr_2);
+         }else if(structure == "ADD_TO_ARRAYLIST_END"){ //3
+
+         }
+         else if(structure == "REMOVE_FROM_ARRAYLIST_BEGINNING"){ //4
+
+         }
+         else if(structure == "REMOVE_FROM_ARRAYLIST_MIDDLE"){ //5
+
+         }
+         else if(structure == "REMOVE_FROM_ARRAYLIST_END"){ //6
+
+         }
+         else if(structure == "FIND_IN_ARRAYLIST"){ //7
+
+         }
+         //LINKED LIST
+         else if(structure == "ADD_TO_LINKEDLIST_BEGINNING"){ //1
+
+         }
+         else if(structure == "ADD_TO_LINKEDLIST_MIDDLE"){ //2
+
+         }
+         else if(structure == "ADD_TO_LINKEDLIST_END"){ //3
+
+         }
+         else if(structure == "REMOVE_FROM_LINKEDLIST_BEGINNING"){ //4
+
+         }
+         else if(structure == "REMOVE_FROM_LINKEDLIST_MIDDLE"){ //5
+
+         }
+         else if(structure == "REMOVE_FROM_LINKEDLIST_END"){ //6
+
+         }
+         else if(structure == "FIND_IN_LINKEDLIST"){ //7
+
+         }
+         //HEAP
+         else if(structure == "ADD_TO_HEAP"){ //1
+
+         }
+         else if(structure == "REMOVE_FROM_HEAP"){ //2
+
+         }
+         else if(structure == "FIND_IN_HEAP"){ //3
+
+         }
+         //RED BLACK TREE
+         else if(structure == "ADD_TO_RED_BLACK_TREE"){ //1
+
+         }
+         else if(structure == "REMOVE_FROM_RED_BLACK_TREE"){ //2
+
+         }
+         else if(structure == "FIND_IN_RED_BLACK_TREE"){ //3
+
+         }
+
+
+     }
 };
 
 

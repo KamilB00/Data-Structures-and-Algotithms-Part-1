@@ -6,6 +6,8 @@
 
 using namespace std;
 
+Timer *Timer::instance = 0;
+
 int main() {
 
     Menu *menu = new Menu();

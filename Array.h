@@ -19,8 +19,8 @@ public:
     int *arr_dyn = nullptr;
     int *arr_dyn_new = nullptr;
 
-public:
-    Timer *timer = new Timer();
+    Timer* timer = timer->getInstance();
+
 
 public:
     Array() {
@@ -145,8 +145,9 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        timer->addToArrayList_Beginning(elapsed_time);
-        //cout << "elapsed time [Array add to end]: " << elapsed_time << " ns" << endl; //END [ARRAY ADD TO END]
+        timer->addToArrayList_Beginning(elapsed_time,"ADD_TO_ARRAYLIST_BEGINNING");
+        timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
+
     }
 
     void remove(int index) {
