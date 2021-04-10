@@ -8,10 +8,14 @@
 #include <iostream>
 #include <cmath>
 
+
+
 class Heap {
     int size = 0;
     int *items = nullptr;
     int *items_new = nullptr;
+
+    Timer* timer = timer->getInstance();
 
 public:
     Heap() {
@@ -137,36 +141,39 @@ public:
 
 public:
     void remove(int index) {
+        if(index < size && index >=0) {
+            if (size > 0) {
+                auto start = std::chrono::steady_clock::now();// START [HEAP REMOVE]
+                size--;
+                items_new = create_arr(size);
 
-        if (size > 0) {
-            auto start = std::chrono::steady_clock::now();// START [HEAP REMOVE]
-            size--;
-            items_new = create_arr(size);
+                for (int i = 0; i < index; i++) {
+                    items_new[i] = items[i];
+                }
+                items_new[index] = items[size];
 
-            for (int i = 0; i < index; i++) {
-                items_new[i] = items[i];
+                for (int i = index + 1; i < size; i++) {
+                    items_new[i] = items[i];
+                }
+                delete[]items;
+                items = nullptr;
+                items = items_new;
+                items_new = nullptr;
+                delete[] items_new;
+
+                heapify_down(index);
+                cout << "heap[" << index << "] has been removed !" << endl;
+
+                auto end = std::chrono::steady_clock::now();
+                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                timer->calculate_average_elapsed_time(elapsed_time,"REMOVE_FROM_HEAP");
+                timer->showAvgTime("REMOVE_FROM_HEAP");
+
+            } else {
+                cout << "Heap is empty !" << endl;
             }
-            items_new[index] = items[size];
-
-            for (int i = index + 1; i < size; i++) {
-                items_new[i] = items[i];
-            }
-            delete[]items;
-            items = nullptr;
-            items = items_new;
-            items_new = nullptr;
-            delete[] items_new;
-
-            heapify_down(index);
-            cout<<"heap["<<index<<"] has been removed !"<<endl;
-
-            auto end = std::chrono::steady_clock::now();
-            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [Heap find by value]: " << elapsed_time << " ns"
-                 << endl;//END [HEAP REMOVE]
-
-        } else {
-            cout << "Heap is empty !" << endl;
+        }else{
+            cout<<"No index found !"<<endl;
         }
 
     }
@@ -198,8 +205,8 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [Heap add]: " << elapsed_time << " ns"
-             << endl;//END [HEAP ADD]
+        timer->calculate_average_elapsed_time(elapsed_time,"ADD_TO_HEAP");
+        timer->showAvgTime("ADD_TO_HEAP");
 
     }
 
@@ -222,8 +229,8 @@ public:
         }
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [Heap find by value]: " << elapsed_time << " ns"
-             << endl;//END [HEAP FIND BY VALUE]
+        timer->calculate_average_elapsed_time(elapsed_time,"FIND_IN_HEAP_BY_VALUE");
+        timer->showAvgTime("FIND_IN_HEAP_BY_VALUE");
     }
 
 public:
@@ -237,9 +244,8 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [Heap find by index]: " << elapsed_time << " ns"
-             << endl;//END [HEAP FIND BY INDEX]
-
+        timer->calculate_average_elapsed_time(elapsed_time,"FIND_IN_HEAP_BY_INDEX");
+        timer->showAvgTime("FIND_IN_HEAP_BY_INDEX");
     }
 
 public:

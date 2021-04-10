@@ -29,6 +29,8 @@ public:
 
 class ListTwoDirection {
 
+    Timer *timer = timer->getInstance();
+
     int size = 0;
 
 public:
@@ -111,8 +113,9 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [List Add value at index 0]: " << elapsed_time << " ns"
-                 << endl; //END [LIST ADD VALUE AT INDEX 0]
+
+            timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_LINKEDLIST_BEGINNING");
+            timer->showAvgTime("ADD_TO_LINKEDLIST_BEGINNING");
 
         } else if (index == size) { // na końcu
             auto start = std::chrono::steady_clock::now(); //START [LIST ADD VALUE AT THE END]
@@ -123,8 +126,10 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [List Add value at the end]: " << elapsed_time << " ns"
-                 << endl; //END [LIST ADD VALUE AT THE END]
+
+            timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_LINKEDLIST_END");
+            timer->showAvgTime("ADD_TO_LINKEDLIST_END");
+
         } else {
             auto start = std::chrono::steady_clock::now(); //START [LIST ADD VALUE IN THE END]
 
@@ -138,8 +143,9 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [List Add value in the middle]: " << elapsed_time << " ns"
-                 << endl; //END [LIST ADD VALUE IN THE MIDDLE]
+
+            timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_LINKEDLIST_MIDDLE");
+            timer->showAvgTime("ADD_TO_LINKEDLIST_MIDDLE");
         }
         size++;
     }
@@ -159,8 +165,9 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [List remove value from middle]: " << elapsed_time << " ns"
-                 << endl; //END [LIST REMOVE VALUE FROM MIDDLE]
+
+            timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_MIDDLE");
+            timer->showAvgTime("REMOVE_FROM_LINKEDLIST_MIDDLE");
 
         } else if (index == 0) { // deleting from index 0
             auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM INDEX 0]
@@ -178,8 +185,9 @@ public:
 
                 auto end = std::chrono::steady_clock::now();
                 double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                cout << "elapsed time [List remove value from index 0]: " << elapsed_time << " ns"
-                     << endl; //END [LIST REMOVE VALUE FROM INDEX 0]
+
+                timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_BEGINNING");
+                timer->showAvgTime("REMOVE_FROM_LINKEDLIST_BEGINNING");
             }
         } else if (index == size - 1) { //deleting from last index
             auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE LAST]
@@ -192,8 +200,8 @@ public:
 
             auto end = std::chrono::steady_clock::now();
             double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            cout << "elapsed time [List remove value last]: " << elapsed_time << " ns"
-                 << endl; //END [LIST REMOVE VALUE LAST]
+            timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_END");
+            timer->showAvgTime("REMOVE_FROM_LINKEDLIST_END");
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
 
@@ -237,8 +245,8 @@ public:
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [List find by value]: " << elapsed_time << " ns"
-             << endl; //END [LIST FIND BY VALUE]
+        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
+        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
     }
 
 public :
@@ -266,8 +274,8 @@ public :
 
         auto end = std::chrono::steady_clock::now();
         double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        cout << "elapsed time [List find by value]: " << elapsed_time << " ns"
-             << endl; //END [LIST FIND BY INDEX]
+        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_INDEX");
+        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_INDEX");
     }
 
 };
