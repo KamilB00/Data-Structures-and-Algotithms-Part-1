@@ -44,7 +44,8 @@ public:
 
     double avg_time_addToHeap = 0;
     double avg_time_removeFromHeap = 0;
-    double avg_time_findInHeap = 0;
+    double avg_time_findInHeap_by_index = 0;
+    double avg_time_findInHeap_by_value = 0;
 
     double avg_time_addTo_RB_tree = 0;
     double avg_time_remove_from_RB_tree = 0;
@@ -108,6 +109,9 @@ public:
     double elapsed_time_total_heap_3 = 0;
     double visit_counter_heap_3 = 0;
 
+    double elapsed_time_total_heap_4 = 0;
+    double visit_counter_heap_4 = 0;
+
     double elapsed_time_total_RB_1 = 0;
     double visit_counter_RB_1 = 0;
 
@@ -166,8 +170,11 @@ public:
             cout << "Average Time [" << operation << "] : " << avg_time_addToHeap << " ns" << endl;
         } else if (operation == "REMOVE_FROM_HEAP") { //2
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromHeap << " ns" << endl;
-        } else if (operation == "FIND_IN_HEAP") { //3
-            cout << "Average Time [" << operation << "] : " << avg_time_findInHeap << " ns" << endl;
+        } else if (operation == "FIND_IN_HEAP_BY_INDEX") { //3
+            cout << "Average Time [" << operation << "] : " << avg_time_findInHeap_by_index << " ns" << endl;
+        }
+        else if (operation == "FIND_IN_HEAP_BY_VALUE") { //3
+            cout << "Average Time [" << operation << "] : " << avg_time_findInHeap_by_value << " ns" << endl;
         }
             //RED BLACK TREE
         else if (operation == "ADD_TO_RED_BLACK_TREE") {
@@ -274,10 +281,15 @@ public:
             elapsed_time_total_heap_2 += elapsed_time;
             avg_time_removeFromHeap = (elapsed_time_total_heap_2 / visit_counter_heap_2);
 
-        } else if (operation == "FIND_IN_HEAP") { //3
+        } else if (operation == "FIND_IN_HEAP_BY_INDEX") { //3
             visit_counter_heap_3++;
             elapsed_time_total_heap_3 += elapsed_time;
-            avg_time_findInHeap = (elapsed_time_total_heap_3 / visit_counter_heap_3);
+            avg_time_findInHeap_by_index = (elapsed_time_total_heap_3 / visit_counter_heap_3);
+        }
+        else if (operation == "FIND_IN_HEAP_BY_VALUE") { //3
+            visit_counter_heap_4++;
+            elapsed_time_total_heap_4 += elapsed_time;
+            avg_time_findInHeap_by_value = (elapsed_time_total_heap_4 / visit_counter_heap_4);
         }
             //RED BLACK TREE
         else if (operation == "ADD_TO_RED_BLACK_TREE") { //1
