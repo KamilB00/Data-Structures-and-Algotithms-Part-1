@@ -182,13 +182,12 @@ public:
                 last = nullptr;
                 delete temp;
                 size--;
-
+            }
                 auto end = std::chrono::steady_clock::now();
                 double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-
                 timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_BEGINNING");
                 timer->showAvgTime("REMOVE_FROM_LINKEDLIST_BEGINNING");
-            }
+
         } else if (index == size - 1) { //deleting from last index
             auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE LAST]
 

@@ -164,7 +164,6 @@ public:
         cout << "          2. Doubly Linked List               " << endl;
         cout << "          3. Heap                             " << endl;
         cout << "          4. Red-Black Tree                   " << endl;
-        cout << "          5. AVL Tree                         " << endl;
         cout << "--------------------------------------------  " << endl;
         cout << endl;
         cout << " Press 0 to Return                            " << endl;
@@ -202,29 +201,16 @@ public:
                                     //#1 Add to array
                                 case 1: {
                                     array->add();
-                                    visit_count++;
 
-                                    if (visit_count > 0) {
-                                        do {
-                                            add_more = ' ';
-                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
-                                            cin >> add_more;
+                                    array->show();
 
-                                            if (add_more == 'y') {
-                                                array->add();
-                                            } else if (add_more != 'y' && add_more != 'n') {
-                                                cout << "No such option try again !" << endl;
-                                            }
-
-                                        } while (add_more == 'y');
-                                    }
                                     break;
                                 }
 
                                     //#2 Add to array by index
                                 case 2: {
                                     int index = 0;
-                                    visit_count++;
+
                                     cout << "index: ";
                                     cin >> index;
 
@@ -234,25 +220,6 @@ public:
                                         array->add(index);
                                     }
 
-                                    if (visit_count > 0) {
-                                        do {
-                                            cout << "Do you want to add more numbers [y/n] ?  " << endl;
-                                            cin >> add_more;
-
-                                            if (add_more == 'y') {
-                                                cout << "index: ";
-                                                cin >> index;
-
-                                                if (index < 0 || index > array->size) {
-                                                    cout << "Incorrect index !" << endl;
-                                                } else {
-                                                    array->add(index);
-                                                }
-                                            } else if (add_more != 'y' && add_more != 'n') {
-                                                cout << "No such option try again !" << endl;
-                                            }
-                                        } while (add_more == 'y');
-                                    }
                                     break;
                                 }
                                     //#3 Remove element
