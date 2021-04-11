@@ -288,24 +288,7 @@ public:
                                     cin >> value;
 
                                     list->add(value, list->get_size());
-                                    visit_count++;
 
-                                    if (visit_count > 0) {
-                                        do {
-                                            add_more = ' ';
-                                            cout << "Do you want to add more numbers [y/n] ?  ";
-                                            cin >> add_more;
-
-                                            if (add_more == 'y') {
-                                                cout << "list.add(" << list->get_size() << ") = ";
-                                                cin >> value;
-                                                list->add(value, list->get_size());
-                                            } else if (add_more != 'y' && add_more != 'n') {
-                                                cout << "No such option try again !" << endl;
-                                            }
-
-                                        } while (add_more == 'y');
-                                    }
                                     break;
                                 }
                                     // #2 Add to list by index [LIST]
@@ -328,34 +311,7 @@ public:
                                     cin >> value;
 
                                     list->add(value, index);
-                                    visit_count++;
 
-                                    if (visit_count > 0) {
-                                        do {
-                                            add_more = ' ';
-                                            cout << "Do you want to add more numbers [y/n] ?  ";
-                                            cin >> add_more;
-
-                                            if (add_more == 'y') {
-                                                do {
-                                                    cout << "Index: ";
-                                                    cin >> index;
-
-                                                    if (index < 0 || index > list->get_size()) {
-                                                        cout << "Incorrect index ! Try again" << endl;
-                                                    }
-                                                } while (index > list->get_size() || index < 0);
-
-                                                cout << "list.add(" << index << ") = ";
-                                                cin >> value;
-
-                                                list->add(value, index);
-                                            } else if (add_more != 'y' && add_more != 'n') {
-                                                cout << "No such option try again !" << endl;
-                                            }
-
-                                        } while (add_more == 'y');
-                                    }
                                     break;
                                 }
                                     //#3 Remove element [LIST]
