@@ -12,17 +12,23 @@
 #include "RedBlackTree.h"
 
 class Menu {
+
 public:
+    Timer *timer = timer->getInstance();
+    int visit_counter = 0;
+    string file_name;
+    string file_name_and_extension;
 
     int mode_interface() {
         clearScreen();
         int mode = 0;
+
         cout << "-----------------------------------------------" << endl;
         cout << "     Welcome to Data Structures Time Analyzer " << endl;
         cout << "-----------------------------------------------" << endl;
         cout << "               1. Test Mode" << endl;
-        cout << "               2. Auto Mode" << endl;
-        cout << "               3. Read Mode" << endl;
+        cout << "               2. Read Mode" << endl;
+        cout << "               3. Show average operations time" << endl;
         cout << "               4. About" << endl;
         cout << "-----------------------------------------------" << endl;
         cout << endl;
@@ -30,30 +36,70 @@ public:
 
         do {
             cin >> mode;
-            if (mode >= 0 && mode <= 3) {
+            if (mode >= 0 && mode <= 4) {
                 switch (mode) {
                     case 1: {
-                        File *file = new File();
-                        clearScreen();
-                        data_structures_interface();
+
+                        regex reg("[a-zA-Z0-9]+");
+
+                        cout << "File name: ";
+                        cin >> file_name;
+                        if (regex_match(file_name, reg)) {
+                            file_name_and_extension = file_name + ".txt";
+
+                            File *file = new File(file_name_and_extension);
+                            timer->clear_data();
+                            clearScreen();
+                            data_structures_interface();
+                        } else {
+                            cout << "Incorrect file name syntax" << endl;
+                        }
                     }
                         break;
                     case 2: {
-                        File *file = new File(100);
+                        visit_counter++;
+                        char choice;
                         clearScreen();
-                        data_structures_interface();
+                        if (visit_counter > 1) {
+                            cout << "Do you want to remove previous measurements [y/n]" << endl;
+                            do {
+                                cin >> choice;
+                                if (choice != 'y' && choice != 'n') {
+                                    cout << "Incorrect choice. Try again !" << endl;
+                                }
+                            } while (choice != 'y' && choice != 'n');
+
+                            if (choice == 'y') {
+                                timer->clear_data();
+                            }
+                        }
+                        regex reg("[a-zA-Z0-9]+");
+
+                        cout << "File name: ";
+                        cin >> file_name;
+                        if (regex_match(file_name, reg)) {
+
+                            file_name_and_extension = file_name + ".txt";
+
+                            fstream file;
+                            file.open(file_name_and_extension, ios::in);
+
+                            if (!file.good()) {
+                                cout << "File " << file_name_and_extension << ".txt does not exist !" << endl;
+                                mode_interface();
+
+                            } else {
+                                data_structures_interface();
+                            }
+
+                        } else {
+                            cout << "Incorrect file name syntax" << endl;
+                        }
                         break;
                     }
                     case 3: {
-                        clearScreen();
-                        fstream file;
-                        file.open("data.txt", ios::in);
-
-                        if (!file.good()) {
-                            cout << "File data.txt does not exist !" << endl;
-                        }
-                        data_structures_interface();
-                        break;
+                        timer->view_data();
+                        mode_interface();
                     }
                     case 4: {
                         clearScreen();
@@ -67,7 +113,7 @@ public:
             } else {
                 cout << "Mode not found try again !" << endl;
             }
-        } while (mode < 0 || mode > 3);
+        } while (mode < 0 || mode > 4);
 
     }
 
@@ -80,9 +126,6 @@ public:
         cout << "   lower bounds and upper bounds of randomly           " << endl;
         cout << "   generated numbers                                   " << endl;
         cout << "-----------------------------------------------------  " << endl;
-        cout << "   * Auto Mode * - fills a file automatically with     " << endl;
-        cout << "   random numbers in range (-1000,1000)                " << endl;
-        cout << "-----------------------------------------------------  " << endl;
         cout << "   * Read Mode *  - program creates a file and allows  " << endl;
         cout << "   you to fill it with your own data                   " << endl;
         cout << endl;
@@ -90,6 +133,9 @@ public:
         cout << "   [1-st line] number of elements                      " << endl;
         cout << "   [2-n to n-th line] elements of the array            " << endl;
         cout << "   separated with new line                             " << endl;
+        cout << "-----------------------------------------------------  " << endl;
+        cout << "   * Show average operation time * - allow to view     " << endl;
+        cout << "   each operation average time                         " << endl;
         cout << "-----------------------------------------------------  " << endl;
         cout << endl;
         cout << " Press 0 to Return" << endl;
@@ -180,7 +226,7 @@ public:
                         // ARRAY DATA STRUCTURE
                     case 1: {
                         clearScreen();
-                        Array *array = new Array();
+                        Array *array = new Array(file_name_and_extension);
                         char add_more = ' ';
 
                         int operation = operations_interface("Array");
@@ -202,7 +248,6 @@ public:
                                 case 1: {
                                     array->add();
 
-                                    array->show();
 
                                     break;
                                 }
@@ -264,7 +309,7 @@ public:
                     case 2: {
 
                         clearScreen();
-                        ListTwoDirection *list = new ListTwoDirection();
+                        ListTwoDirection *list = new ListTwoDirection(file_name_and_extension);
                         int operation = operations_interface("List");
 
                         do {
@@ -433,32 +478,31 @@ public:
                                     cout << "Index: ";
                                     cin >> index;
 
-                                    if(index > 0 && index < heap->get_size()){
+                                    if (index >= 0 && index < heap->get_size()) {
                                         heap->find(index);
                                     }
                                     break;
                                 }
                                     //#6 Show heap [HEAP]
-                                case 6:
-                                {
+                                case 6: {
                                     char show = 'y';
-                                    if(heap->get_size() > 100){
-                                        cout<<"There are "<<heap->get_size()<<" values in the heap do you want to continue ? [y/n]"<<endl;
+                                    if (heap->get_size() > 100) {
+                                        cout << "There are " << heap->get_size()
+                                             << " values in the heap do you want to continue ? [y/n]" << endl;
 
-                                        cin>>show;
+                                        cin >> show;
 
-                                       while(show != 'y' || show != 'n'){
-                                           cout<<"Incorrect character. Try again !"<<endl;
-                                           cin>>show;
-                                       }
-                                         if(show == 'y'){
-                                             heap->show();
-                                         }
-                                    }
-                                    else {
+                                        while (show != 'y' || show != 'n') {
+                                            cout << "Incorrect character. Try again !" << endl;
+                                            cin >> show;
+                                        }
+                                        if (show == 'y') {
+                                            heap->show();
+                                        }
+                                    } else {
                                         heap->show();
                                     }
-                                 break;
+                                    break;
                                 }
                             }
                         } while (operation = operations_interface_tree("Heap"));
@@ -472,27 +516,24 @@ public:
                         clearScreen();
                         int operation = operations_interface("Red-Black Tree");
                         RedBlackTree *rbt = new RedBlackTree();
-                        do{
+                        do {
                             switch (operation) {
-                                case 1:
-                                {
+                                case 1: {
                                     rbt->add();
                                     rbt->show();
                                     break;
                                 }
-                                case 2:
-                                {
+                                case 2: {
                                     //Remove value from R-B-tree
                                     break;
                                 }
-                                case 3:
-                                {
+                                case 3: {
                                     //Find value in R-B-tree
                                     break;
                                 }
                             }
 
-                        }while(operation =  operations_interface("Red-Black Tree"));
+                        } while (operation = operations_interface("Red-Black Tree"));
 
                         break;
                     }

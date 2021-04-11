@@ -59,23 +59,24 @@ public:
 
     }
 
-    ListTwoDirection() {
+    ListTwoDirection(const string& file_name) {
         string amount;
         string element;
         fstream file;
-        file.open("data.txt", ios::in);
+        file.open(file_name, ios::in);
 
         if (!file.good()) {
-            cout << "File data.txt does not exist !" << endl;
-        }
-        getline(file, amount);
+            cout << "File" << file_name << ".txt does not exist ! [LINKED LIST]" << endl;
+        } else {
+            getline(file, amount);
 
-        list_size = atoi(amount.c_str());
-        for (int i = 0; i < atoi(amount.c_str()); i++) {
-            getline(file, element);
-           fillTheList(atoi(element.c_str()));
+            list_size = atoi(amount.c_str());
+            for (int i = 0; i < atoi(amount.c_str()); i++) {
+                getline(file, element);
+                fillTheList(atoi(element.c_str()));
+            }
+            cout << "List filled with data !" << endl;
         }
-        cout<<"List filled with data !"<<endl;
     }
 
 public:

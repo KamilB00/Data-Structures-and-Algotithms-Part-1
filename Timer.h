@@ -140,12 +140,11 @@ public:
 
             cout << "Average Time [" << operation << "] : " << avg_time_findInArrayList_by_index << " ns" << endl;
 
+        } else if (operation == "FIND_IN_ARRAYLIST_BY_VALUE") {
+
+            cout << "Average Time [" << operation << "] : " << avg_time_findInArrayList_by_value << " ns" << endl;
+
         }
-        else if (operation == "FIND_IN_ARRAYLIST_BY_VALUE") {
-
-        cout << "Average Time [" << operation << "] : " << avg_time_findInArrayList_by_value << " ns" << endl;
-
-    }
             //LINKED LIST
         else if (operation == "ADD_TO_LINKEDLIST_BEGINNING") {
             cout << "Average Time [" << operation << "] : " << avg_time_addToLinkedList_Beginning << " ns" << endl;
@@ -162,7 +161,7 @@ public:
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromLinkedList_End << " ns" << endl;
         } else if (operation == "FIND_IN_LINKEDLIST_BY_VALUE") {
             cout << "Average Time [" << operation << "] : " << avg_time_findInLinkedList_by_value << " ns" << endl;
-        }else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") {
+        } else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") {
             cout << "Average Time [" << operation << "] : " << avg_time_findInLinkedList_by_index << " ns" << endl;
         }
             //HEAP
@@ -172,8 +171,7 @@ public:
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromHeap << " ns" << endl;
         } else if (operation == "FIND_IN_HEAP_BY_INDEX") { //3
             cout << "Average Time [" << operation << "] : " << avg_time_findInHeap_by_index << " ns" << endl;
-        }
-        else if (operation == "FIND_IN_HEAP_BY_VALUE") { //3
+        } else if (operation == "FIND_IN_HEAP_BY_VALUE") { //3
             cout << "Average Time [" << operation << "] : " << avg_time_findInHeap_by_value << " ns" << endl;
         }
             //RED BLACK TREE
@@ -225,8 +223,7 @@ public:
             visit_counter_arr_7++;
             elapsed_time_total_arr_7 += elapsed_time;
             avg_time_findInArrayList_by_index = (elapsed_time_total_arr_7 / visit_counter_arr_7);
-        }
-        else if (operation == "FIND_IN_ARRAYLIST_BY_VALUE") { //8
+        } else if (operation == "FIND_IN_ARRAYLIST_BY_VALUE") { //8
             visit_counter_arr_8++;
             elapsed_time_total_arr_8 += elapsed_time;
             avg_time_findInArrayList_by_value = (elapsed_time_total_arr_8 / visit_counter_arr_8);
@@ -264,11 +261,10 @@ public:
             visit_counter_list_7++;
             elapsed_time_total_list_7 += elapsed_time;
             avg_time_findInLinkedList_by_value = (elapsed_time_total_list_7 / visit_counter_list_7);
-        }
-        else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") { //7
+        } else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") { //7
             visit_counter_list_8++;
             elapsed_time_total_list_8 += elapsed_time;
-            avg_time_findInLinkedList_by_index = (elapsed_time_total_list_8/ visit_counter_list_8);
+            avg_time_findInLinkedList_by_index = (elapsed_time_total_list_8 / visit_counter_list_8);
         }
             //HEAP
         else if (operation == "ADD_TO_HEAP") { //1
@@ -285,8 +281,7 @@ public:
             visit_counter_heap_3++;
             elapsed_time_total_heap_3 += elapsed_time;
             avg_time_findInHeap_by_index = (elapsed_time_total_heap_3 / visit_counter_heap_3);
-        }
-        else if (operation == "FIND_IN_HEAP_BY_VALUE") { //3
+        } else if (operation == "FIND_IN_HEAP_BY_VALUE") { //4
             visit_counter_heap_4++;
             elapsed_time_total_heap_4 += elapsed_time;
             avg_time_findInHeap_by_value = (elapsed_time_total_heap_4 / visit_counter_heap_4);
@@ -310,6 +305,68 @@ public:
         }
 
 
+    }
+
+    void clear_data() {
+        avg_time_addToArrayList_Beginning = 0;
+        avg_time_addToArrayList_Middle = 0;
+        avg_time_addToArrayList_End = 0;
+        avg_time_removeFromArrayList_Beginning = 0;
+        avg_time_removeFromArrayList_Middle = 0;
+        avg_time_removeFromArrayList_End = 0;
+        avg_time_findInArrayList_by_index = 0;
+        avg_time_findInArrayList_by_value = 0;
+
+        avg_time_addToLinkedList_Beginning = 0;
+        avg_time_addToLinkedList_Middle = 0;
+        avg_time_addToLinkedList_End = 0;
+        avg_time_removeFromLinkedList_Beginning = 0;
+        avg_time_removeFromLinkedList_Middle = 0;
+        avg_time_removeFromLinkedList_End = 0;
+        avg_time_findInLinkedList_by_index = 0;
+        avg_time_findInLinkedList_by_value = 0;
+
+        avg_time_addToHeap = 0;
+        avg_time_removeFromHeap = 0;
+        avg_time_findInHeap_by_index = 0;
+        avg_time_findInHeap_by_value = 0;
+
+        avg_time_addTo_RB_tree = 0;
+        avg_time_remove_from_RB_tree = 0;
+        avg_time_find_in_RB_tree = 0;
+    }
+
+    void view_data() {
+
+        cout << "Average time of operations: " << endl;
+        cout << endl;
+        cout << "ADD_TO_ARRAYLIST_BEGINNING: " << avg_time_addToArrayList_Beginning << " ns" << endl;
+        cout << "ADD_TO_ARRAYLIST_MIDDLE: " << avg_time_addToArrayList_Middle << " ns" << endl;
+        cout << "ADD_TO_ARRAYLIST_END: " << avg_time_addToArrayList_End << " ns" << endl;
+        cout << "REMOVE_FROM_ARRAYLIST_BEGINNING: " << avg_time_removeFromArrayList_Beginning << " ns" << endl;
+        cout << "REMOVE_FROM_ARRAYLIST_MIDDLE: " << avg_time_removeFromArrayList_Middle << " ns" << endl;
+        cout << "REMOVE_FROM_ARRAYLIST_END: " << avg_time_removeFromArrayList_End << " ns" << endl;
+        cout << "FIND_IN_ARRAYLIST_BY_INDEX: " << avg_time_findInArrayList_by_index << " ns" << endl;
+        cout << "FIND_IN_ARRAYLIST_BY_VALUE: " << avg_time_findInArrayList_by_value << " ns" << endl;
+        cout << endl;
+        cout << "ADD_TO_LINKEDLIST_BEGINNING: " << avg_time_addToLinkedList_Beginning << " ns" << endl;
+        cout << "ADD_TO_LINKEDLIST_MIDDLE: " << avg_time_addToLinkedList_Middle << " ns" << endl;
+        cout << "ADD_TO_LINKEDLIST_END: " << avg_time_addToLinkedList_End << " ns" << endl;
+        cout << "REMOVE_FROM_LINKEDLIST_BEGINNING: " << avg_time_removeFromLinkedList_Beginning << " ns" << endl;
+        cout << "REMOVE_FROM_LINKEDLIST_MIDDLE: " << avg_time_removeFromLinkedList_Middle << " ns" << endl;
+        cout << "REMOVE_FROM_LINKEDLIST_END: " << avg_time_removeFromLinkedList_End << " ns" << endl;
+        cout << "FIND_IN_LINKEDLIST_BY_VALUE: " << avg_time_findInLinkedList_by_value << " ns" << endl;
+        cout << "FIND_IN_LINKEDLIST_BY_INDEX: " << avg_time_findInLinkedList_by_index << " ns" << endl;
+        cout << endl;
+        cout << "ADD_TO_HEAP: " << avg_time_addToHeap << " ns" << endl;
+        cout << "REMOVE_FROM_HEAP: " << avg_time_removeFromHeap << " ns" << endl;
+        cout << "FIND_IN_HEAP_BY_INDEX: " << avg_time_findInHeap_by_index << " ns" << endl;
+        cout << "FIND_IN_HEAP_BY_VALUE: " << avg_time_findInHeap_by_value << " ns" << endl;
+        cout << endl;
+        cout << "ADD_TO_RED_BLACK_TREE: " << avg_time_addTo_RB_tree << " ns" << endl;
+        cout << "REMOVE_FROM_RED_BLACK_TREE: " << avg_time_remove_from_RB_tree << " ns" << endl;
+        cout << "FIND_IN_RED_BLACK_TREE: " << avg_time_find_in_RB_tree << " ns" << endl;
+        cout << endl;
     }
 };
 

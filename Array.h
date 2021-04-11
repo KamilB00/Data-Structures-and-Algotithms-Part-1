@@ -23,24 +23,28 @@ public:
 
 
 public:
-    Array() {
+    Array(const string& file_name) {
 
 
         string amount;
         string element;
         fstream file;
-        file.open("data.txt", ios::in);
+        file.open(file_name, ios::in);
+
+        cout<<"ARRAY file_name -> "<<file_name<<endl;
 
         if (!file.good()) {
-            cout << "File data.txt does not exist !" << endl;
+            cout << "File "<<file_name<<".txt does not exist !" << endl;
         }
-        getline(file, amount);
+        else {
+            getline(file, amount);
 
-        arr_dyn = create(atoi(amount.c_str()));
-        size = atoi(amount.c_str());
-        for (int i = 0; i < size; i++) {
-            getline(file, element);
-            arr_dyn[i] = atoi(element.c_str());
+            arr_dyn = create(atoi(amount.c_str()));
+            size = atoi(amount.c_str());
+            for (int i = 0; i < size; i++) {
+                getline(file, element);
+                arr_dyn[i] = atoi(element.c_str());
+            }
         }
     }
 
@@ -50,7 +54,7 @@ public:
     }
 
     void add(int index) {
-
+int times = 0;
         int value = 0;
         int temp = 0;
 
@@ -59,35 +63,37 @@ public:
             size++;
 
             arr_dyn_new = create(size);
+            cout << "How many times should time be measured : ";
+            cin >> times;
 
             cout << "array[" << index << "] = ";
             cin >> value;
-            auto start = std::chrono::steady_clock::now(); // START [ARRAY ADD AT INDEX 0]
-            arr_dyn_new[0] = value;
+            for (int i = 0; i < times; i++) {
+                auto start = std::chrono::steady_clock::now(); // START [ARRAY ADD AT INDEX 0]
+                arr_dyn_new[0] = value;
 
-            for (int i = 0; i < size; i++) {
-                temp = arr_dyn[i];
-                arr_dyn_new[i + 1] = temp;
+                for (int i = 0; i < size; i++) {
+                    temp = arr_dyn[i];
+                    arr_dyn_new[i + 1] = temp;
+                }
+
+                auto end = std::chrono::steady_clock::now();
+                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+
+                timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_ARRAYLIST_BEGINNING");
+                timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
             }
-
             arr_dyn = nullptr;
             delete[] arr_dyn;
             arr_dyn = arr_dyn_new;
             arr_dyn_new = nullptr;
             delete[] arr_dyn_new;
-
-            auto end = std::chrono::steady_clock::now();
-            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-
-            timer->calculate_average_elapsed_time(elapsed_time,"ADD_TO_ARRAYLIST_BEGINNING");
-            timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
-
         }
 
             //adding element in the middle
         else if (index <= size - 1 && index > 0) {
             temp = 0;
-            int times = 0;
+
             size++;
             arr_dyn_new = create(size);
 
