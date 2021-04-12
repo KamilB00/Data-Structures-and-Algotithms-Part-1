@@ -4,285 +4,479 @@
 
 #ifndef DATASTRUCTURES_REDBLACKTREE_H
 #define DATASTRUCTURES_REDBLACKTREE_H
-#include <string>
+#include <iostream>
+
+#define BLACK 0
+#define RED 1
+#define BOTH_BLACK 2
+
+using namespace std;
+
 
 class Node {
-public:
+    int color;
     int data;
-    bool isRed;
-    Node *parent, *left, *right;
 
+public:
+    Node *parent;
+    Node *left;
+    Node *right;
 
     Node(int data) {
         this->data = data;
-        left = right = parent = NULL;
-        this->isRed = true;
+        parent = left = right = NULL;
+        color = RED;
     }
+
+    Node(int data, int color) {
+        this->data = data;
+        this->color = color;
+        parent = left = right = NULL;
+    }
+
+    void setColor(int color) {
+        this->color = color;
+    }
+
+    int getColor() {
+        return this->color;
+    }
+
+    int getData() {
+        return this->data;
+    }
+
+    void setData(int data) {
+        this->data = data;
+    }
+
 };
 
+Node *AddToTree(Node *root, Node *node) {
+    if (root == NULL)
+        return node;
+    if (root->getData() > node->getData()) {
+        root->left = AddToTree(root->left, node);
+        root->left->parent = root;
+    } else if (root->getData() < node->getData()) {
+        root->right = AddToTree(root->right, node);
+        root->right->parent = root;
+    }
+    return root;
+
+}
+
 class RedBlackTree {
+
+    Node *root;
+
 public:
-    Node *root = nullptr;
+    RedBlackTree(const string &file_name) {
+        string amount;
+        string element;
+        fstream file;
+        file.open(file_name, ios::in);
 
-    int nodesCounter = 0;
-    Node *getNewNode(int data) {
+        if (!file.good()) {
+            cout << "File" << file_name << ".txt does not exist ! [RB TREE]" << endl;
+        } else {
+            getline(file, amount);
+
+            for (int i = 0; i < atoi(amount.c_str()); i++) {
+                getline(file, element);
+                addNode(atoi(element.c_str()));
+            }
+            cout << "RB Tree filled with data !" << endl;
+        }
+    }
+
+    Node *getRoot() {
+        return root;
+    }
+
+    //Swapping nodes color
+    void swapNodeColor(Node *node1, Node *node2) {
+        int tempColor = node1->getColor();
+        node1->setColor(node2->getColor());
+        node2->setColor(tempColor);
+
+    }
+
+    void fillTheTree(int data){
         Node *newNode = new Node(data);
-
-        if(nodesCounter == 0){
-            root = newNode;
-        }
-
-        nodesCounter++;
-        return newNode;
+        this->root = AddToTree(this->root, newNode);
+        fixInsertViolation(newNode);
     }
 
-    void add(){
-        int value =0;
-        cout<<"Value of a node: "<<endl;
-        cin>>value;
-        insert(root, getNewNode(value));
-        evaluateTree(root);
+    int getBlackHeight(Node *root) {
+        if (root == NULL || root->getData() == -1)
+            return 0;
+        if (root->getColor() == BLACK) {
+            return 1 + max(getBlackHeight(root->left), getBlackHeight(root->right));
+        } else
+            return max(getBlackHeight(root->left), getBlackHeight(root->right));
     }
 
-    Node *insert(Node *root_node, Node *ptr) {
-        // root_node - korzeń główny
-        // ptr - to co dodajemy do drzewa
-
-
-        if (root_node == NULL) {   //  first adding
-            return ptr;
-        }
-
-        if (ptr->data < root_node->data) {   // adding to left subtree
-            root_node->left = insert(root_node->left, ptr);
-            root_node->left->parent = root_node;
-        } else if (ptr->data >= root_node->data) { // adding to right subtree
-            root_node->right = insert(root_node->right, ptr);
-            root_node->right->parent = root_node;
-        }
-
-        return root_node;
+    Node *getMaxValueNode(Node *root) {
+        if (root == NULL)
+            return NULL;
+        else if (root->right == NULL)
+            return root;
+        else
+            return getMaxValueNode(root->right);
     }
 
-    void rotateLeft(Node *&root_node, Node *&ptr) {
-        // ptr - to co przekazuje (5)
-        // ptr_right - prawy potomek tego co przekazuje (10)
 
-        Node *ptr_right = ptr->right;
-        ptr->right = ptr_right->left;
+    Node *getGrandParent(Node *node) {
+        if ((node != NULL) && (node->parent != NULL))
+            return node->parent->parent;
+        return NULL;
 
-        if (ptr->right != NULL) {
-            ptr->right->parent = ptr; //
-        }
-        ptr_right->parent = ptr->parent;
-        if (ptr->parent == NULL) {
-            root_node = ptr_right;
-        } else if (ptr == ptr->parent->left) {
-            ptr->parent->left = ptr_right; // podpinanie do rodzica z lewej
-        } else {
-            ptr->parent->right = ptr_right; // podpinanie do rodzica z prawej
-        }
-        ptr_right->left = ptr;
-        ptr->parent = ptr_right;
     }
 
-    void rotateRight(Node *&root_node, Node *&ptr) {
-        Node *ptr_left = ptr->left;
-        ptr->left = ptr_left->right;
+    void rotateLeft(Node *&node) {
+        Node *rightNode = node->right;
+        Node *nodeParent = node->parent;
+        node->right = rightNode->left;
 
-        if (ptr->left != NULL) {
-            ptr->left->parent = ptr;
-        }
-        ptr_left->parent = ptr->parent;
-        if (ptr->parent == NULL) {
-            root_node = ptr_left;
-        } else if (ptr == ptr->parent->left) {
-            ptr->parent->left = ptr_left;
-        } else {
-            ptr->parent->right = ptr_left;
-        }
-        ptr_left->right = ptr_left;
-        ptr->parent = ptr_left;
+        if (node->right != NULL)
+            node->right->parent = node;
+
+        rightNode->parent = nodeParent;
+
+        if (node->parent == NULL)
+            this->root = rightNode;
+        else if (node == node->parent->left)
+            node->parent->left = rightNode;
+        else
+            node->parent->right = rightNode;
+
+        rightNode->left = node;
+        node->parent = rightNode;
     }
 
-    Node *getLeftAunt(Node *root_node) {
-        return root_node->parent->left;
+    void rotateRight(Node *&node) {
+        Node *nodeLeft = node->left;
+        node->left = nodeLeft->right;
+
+        if (node->left != NULL)
+            node->left->parent = node;
+
+        nodeLeft->parent = node->parent;
+
+        if (node->parent == NULL)
+            this->root = nodeLeft;
+        else if (node == node->parent->left)
+            node->parent->left = nodeLeft;
+        else
+            node->parent->right = nodeLeft;
+
+        nodeLeft->right = node;
+        node->parent = nodeLeft;
+
     }
 
-    Node *getRightAunt(Node *root_node) {
-        return root_node->parent->right;
-    }
 
-    void evaluateRoot(Node *node) {
-        if (!hasParent(node)) {
-            root = node;
-        }
-    }
+    void fixInsertViolation(Node *&node) {
 
-    void evaluateTree(Node *node) {
-        Node *temp = nullptr;
+        Node *parentNode = NULL;
+        Node *grandParentNode = NULL;
 
-        if (!root->isRed) {
-            temp = node->right;
-            if (node->isRed && temp->isRed && hasParent(node)) {
-                if (isLeftAuntRed(node)) {
-                    cout<<"LEFT AUNT IS RED"<<endl;
+        //if node is root then color node to black
+        //if node is red then it's parent can not be red
+        while ((node != root) && (node->getColor() != BLACK) && (node->parent->getColor() == RED)) {
 
+            parentNode = node->parent;
+            grandParentNode = getGrandParent(node);
+
+
+            //  NODE IS PARENT LEFT CHILD
+            if (parentNode == grandParentNode->left) {
+
+                Node *uncleNode = grandParentNode->right;
+
+                /* Case: 1
+                   The aunt of node is also red  FLIP COLORS
+                   */
+                if (uncleNode != NULL && uncleNode->getColor() == RED) {
+                    grandParentNode->setColor(RED);
+                    parentNode->setColor(BLACK);
+                    uncleNode->setColor(BLACK);
+                    node = grandParentNode;
                 } else {
-                    cout<<"LEFT AUNT IS BLACK"<<endl;
+                    /* Case : 2
+                       node is right child of its parent ROTATE LEFT
+                       */
+                    if (node == parentNode->right) {
+                        rotateLeft(parentNode);
 
+                        node = parentNode;
+                        parentNode = node->parent;
+                    }
+
+                    /* Case : 3
+                       node is left child of its parent ROTATE RIGHT
+                      */
+                    rotateRight(grandParentNode);
+                    swapNodeColor(parentNode, grandParentNode);
+                    node = parentNode;
                 }
             }
 
-            temp = node->left;
+                // NODE IS PARENT RIGHT CHILD
 
-            if (node->isRed && temp->isRed && hasParent(node)) {
-                if (node->isRed && temp->isRed && hasParent(node)) {
-                    if (isRightAuntRed(node)) {
-                        cout<<"RIGHT AUNT IS RED"<<endl;
+            else {
+                Node *uncleNode = grandParentNode->left;
 
+                /*  Case : 1
+                    The aunt of node is also red FLIP COLOR */
+                if ((uncleNode != NULL) && (uncleNode->getColor() == RED)) {
+                    grandParentNode->setColor(RED);
+                    parentNode->setColor(BLACK);
+                    uncleNode->setColor(BLACK);
+                    node = grandParentNode;
+                } else {
+                    /* Case : 2
+                       node is left child of its parent ROTATE RIGHT
+                        */
+                    if (node == parentNode->left) {
+                        rotateRight(parentNode);
+                        node = parentNode;
+                        parentNode = node->parent;
+                    }
+
+                    /* Case : 3
+                       node is right child of its parent ROTATE LEFT
+                        */
+                    rotateLeft(grandParentNode);
+                    swapNodeColor(parentNode, grandParentNode);
+                    node = parentNode;
+                }
+            }
+        }
+
+        root->setColor(BLACK);
+    }
+
+    void addNode(int data) {
+        Node *newNode = new Node(data);
+
+        this->root = AddToTree(this->root, newNode);
+
+        fixInsertViolation(newNode);
+
+    }
+
+    Node *getDeletingNodePosition(Node *root, int value) {
+        if (root == NULL)
+            return root;
+        //if value is in right subtree
+        if (value > root->getData())
+            return getDeletingNodePosition(root->right, value);
+
+            //if value is in left subtree
+        else if (value < root->getData())
+            return getDeletingNodePosition(root->left, value);
+
+        //if value is in root
+        if (root->left == NULL or root->right == NULL)
+            return root;
+
+        Node *temp = getMaxValueNode(root->left);
+        root->setData(temp->getData());
+        return getDeletingNodePosition(root->left, temp->getData());
+    }
+
+    void fixViolation(Node *node) {
+        if (node == NULL)
+            return;
+
+        if (node == root) {
+            root = NULL;
+            return;
+        }
+
+        //if one of node or its child is red
+        if (node->getColor() == RED || node->left->getColor() == RED || node->right->getColor() == RED) {
+            Node *child = node->left != NULL ? node->left : node->right;
+
+            //if node is left child
+            if (node == node->parent->left) {
+                node->parent->left = child;
+                if (child != NULL) {
+                    child->parent = node->parent;
+                    child->setColor(BLACK);
+                }
+                delete (node);
+            }
+                //if node is right child
+            else {
+                node->parent->right = child;
+                if (child != NULL) {
+                    child->parent = node->parent;
+                    child->setColor(BLACK);
+                }
+                delete (node);
+            }
+        }
+            //if both node and it's child is black
+        else {
+            Node *child = NULL;
+            Node *parent = NULL;
+            Node *ptr = node;
+            ptr->setColor(BOTH_BLACK);
+            while (ptr != root && ptr->getColor() == BOTH_BLACK) {
+                parent = ptr->parent;
+
+                if (ptr == parent->left) {
+                    child = parent->right;
+
+                    if (!child->right) {
+                        child->right = new Node(-1, BLACK);
+                        child->right->parent = child;
+                    }
+                    if (!child->left) {
+                        child->left = new Node(-1, BLACK);
+                        child->left->parent = child;
+                    }
+
+                    //If child is red
+                    //Make child black
+                    //Make parent red
+                    //Rotate parent left
+                    if (child->getColor() == RED) {
+                        child->setColor(BLACK);
+                        parent->setColor(RED);
+                        rotateLeft(parent);
+                    }
+
+                    else {
+                        //If child is black
+                        //Make child red
+                        //If parent is black make parent double black
+                        //If parent is red make parent black
+                        if (child->left->getColor() == BLACK && child->right->getColor() == BLACK) {
+                            child->setColor(RED);
+                            if (parent->getColor() == RED)
+                                parent->setColor(BLACK);
+                            else
+                                parent->setColor(BOTH_BLACK);
+                            ptr = parent;
+                        } else {
+                            if (child->right->getColor() == BLACK) {
+                                child->left->setColor(BLACK);
+                                child->setColor(RED);
+                                rotateRight(child);
+                                child = parent->right;
+                            }
+                            child->setColor(parent->getColor());
+                            parent->setColor(BLACK);
+                            child->right->setColor(BLACK);
+                            rotateLeft(parent);
+                            break;
+                        }
+                    }
+                } else {
+                    child = parent->left;
+                    if (!child->right) {
+                        child->right = new Node(-1, BLACK);
+                        child->right->parent = child;
+                    }
+                    if (!child->left) {
+                        child->left = new Node(-1, BLACK);
+                        child->left->parent = child;
+                    }
+                    if (child->getColor() == RED) {
+                        child->setColor(BLACK);
+                        parent->setColor(RED);
+                        rotateRight(parent);
                     } else {
-                        cout<<"RIGHT AUNT IS BLACK"<<endl;
-
+                        if (child->left->getColor() == BLACK && child->right->getColor() == BLACK) {
+                            child->setColor(RED);
+                            if (parent->getColor() == RED)
+                                parent->setColor(BLACK);
+                            else
+                                parent->setColor(BOTH_BLACK);
+                            ptr = parent;
+                        } else {
+                            if (child->left->getColor() == BLACK) {
+                                child->right->setColor(BLACK);
+                                child->setColor(RED);
+                                rotateLeft(child);
+                                child = parent->left;
+                            }
+                            child->setColor(parent->getColor());
+                            parent->setColor(BLACK);
+                            child->left->setColor(BLACK);
+                            rotateRight(parent);
+                            break;
+                        }
                     }
                 }
             }
-
-
-        } else if (root->isRed) {
-            evaluateRoot(root);
-            evaluateTree(node);
-        } else {
-            cout << "Tree is Valid " << endl;
-        }
-    }
-
-    bool hasParent(Node *node) {
-        if (node->parent != NULL) return true;
-        else return false;
-    }
-
-    void colorFlip(Node *root_node) {
-        root_node->isRed = false;
-        if (root_node->parent->left == root) {
-            getRightAunt(root_node)->isRed = false;
-        } else if (root_node->parent->right == root) {
-            getLeftAunt(root_node)->isRed = false;
+            if (node == node->parent->left)
+                node->parent->left = NULL;
+            else
+                node->parent->right = NULL;
+            delete (node);
+            root->setColor(BLACK);
         }
 
     }
 
-    void colorFlipRoot() {
-        if (root->isRed)
-            root->isRed = false;
+    void deleteNode(int data) {
+        Node *nodeToDelete = getDeletingNodePosition(this->root, data);
+        if (!nodeToDelete->right) {
+            nodeToDelete->right = new Node(-1, BLACK);
+            nodeToDelete->right->parent = nodeToDelete;
+        }
+        if (!nodeToDelete->left) {
+            nodeToDelete->left = new Node(-1, BLACK);
+            nodeToDelete->left->parent = nodeToDelete;
+        }
+        fixViolation(nodeToDelete);
     }
 
-    bool isLeftAuntRed(Node *root_node) {
-        if (root_node->parent->right == root_node) {
-            if (getLeftAunt(root_node) != NULL) {
-                // Left Aunt is RED OR BLACK
-                return getLeftAunt(root_node)->isRed;
+    void preorderTraversal(Node *root) {
+        if (root != NULL and root->getData() != -1) {
+            cout << root->getData() << " " << (root->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
+            if (root->parent != NULL) {
+                cout << "Parent [" << root->parent->getData() << "] "
+                     << (root->parent->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
             } else {
-                return false;
+                cout << "Parent [NULL] [BLACK]" << endl;
+
             }
-
-        }
-    }
-
-    bool isRightAuntRed(Node *root_node) {
-        if (root_node->parent->left == root_node) {
-            if (getRightAunt(root_node) != NULL) {
-                //Right Aunt is RED OR BLACK
-                return getLeftAunt(root_node)->isRed;
+            if (root->left != NULL) {
+                cout << "Left Child [" << root->left->getData() << "] "
+                     << (root->left->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
             } else {
-                //Right Aunt is BLACK
-                return false;
+                cout << "Left Child [NULL] [BLACK]" << endl;
             }
-        }
-
-    }
-
-    void fixViolation(Node *root_node, Node *ptr) {
-        //RULES
-        // NULL = BLACK
-
-        // 1. BLACK AUNT ROTATE
-
-        // right child left subtree : RL rotation
-        // right child right subtree : L rotation
-        // left child right subtree : LR rotation
-        // left child left subtree : R rotation
-
-        // After rotation
-        //      BLACK
-        //      /   \
-        //     RED  RED
-
-        // 2. RED AUNT COLOR FLIP
-
-        // After color flip
-        //          RED
-        //         /   \
-        //      BLACK  BLACK
-
-        //ONLY ONE NODE IN THE TREE
-
-
-    }
-
-    int rootVisitCounter = 0;
-    Node* preOrderTraversal(Node* node){
-      //  NLR
-
-
-      Node* temp = NULL;
-
-
-
-          string result = (node->isRed) ? "RED" : "BLACK";
-          cout<<node->data<<" ["<<result<<"]"<<endl;
-
-
-      if(node->left != NULL){
-          preOrderTraversal(node->left);
-      }
-      else if (node->right != NULL){
-        preOrderTraversal(node->right);
-      }
-
-        if (node->left == NULL && node->right == NULL) {
-
-            do {
-
-                temp = node; //setting actual node value
-                node = node->parent; //setting parent value to be current node
-
-                if(node == root && node->right == NULL) {
-                    node = NULL;
-                }
-
-            } while ( node != NULL && (node->right == NULL || node->right == temp ) );
-
-            if(node != NULL) {
-                preOrderTraversal(node->right);
+            if (root->right != NULL) {
+                cout << "Right Child [" << root->right->getData() << "]"
+                     << (root->right->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
+            } else {
+                cout << "Right Child [NULL] [BLACK]" << endl;
             }
-
-
-
+            cout << endl;
+            preorderTraversal(root->left);
+            preorderTraversal(root->right);
         }
-
     }
 
-    bool find(Node *root, int data) {
-        if (root == NULL) return false;
-        else if (root->data == data) return true;
-        else if (data <= root->data) return find(root->left, data);
-        else return find(root->right, data);
+    bool find(Node *node, int data) {
+        if (node == NULL) return false;
+        else if (node->getData() == data) return true;
+        else if (data <= node->getData()) return find(root->left, data);
+        else return find(node->right, data);
     }
 
-    void show() {
-       preOrderTraversal(root);
-    }
+
+
+//    void show() {
+//       preorderTraversal(root);
+//    }
 
 };
 

@@ -444,7 +444,7 @@ public:
                         //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
-                        Heap *heap = new Heap();
+                        Heap *heap = new Heap(file_name_and_extension);
                         int operation = operations_interface_tree("Heap");
 
                         do {
@@ -529,12 +529,11 @@ public:
                     case 4: {
                         clearScreen();
                         int operation = operations_interface("Red-Black Tree");
-                        RedBlackTree *rbt = new RedBlackTree();
+                        RedBlackTree *rbt = new RedBlackTree(file_name_and_extension);
                         do {
                             switch (operation) {
                                 case 1: {
-                                    rbt->add();
-                                    rbt->show();
+                                        rbt->preorderTraversal(rbt->getRoot());
                                     break;
                                 }
                                 case 2: {
