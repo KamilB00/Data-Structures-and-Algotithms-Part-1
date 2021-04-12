@@ -13,6 +13,7 @@
 using namespace std;
 
 
+
 class Node {
     int color;
     int data;
@@ -67,7 +68,7 @@ Node *AddToTree(Node *root, Node *node) {
 }
 
 class RedBlackTree {
-
+    Timer *timer = timer->getInstance();
     Node *root;
 
 public:
@@ -102,11 +103,6 @@ public:
 
     }
 
-    void fillTheTree(int data){
-        Node *newNode = new Node(data);
-        this->root = AddToTree(this->root, newNode);
-        fixInsertViolation(newNode);
-    }
 
     int getBlackHeight(Node *root) {
         if (root == NULL || root->getData() == -1)
@@ -259,12 +255,17 @@ public:
     }
 
     void addNode(int data) {
+        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
         Node *newNode = new Node(data);
 
         this->root = AddToTree(this->root, newNode);
 
         fixInsertViolation(newNode);
 
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_RED_BLACK_TREE");
+        timer->showAvgTime("ADD_TO_RED_BLACK_TREE");
     }
 
     Node *getDeletingNodePosition(Node *root, int value) {
@@ -426,17 +427,21 @@ public:
 
     void deleteNode(int data) {
         Node *nodeToDelete = getDeletingNodePosition(this->root, data);
-        if (!nodeToDelete->right) {
-            nodeToDelete->right = new Node(-1, BLACK);
-            nodeToDelete->right->parent = nodeToDelete;
+        if (nodeToDelete == nullptr) {
+            cout << "There is are not any " << data << " in the tree !" << endl;
         }
-        if (!nodeToDelete->left) {
-            nodeToDelete->left = new Node(-1, BLACK);
-            nodeToDelete->left->parent = nodeToDelete;
+        {
+            if (!nodeToDelete->right) {
+                nodeToDelete->right = new Node(-1, BLACK);
+                nodeToDelete->right->parent = nodeToDelete;
+            }
+            if (!nodeToDelete->left) {
+                nodeToDelete->left = new Node(-1, BLACK);
+                nodeToDelete->left->parent = nodeToDelete;
+            }
+            fixViolation(nodeToDelete);
         }
-        fixViolation(nodeToDelete);
     }
-
     void preorderTraversal(Node *root) {
         if (root != NULL and root->getData() != -1) {
             cout << root->getData() << " " << (root->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
@@ -466,17 +471,26 @@ public:
     }
 
     bool find(Node *node, int data) {
+
+
         if (node == NULL) return false;
-        else if (node->getData() == data) return true;
-        else if (data <= node->getData()) return find(root->left, data);
-        else return find(node->right, data);
+        else if (node->getData() == data) {
+            return true;
+        }
+
+        else if (data <= node->getData()) {
+
+            return find(root->left, data);
+        }
+
+        else {
+            return find(node->right, data);
+        }
+
+
+
     }
 
-
-
-//    void show() {
-//       preorderTraversal(root);
-//    }
 
 };
 
