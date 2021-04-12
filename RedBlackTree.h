@@ -439,10 +439,17 @@ public:
     }
 
     void deleteNode(int data) {
+        int times = 0;
+        cout<<"How many times do you want to add this value: "<<endl;
+        cin>>times;
+        for(int i = 0;i<times;i++) {
+
+
         Node *nodeToDelete = getDeletingNodePosition(this->root, data);
         if (nodeToDelete == nullptr) {
-            cout <<"Value "<< data << "not found in the tree !" << endl;
+            cout <<"Value "<< data << " not found in the tree !" << endl;
         }else{
+            auto start = std::chrono::steady_clock::now(); //START [RBT REMOVE BY VALUE]
             if (!nodeToDelete->right) {
                 nodeToDelete->right = new Node(-1, BLACK);
                 nodeToDelete->right->parent = nodeToDelete;
@@ -452,10 +459,19 @@ public:
                 nodeToDelete->left->parent = nodeToDelete;
             }
             fixViolation(nodeToDelete);
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                            end - start).count());
+            timer->calculate_average_elapsed_time(elapsed_time,
+                                                  "REMOVE_FROM_RED_BLACK_TREE");
+            timer->showAvgTime("REMOVE_FROM_RED_BLACK_TREE");
+        }
+
         }
     }
     void preorderTraversal(Node *root) {
-        if (root != NULL and root->getData() != -1) {
+        if (root != NULL && root->getData() != -1) {
             cout << root->getData() << " " << (root->getColor() == 1 ? "[RED]" : "[BLACK] ") << endl;
             if (root->parent != NULL) {
                 cout << "Parent [" << root->parent->getData() << "] "

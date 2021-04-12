@@ -569,23 +569,12 @@ public:
                                 case 2: {
                                     //Remove value from R-B-tree
                                     int data = 0;
+                                    int tmp = 0;
                                     cout << "Type a value you want to delete: ";
                                     cin >> data;
 
-                                    int times = 0;
-                                    cout<<"How many times do you want to add this value: "<<endl;
-                                    cin>>times;
-                                    for(int i = 0;i<times;i++) {
-                                        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
                                         rbt->deleteNode(data);
-                                        auto end = std::chrono::steady_clock::now();
-                                        double elapsed_time = double(
-                                                std::chrono::duration_cast<std::chrono::nanoseconds>(
-                                                        end - start).count());
-                                        timer->calculate_average_elapsed_time(elapsed_time,
-                                                                              "REMOVE_FROM_RED_BLACK_TREE");
-                                        timer->showAvgTime("REMOVE_FROM_RED_BLACK_TREE");
-                                    }
+
                                     break;
                                 }
                                 case 3: {
