@@ -126,10 +126,10 @@ public:
         cout << "   lower bounds and upper bounds of randomly           " << endl;
         cout << "   generated numbers                                   " << endl;
         cout << "-----------------------------------------------------  " << endl;
-        cout << "   * Read Mode *  - program creates a file and allows  " << endl;
-        cout << "   you to fill it with your own data                   " << endl;
+        cout << "   * Read Mode *  - program can read your own .txt file" << endl;
+        cout << "   organized with proper pattern                       " << endl;
         cout << endl;
-        cout << "   [File Pattern]                                      " << endl;
+        cout << "                   *File Pattern*                      " << endl;
         cout << "   [1-st line] number of elements                      " << endl;
         cout << "   [2-n to n-th line] elements of the array            " << endl;
         cout << "   separated with new line                             " << endl;
@@ -181,7 +181,23 @@ public:
         return select_option();
     }
 
-    int operations_interface(string name) {
+    int operations_interface_RB_TREE(string name) {
+
+        cout << "     -------------------------------------------   " << endl;
+        cout << "             Operations on " << name << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << "              1. Add element                       " << endl;
+        cout << "              2. Remove element                    " << endl;
+        cout << "              3. Find element by value             " << endl;
+        cout << "              4. Show Red Black Tree               " << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << endl;
+        cout << " Press 0 to Return                            " << endl;
+
+        return select_option();
+    }
+
+    int operations_interface_array(string name) {
 
         cout << "     -------------------------------------------   " << endl;
         cout << "             Operations on " << name << endl;
@@ -198,6 +214,24 @@ public:
 
         return select_option();
     }
+
+    int operations_interface_list(string name) {
+
+        cout << "     -------------------------------------------   " << endl;
+        cout << "             Operations on " << name << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << "              1. Add element                       " << endl;
+        cout << "              2. Add element by index              " << endl;
+        cout << "              3. Remove element                    " << endl;
+        cout << "              4. Remove element by index           " << endl;
+        cout << "              5. Find element by value             " << endl;
+        cout << "     -------------------------------------------   " << endl;
+        cout << endl;
+        cout << " Press 0 to Return                            " << endl;
+
+        return select_option();
+    }
+
 
     void data_structures_interface() {
 
@@ -229,7 +263,7 @@ public:
                         Array *array = new Array(file_name_and_extension);
                         char add_more = ' ';
 
-                        int operation = operations_interface("Array");
+                        int operation = operations_interface_array("Array");
                         do {
                             int visit_count = 0;
                             switch (operation) {
@@ -298,7 +332,7 @@ public:
                                     cout << "No option found try again ! [Press 0 to Return]" << endl;
                             }
 
-                        } while (operation = operations_interface("Array"));
+                        } while (operation = operations_interface_array("Array"));
                         data_structures_interface();
                         break;
                     }
@@ -310,7 +344,7 @@ public:
 
                         clearScreen();
                         ListTwoDirection *list = new ListTwoDirection(file_name_and_extension);
-                        int operation = operations_interface("List");
+                        int operation = operations_interface_list("List");
 
                         do {
                             int visit_count = 0;
@@ -367,11 +401,11 @@ public:
                                     if (list->get_size() > 0) {
                                         cout << "How many times do you want to delete :" << endl;
                                         cin >> times;
-                                        if(times <= list->get_size()) {
+                                        if (times <= list->get_size()) {
                                             list->delete_manager(index, times);
-                                        }
-                                        else{
-                                            cout<<"There are only "<<list->get_size()<<" elements in the list"<<endl;
+                                        } else {
+                                            cout << "There are only " << list->get_size() << " elements in the list"
+                                                 << endl;
                                         }
 
                                     } else {
@@ -395,11 +429,11 @@ public:
                                         cout << "How many times do you want to delete :" << endl;
                                         cin >> times;
 
-                                        if(times <= list->get_size()) {
+                                        if (times <= list->get_size()) {
                                             list->delete_manager(index, times);
-                                        }
-                                        else{
-                                            cout<<"There are only "<<list->get_size()<<" elements in the list"<<endl;
+                                        } else {
+                                            cout << "There are only " << list->get_size() << " elements in the list"
+                                                 << endl;
                                         }
 
                                     } else {
@@ -416,26 +450,9 @@ public:
                                     }
                                     break;
                                 }
-                                    //#6 Find element by index [LIST]
-                                case 6: {
-                                    if (list->get_size() > 0) {
-                                        int index = 0;
-                                        do {
-                                            cout << "Value index: ";
-                                            cin >> index;
-                                            if (index < 0 || index > list->get_size()) {
-                                                cout << "Incorrect index ! Try again" << endl;
-                                            }
-                                        } while (index > list->get_size() || index < 0);
 
-                                        list->find(index);
-                                    } else {
-                                        cout << "List is empty nothing to find !" << endl;
-                                    }
-                                    break;
-                                }
                             }
-                        } while (operation = operations_interface("List"));
+                        } while (operation = operations_interface_list("List"));
                         data_structures_interface();
                         break;
                     }
@@ -444,12 +461,10 @@ public:
                         //HEAP DATA STRUCTURE
                     case 3: {
                         clearScreen();
-                        Heap *heap = new Heap();
+                        Heap *heap = new Heap(file_name_and_extension);
                         int operation = operations_interface_tree("Heap");
 
                         do {
-                            int visit_count = 0;
-                            char add_more = ' ';
                             switch (operation) {
                                 //Heap OPTIONS
 
@@ -528,36 +543,79 @@ public:
                         //Red-Black Tree DATA STRUCTURE
                     case 4: {
                         clearScreen();
-                        int operation = operations_interface("Red-Black Tree");
-                        RedBlackTree *rbt = new RedBlackTree();
+                        RedBlackTree *rbt = new RedBlackTree(file_name_and_extension);
+
+                        int operation = operations_interface_RB_TREE("Red-Black Tree");
                         do {
                             switch (operation) {
+
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete rbt;
+                                    rbt = nullptr;
+                                }
+
                                 case 1: {
-                                    rbt->add();
-                                    rbt->show();
+                                    //Add value to R-B-tree
+                                    int data = 0;
+                                    cout << "Type a value you want to add: ";
+                                    cin >> data;
+
+                                    rbt->addNode(data);
+
                                     break;
                                 }
                                 case 2: {
                                     //Remove value from R-B-tree
+                                    int data = 0;
+                                    int tmp = 0;
+                                    cout << "Type a value you want to delete: ";
+                                    cin >> data;
+
+                                        rbt->deleteNode(data);
+
                                     break;
                                 }
                                 case 3: {
-                                    //Find value in R-B-tree
+                                    //Find in R-B-tree by value
+                                    int data = 0;
+                                    cout << "Type a value you are looking for: ";
+                                    cin >> data;
+
+                                    int times = 0;
+                                    cout << "How many times should time be measured: " << endl;
+                                    cin >> times;
+                                    for (int i = 0; i < times; i++) {
+                                        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+
+                                        if (rbt->find(rbt->getRoot(), data)) {
+                                            cout << "Value " << data << " is in the RED BLACK TREE" << endl;
+                                        } else {
+                                            cout << "Value not found" << endl;
+                                        }
+
+                                        auto end = std::chrono::steady_clock::now();
+                                        double elapsed_time = double(
+                                                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                                                        end - start).count());
+                                        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_RED_BLACK_TREE");
+                                        timer->showAvgTime("FIND_IN_RED_BLACK_TREE");
+                                    }
                                     break;
+                                }
+                                case 4: {
+                                    //Show R-B-tree
+                                    rbt->preorderTraversal(rbt->getRoot());
                                 }
                             }
 
-                        } while (operation = operations_interface("Red-Black Tree"));
+                        } while (operation = operations_interface_RB_TREE("Red-Black Tree"));
+                        data_structures_interface();
 
                         break;
                     }
-//*******************************************************************************************************************
-                        //AVL Tree DATA STRUCTURE
-                    case 5: {
-                        clearScreen();
-                        operations_interface("AVL Tree");
-                        break;
-                    }
+
 //*******************************************************************************************************************
                 }
             } else {
@@ -569,7 +627,6 @@ public:
 
     void clearScreen() {
         cout << "\033[2J\033[1;1H";
-//      system("clear");
     }
 };
 

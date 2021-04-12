@@ -17,25 +17,27 @@ class Heap {
     Timer *timer = timer->getInstance();
 
 public:
-    Heap() {
+    Heap(const string &file_name) {
         string amount;
         string element;
         fstream file;
-        file.open("data.txt", ios::in);
+
+        file.open(file_name, ios::in);
 
         if (!file.good()) {
-            cout << "File data.txt does not exist !" << endl;
-        }
-        getline(file, amount);
+            cout << "File "<<file_name<<".txt does not exist !" << endl;
+        }else {
 
-        items = new int[(atoi(amount.c_str()))];
+            getline(file, amount);
+            items = new int[(atoi(amount.c_str()))];
 
-        size = atoi(amount.c_str());
-        for (int i = 0; i < size; i++) {
-            getline(file, element);
-            items[i] = atoi(element.c_str());
+            size = atoi(amount.c_str());
+            for (int i = 0; i < size; i++) {
+                getline(file, element);
+                items[i] = atoi(element.c_str());
+            }
+            create_max_heap(size);
         }
-        create_max_heap(size);
     }
 
 public:

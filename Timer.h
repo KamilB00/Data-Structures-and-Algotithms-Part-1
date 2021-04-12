@@ -39,7 +39,6 @@ public:
     double avg_time_removeFromLinkedList_Beginning = 0;
     double avg_time_removeFromLinkedList_Middle = 0;
     double avg_time_removeFromLinkedList_End = 0;
-    double avg_time_findInLinkedList_by_index = 0;
     double avg_time_findInLinkedList_by_value = 0;
 
     double avg_time_addToHeap = 0;
@@ -97,8 +96,6 @@ public:
     double elapsed_time_total_list_7 = 0;
     double visit_counter_list_7 = 0;
 
-    double elapsed_time_total_list_8 = 0;
-    double visit_counter_list_8 = 0;
 
     double elapsed_time_total_heap_1 = 0;
     double visit_counter_heap_1 = 0;
@@ -161,8 +158,6 @@ public:
             cout << "Average Time [" << operation << "] : " << avg_time_removeFromLinkedList_End << " ns" << endl;
         } else if (operation == "FIND_IN_LINKEDLIST_BY_VALUE") {
             cout << "Average Time [" << operation << "] : " << avg_time_findInLinkedList_by_value << " ns" << endl;
-        } else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") {
-            cout << "Average Time [" << operation << "] : " << avg_time_findInLinkedList_by_index << " ns" << endl;
         }
             //HEAP
         else if (operation == "ADD_TO_HEAP") { //1
@@ -261,10 +256,6 @@ public:
             visit_counter_list_7++;
             elapsed_time_total_list_7 += elapsed_time;
             avg_time_findInLinkedList_by_value = (elapsed_time_total_list_7 / visit_counter_list_7);
-        } else if (operation == "FIND_IN_LINKEDLIST_BY_INDEX") { //7
-            visit_counter_list_8++;
-            elapsed_time_total_list_8 += elapsed_time;
-            avg_time_findInLinkedList_by_index = (elapsed_time_total_list_8 / visit_counter_list_8);
         }
             //HEAP
         else if (operation == "ADD_TO_HEAP") { //1
@@ -323,7 +314,6 @@ public:
         avg_time_removeFromLinkedList_Beginning = 0;
         avg_time_removeFromLinkedList_Middle = 0;
         avg_time_removeFromLinkedList_End = 0;
-        avg_time_findInLinkedList_by_index = 0;
         avg_time_findInLinkedList_by_value = 0;
 
         avg_time_addToHeap = 0;
@@ -356,7 +346,7 @@ public:
         cout << "REMOVE_FROM_LINKEDLIST_MIDDLE: " << avg_time_removeFromLinkedList_Middle << " ns" << endl;
         cout << "REMOVE_FROM_LINKEDLIST_END: " << avg_time_removeFromLinkedList_End << " ns" << endl;
         cout << "FIND_IN_LINKEDLIST_BY_VALUE: " << avg_time_findInLinkedList_by_value << " ns" << endl;
-        cout << "FIND_IN_LINKEDLIST_BY_INDEX: " << avg_time_findInLinkedList_by_index << " ns" << endl;
+
         cout << endl;
         cout << "ADD_TO_HEAP: " << avg_time_addToHeap << " ns" << endl;
         cout << "REMOVE_FROM_HEAP: " << avg_time_removeFromHeap << " ns" << endl;

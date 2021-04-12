@@ -241,7 +241,7 @@ public:
 
         if (times > 0) {
             if (index == 0) {
-                if (times <= size ) {
+                if (times <= size) {
                     for (int i = 0; i < times; i++) {
                         remove(index);
                     }
@@ -300,9 +300,8 @@ public:
             } else {
                 cout << "List is empty !" << endl;
             }
-        }
-        else {
-            cout<<"Wrong value!"<<endl;
+        } else {
+            cout << "Wrong value!" << endl;
         }
     }
 
@@ -319,7 +318,6 @@ public:
 public:
 
     void find() { // find by value
-        int times = 0;
 
         int value = 0;
         Element *temp = first;
@@ -352,40 +350,6 @@ public:
 
         delete temp;
     }
-
-public :
-
-    void find(int index) {
-        int times = 0;
-        int visit_count = 0;
-        Element *temp = first;
-
-        if (visit_count > 0) {
-            do {
-                cout << "Value index: ";
-                cin >> index;
-                if (index < 0 || index > size) {
-                    cout << "Incorrect index ! Try again" << endl;
-                }
-            } while (index > size || index < 0);
-        }
-
-        temp = first;
-        auto start = std::chrono::steady_clock::now(); //START [LIST VALUE BY INDEX]
-
-        for (int i = 0; i < index; i++) {
-            temp = temp->next;
-        }
-        cout << "List value at index " << index << " = " << temp->data << endl;
-
-        auto end = std::chrono::steady_clock::now();
-        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_INDEX");
-        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_INDEX");
-
-        delete temp;
-    }
-
 };
 
 
