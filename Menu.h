@@ -363,11 +363,17 @@ public:
                                 case 3: {
 
                                     int index = list->get_size() - 1;
-
+                                    int times = 0;
                                     if (list->get_size() > 0) {
+                                        cout << "How many times do you want to delete :" << endl;
+                                        cin >> times;
+                                        if(times <= list->get_size()) {
+                                            list->delete_manager(index, times);
+                                        }
+                                        else{
+                                            cout<<"There are only "<<list->get_size()<<" elements in the list"<<endl;
+                                        }
 
-                                        list->remove(index);
-                                        cout << "list.remove(" << index << ") Removed Successfully !" << endl;
                                     } else {
                                         cout << "List is empty !" << endl;
                                     }
@@ -376,6 +382,7 @@ public:
                                     //#4 Remove element by index [LIST]
                                 case 4: {
                                     int index = 0;
+                                    int times = 0;
                                     if (list->get_size() > 0) {
                                         do {
                                             cout << "Index: ";
@@ -385,9 +392,16 @@ public:
                                                 cout << "Incorrect index ! Try again" << endl;
                                             }
                                         } while (index > list->get_size() || index < 0);
+                                        cout << "How many times do you want to delete :" << endl;
+                                        cin >> times;
 
-                                        list->remove(index);
-                                        cout << "list.remove(" << index << ") Removed successfully !" << endl;
+                                        if(times <= list->get_size()) {
+                                            list->delete_manager(index, times);
+                                        }
+                                        else{
+                                            cout<<"There are only "<<list->get_size()<<" elements in the list"<<endl;
+                                        }
+
                                     } else {
                                         cout << "List is empty !" << endl;
                                     }

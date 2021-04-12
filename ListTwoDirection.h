@@ -59,7 +59,7 @@ public:
 
     }
 
-    ListTwoDirection(const string& file_name) {
+    ListTwoDirection(const string &file_name) {
         string amount;
         string element;
         fstream file;
@@ -163,12 +163,12 @@ public:
         size++;
     }
 
-    void fillTheList(int d){
+    void fillTheList(int d) {
         Element *n = new Element(d);
         if (size == 0) { // no element in the List
             last = first = n;
             size++;
-        }else {
+        } else {
             last->next = n;
             n->prev = last;
             last = n;
@@ -178,79 +178,136 @@ public:
 
     void remove(unsigned long long int index) {
 
-        int times = 0;
-
         if (index > size || index < 0) {
             cout << "Incorrect index !" << endl;
         } else if (index > 0 && index < size - 1) { //usuwanie ze środka
 
-
             Element *temp = getPosition(index);
-            cout << "How many times should time be measured : ";
-            cin >> times;
-            for (int i = 0; i < times; i++) {
-                auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM MIDDLE]
-                temp->prev->next = temp->next;
-                temp->next->prev = temp->prev;
 
 
-                size--;
+            auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM MIDDLE]
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
 
-                auto end = std::chrono::steady_clock::now();
-                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            size--;
 
-                timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_MIDDLE");
-                timer->showAvgTime("REMOVE_FROM_LINKEDLIST_MIDDLE");
-            }
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+
+            timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_MIDDLE");
+            timer->showAvgTime("REMOVE_FROM_LINKEDLIST_MIDDLE");
             delete temp;
         } else if (index == 0) { // deleting from index 0
 
-
-            Element *temp = first;
             auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE FROM INDEX 0]
-            cout << "How many times should time be measured : ";
-            cin >> times;
-            for (int i = 0; i < times; i++) {
-                if (size > 1) {
-                    first = temp->next;
-                    first->prev = nullptr;
-                    size--;
-                } else {
-                    first = nullptr;
-                    last = nullptr;
-                    size--;
-                }
-                auto end = std::chrono::steady_clock::now();
-                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_BEGINNING");
-                timer->showAvgTime("REMOVE_FROM_LINKEDLIST_BEGINNING");
+            Element *temp = first;
+            if (size > 1) {
+                first = temp->next;
+                first->prev = nullptr;
+                size--;
+            } else {
+                first = nullptr;
+                last = nullptr;
+                size--;
             }
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_BEGINNING");
+            timer->showAvgTime("REMOVE_FROM_LINKEDLIST_BEGINNING");
+
             delete temp;
 
         } else if (index == size - 1) { //deleting from last index
 
             Element *temp = last;
-            cout << "How many times should time be measured : ";
-            cin >> times;
+            auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE LAST]
+            last = last->prev;
+            last->next = nullptr;
+            size--;
 
-            for (int i = 0; i < times; i++) {
-                auto start = std::chrono::steady_clock::now(); //START [LIST REMOVE VALUE LAST]
-                last = last->prev;
-                last->next = nullptr;
-                size--;
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_END");
+            timer->showAvgTime("REMOVE_FROM_LINKEDLIST_END");
 
-                auto end = std::chrono::steady_clock::now();
-                double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_LINKEDLIST_END");
-                timer->showAvgTime("REMOVE_FROM_LINKEDLIST_END");
-            }
             delete temp;
         }
         cout << "Element on the position with index: " << index << " has been deleted" << endl;
-
     }
 
 public:
+    void delete_manager(int index, int times) {
+        int values_at_right = 0;
+
+        if (times > 0) {
+            if (index == 0) {
+                if (times <= size ) {
+                    for (int i = 0; i < times; i++) {
+                        remove(index);
+                    }
+                } else {
+                    for (int i = 0; i < size; i++) {
+                        remove(index);
+
+                    }
+
+                }
+
+            } else if (index > 0 && index < size - 1) {
+
+                values_at_right = size - (index + 1);
+
+                if (values_at_right > times) {
+                    for (int i = 0; i < times; i++) {
+                        remove(index);
+
+                    }
+                } else if (values_at_right == times) {
+                    for (int i = 0; i < size - (index + 1); i++) {
+                        remove(index);
+
+                    }
+
+                } else if (values_at_right < times) {
+                    for (int i = 0; i < values_at_right; i++) {
+                        remove(index);
+
+                    }
+                    int times_left = times - values_at_right;
+                    if (times_left < size) {
+                        for (int i = 0; i < times_left; i++) {
+                            remove(size - 1);
+
+                        }
+                    } else {
+                        for (int i = 0; i < index + 1; i++) {
+                            remove(size - 1);
+
+                        }
+                    }
+                }
+            } else if (index == size - 1) {
+                if (times <= size) {
+                    for (int i = 0; i < times; i++) {
+                        remove(size - 1);
+
+                    }
+                } else {
+                    for (int i = 0; i < size; i++) {
+                        remove(size - 1);
+                    }
+                }
+            } else {
+                cout << "List is empty !" << endl;
+            }
+        }
+        else {
+            cout<<"Wrong value!"<<endl;
+        }
+    }
+
+public:
+
     void removeAll() {
         int i = size - 1;
         while (i >= 0) {
@@ -260,6 +317,7 @@ public:
     }
 
 public:
+
     void find() { // find by value
         int times = 0;
 
@@ -268,34 +326,35 @@ public:
         cout << "Value you are looking for: ";
         cin >> value;
         int found = 0;
-        cout << "How many times should time be measured : ";
-        cin >> times;
-        for (int i = 0; i < times; i++) {
-            auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
-            do {
 
-                if (temp->data == value) {
-                    cout << "Value " << value << " found in the list" << endl;
-                    found++;
-                } else {
+        temp = first;
+        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+        do {
 
-                    temp = temp->next;
-                }
+            if (temp->data == value) {
+                cout << "Value " << value << " found in the list" << endl;
+                found++;
+            } else {
 
-            } while ((found == 0) && (temp != nullptr));
-
-            if (found == 0) {
-                cout << "Value " << value << " was not found in the list " << endl;
+                temp = temp->next;
             }
 
-            auto end = std::chrono::steady_clock::now();
-            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
-            timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
+        } while ((found == 0) && (temp != nullptr));
+
+        if (found == 0) {
+            cout << "Value " << value << " was not found in the list " << endl;
         }
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
+        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
+
+        delete temp;
     }
 
 public :
+
     void find(int index) {
         int times = 0;
         int visit_count = 0;
@@ -310,21 +369,21 @@ public :
                 }
             } while (index > size || index < 0);
         }
-        cout << "How many times should time be measured : ";
-        cin >> times;
-        for (int i = 0; i < times; i++) {
-            auto start = std::chrono::steady_clock::now(); //START [LIST VALUE BY INDEX]
 
-            for (int i = 0; i < index; i++) {
-                temp = temp->next;
-            }
-            cout << "List value at index " << index << " = " << temp->data << endl;
+        temp = first;
+        auto start = std::chrono::steady_clock::now(); //START [LIST VALUE BY INDEX]
 
-            auto end = std::chrono::steady_clock::now();
-            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-            timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_INDEX");
-            timer->showAvgTime("FIND_IN_LINKEDLIST_BY_INDEX");
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
         }
+        cout << "List value at index " << index << " = " << temp->data << endl;
+
+        auto end = std::chrono::steady_clock::now();
+        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_INDEX");
+        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_INDEX");
+
+        delete temp;
     }
 
 };
