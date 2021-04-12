@@ -318,7 +318,6 @@ public:
 public:
 
     void find() { // find by value
-        int times = 0;
 
         int value = 0;
         Element *temp = first;

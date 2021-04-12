@@ -126,10 +126,10 @@ public:
         cout << "   lower bounds and upper bounds of randomly           " << endl;
         cout << "   generated numbers                                   " << endl;
         cout << "-----------------------------------------------------  " << endl;
-        cout << "   * Read Mode *  - program creates a file and allows  " << endl;
-        cout << "   you to fill it with your own data                   " << endl;
+        cout << "   * Read Mode *  - program can read your own .txt file" << endl;
+        cout << "   organized with proper pattern                       " << endl;
         cout << endl;
-        cout << "   [File Pattern]                                      " << endl;
+        cout << "                   *File Pattern*                      " << endl;
         cout << "   [1-st line] number of elements                      " << endl;
         cout << "   [2-n to n-th line] elements of the array            " << endl;
         cout << "   separated with new line                             " << endl;
@@ -214,6 +214,7 @@ public:
 
         return select_option();
     }
+
     int operations_interface_list(string name) {
 
         cout << "     -------------------------------------------   " << endl;
@@ -230,7 +231,6 @@ public:
 
         return select_option();
     }
-
 
 
     void data_structures_interface() {
@@ -543,19 +543,26 @@ public:
                         //Red-Black Tree DATA STRUCTURE
                     case 4: {
                         clearScreen();
-                        int operation = operations_interface_RB_TREE("Red-Black Tree");
                         RedBlackTree *rbt = new RedBlackTree(file_name_and_extension);
+
+                        int operation = operations_interface_RB_TREE("Red-Black Tree");
                         do {
                             switch (operation) {
+
+                                case 0: {
+                                    clearScreen();
+                                    data_structures_interface();
+                                    delete rbt;
+                                    rbt = nullptr;
+                                }
+
                                 case 1: {
                                     //Add value to R-B-tree
                                     int data = 0;
                                     cout << "Type a value you want to add: ";
                                     cin >> data;
 
-
                                     rbt->addNode(data);
-
 
                                     break;
                                 }
@@ -564,12 +571,21 @@ public:
                                     int data = 0;
                                     cout << "Type a value you want to delete: ";
                                     cin >> data;
-                                    auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
-                                    rbt->deleteNode(data);
-                                    auto end = std::chrono::steady_clock::now();
-                                    double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                                    timer->calculate_average_elapsed_time(elapsed_time, "REMOVE_FROM_RED_BLACK_TREE");
-                                    timer->showAvgTime("REMOVE_FROM_RED_BLACK_TREE");
+
+                                    int times = 0;
+                                    cout<<"How many times do you want to add this value: "<<endl;
+                                    cin>>times;
+                                    for(int i = 0;i<times;i++) {
+                                        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+                                        rbt->deleteNode(data);
+                                        auto end = std::chrono::steady_clock::now();
+                                        double elapsed_time = double(
+                                                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                                                        end - start).count());
+                                        timer->calculate_average_elapsed_time(elapsed_time,
+                                                                              "REMOVE_FROM_RED_BLACK_TREE");
+                                        timer->showAvgTime("REMOVE_FROM_RED_BLACK_TREE");
+                                    }
                                     break;
                                 }
                                 case 3: {
@@ -577,18 +593,26 @@ public:
                                     int data = 0;
                                     cout << "Type a value you are looking for: ";
                                     cin >> data;
-                                    auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
 
-                                    if (rbt->find(rbt->getRoot(), data)) {
-                                        cout << "Value " << data << " is in the RED BLACK TREE" << endl;
-                                    } else {
-                                        cout << "Value not found" << endl;
+                                    int times = 0;
+                                    cout << "How many times should time be measured: " << endl;
+                                    cin >> times;
+                                    for (int i = 0; i < times; i++) {
+                                        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+
+                                        if (rbt->find(rbt->getRoot(), data)) {
+                                            cout << "Value " << data << " is in the RED BLACK TREE" << endl;
+                                        } else {
+                                            cout << "Value not found" << endl;
+                                        }
+
+                                        auto end = std::chrono::steady_clock::now();
+                                        double elapsed_time = double(
+                                                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                                                        end - start).count());
+                                        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_RED_BLACK_TREE");
+                                        timer->showAvgTime("FIND_IN_RED_BLACK_TREE");
                                     }
-
-                                    auto end = std::chrono::steady_clock::now();
-                                    double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-                                    timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_RED_BLACK_TREE");
-                                    timer->showAvgTime("FIND_IN_RED_BLACK_TREE");
                                     break;
                                 }
                                 case 4: {
@@ -598,6 +622,7 @@ public:
                             }
 
                         } while (operation = operations_interface_RB_TREE("Red-Black Tree"));
+                        data_structures_interface();
 
                         break;
                     }

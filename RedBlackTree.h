@@ -59,7 +59,7 @@ Node *AddToTree(Node *root, Node *node) {
     if (root->getData() > node->getData()) {
         root->left = AddToTree(root->left, node);
         root->left->parent = root;
-    } else if (root->getData() < node->getData()) {
+    } else if (root->getData() <= node->getData()) {
         root->right = AddToTree(root->right, node);
         root->right->parent = root;
     }
@@ -69,7 +69,7 @@ Node *AddToTree(Node *root, Node *node) {
 
 class RedBlackTree {
     Timer *timer = timer->getInstance();
-    Node *root;
+    Node *root = nullptr;
 
 public:
     RedBlackTree(const string &file_name) {
@@ -81,14 +81,19 @@ public:
         if (!file.good()) {
             cout << "File" << file_name << ".txt does not exist ! [RB TREE]" << endl;
         } else {
+            cout<<"Values are being loaded to the tree !"<<endl;
             getline(file, amount);
-
             for (int i = 0; i < atoi(amount.c_str()); i++) {
                 getline(file, element);
-                addNode(atoi(element.c_str()));
+                fillTheTree(atoi(element.c_str()));
             }
             cout << "RB Tree filled with data !" << endl;
         }
+    }
+    void fillTheTree(int data){
+        Node *newNode = new Node(data);
+        this->root = AddToTree(this->root, newNode);
+        fixInsertViolation(newNode);
     }
 
     Node *getRoot() {
@@ -255,37 +260,45 @@ public:
     }
 
     void addNode(int data) {
-        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
-        Node *newNode = new Node(data);
+        int times = 0;
+        cout<<"How many times do you want to add this value: "<<endl;
+        cin>>times;
+        for(int i = 0;i<times;i++) {
+            auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+            Node *newNode = new Node(data);
 
-        this->root = AddToTree(this->root, newNode);
+            this->root = AddToTree(this->root, newNode);
 
-        fixInsertViolation(newNode);
+            fixInsertViolation(newNode);
 
-        auto end = std::chrono::steady_clock::now();
-        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_RED_BLACK_TREE");
-        timer->showAvgTime("ADD_TO_RED_BLACK_TREE");
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_RED_BLACK_TREE");
+            timer->showAvgTime("ADD_TO_RED_BLACK_TREE");
+        }
     }
 
     Node *getDeletingNodePosition(Node *root, int value) {
+
         if (root == NULL)
             return root;
         //if value is in right subtree
         if (value > root->getData())
             return getDeletingNodePosition(root->right, value);
 
-            //if value is in left subtree
+        //if value is in left subtree
         else if (value < root->getData())
             return getDeletingNodePosition(root->left, value);
 
         //if value is in root
-        if (root->left == NULL or root->right == NULL)
+        if (root->left == NULL || root->right == NULL)
             return root;
 
         Node *temp = getMaxValueNode(root->left);
-        root->setData(temp->getData());
+        if(temp != NULL) {
+            root->setData(temp->getData());
         return getDeletingNodePosition(root->left, temp->getData());
+        }
     }
 
     void fixViolation(Node *node) {
@@ -428,9 +441,8 @@ public:
     void deleteNode(int data) {
         Node *nodeToDelete = getDeletingNodePosition(this->root, data);
         if (nodeToDelete == nullptr) {
-            cout << "There is are not any " << data << " in the tree !" << endl;
-        }
-        {
+            cout <<"Value "<< data << "not found in the tree !" << endl;
+        }else{
             if (!nodeToDelete->right) {
                 nodeToDelete->right = new Node(-1, BLACK);
                 nodeToDelete->right->parent = nodeToDelete;
@@ -472,25 +484,20 @@ public:
 
     bool find(Node *node, int data) {
 
-
-        if (node == NULL) return false;
-        else if (node->getData() == data) {
-            return true;
+        if (node == nullptr) {
+            return false;
         }
-
-        else if (data <= node->getData()) {
-
-            return find(root->left, data);
-        }
-
         else {
-            return find(node->right, data);
+            if (node->getData() == data) {
+                return true;
+            } else if (data < node->getData()) {
+                return find(node->left, data);
+            } else if (data >= node->getData()) {
+                return find(node->right, data);
+            }
         }
-
-
 
     }
-
 
 };
 
