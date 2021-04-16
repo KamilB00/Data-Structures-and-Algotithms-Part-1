@@ -18,9 +18,9 @@ public:
     int visit_counter = 0;
     string file_name;
     string file_name_and_extension;
+    string path;
 
     int mode_interface() {
-        clearScreen();
         int mode = 0;
 
         cout << "-----------------------------------------------" << endl;
@@ -73,28 +73,25 @@ public:
                                 timer->clear_data();
                             }
                         }
-                        regex reg("[a-zA-Z0-9]+");
+                        cout<<"Type a path to your file directory :"<<endl;
+                        cin>>path;
 
-                        cout << "File name: ";
-                        cin >> file_name;
-                        if (regex_match(file_name, reg)) {
 
-                            file_name_and_extension = file_name + ".txt";
-
+                            file_name_and_extension = path;
                             fstream file;
                             file.open(file_name_and_extension, ios::in);
 
                             if (!file.good()) {
-                                cout << "File " << file_name_and_extension << ".txt does not exist !" << endl;
+                                cout << "File does not exist !" << endl;
                                 mode_interface();
 
                             } else {
+                                cout<<file_name_and_extension<<endl;
+                                cout <<"File loaded successfully !" << endl;
                                 data_structures_interface();
                             }
 
-                        } else {
-                            cout << "Incorrect file name syntax" << endl;
-                        }
+
                         break;
                     }
                     case 3: {
@@ -154,12 +151,12 @@ public:
         int choice = 0;
         do {
             cin >> choice;
-            if (choice >= 0 && choice <= 6) {
+            if (choice >= 0 && choice <= 7) {
                 return choice;
             } else {
                 cout << "No operation found try again !" << endl;
             }
-        } while (choice < 0 || choice > 6);
+        } while (choice < 0 || choice > 7);
     };
 
     int operations_interface_tree(string name) {
@@ -197,7 +194,7 @@ public:
         return select_option();
     }
 
-    int operations_interface_array(string name) {
+    int operations_interface(string name) {
 
         cout << "     -------------------------------------------   " << endl;
         cout << "             Operations on " << name << endl;
@@ -208,23 +205,7 @@ public:
         cout << "              4. Remove element by index           " << endl;
         cout << "              5. Find element by value             " << endl;
         cout << "              6. Find element by index             " << endl;
-        cout << "     -------------------------------------------   " << endl;
-        cout << endl;
-        cout << " Press 0 to Return                            " << endl;
-
-        return select_option();
-    }
-
-    int operations_interface_list(string name) {
-
-        cout << "     -------------------------------------------   " << endl;
-        cout << "             Operations on " << name << endl;
-        cout << "     -------------------------------------------   " << endl;
-        cout << "              1. Add element                       " << endl;
-        cout << "              2. Add element by index              " << endl;
-        cout << "              3. Remove element                    " << endl;
-        cout << "              4. Remove element by index           " << endl;
-        cout << "              5. Find element by value             " << endl;
+        cout << "              7. Show " <<name<< endl;
         cout << "     -------------------------------------------   " << endl;
         cout << endl;
         cout << " Press 0 to Return                            " << endl;
@@ -251,7 +232,7 @@ public:
 
         do {
             cin >> choice;
-            if (choice >= 0 && choice <= 5) {
+            if (choice >= 0 && choice <= 4) {
                 switch (choice) {
                     case 0: {
                         clearScreen();
@@ -263,7 +244,7 @@ public:
                         Array *array = new Array(file_name_and_extension);
                         char add_more = ' ';
 
-                        int operation = operations_interface_array("Array");
+                        int operation = operations_interface("Array");
                         do {
                             int visit_count = 0;
                             switch (operation) {
@@ -277,12 +258,9 @@ public:
                                     array = nullptr;
 
                                 }
-
                                     //#1 Add to array
                                 case 1: {
                                     array->add();
-
-
                                     break;
                                 }
 
@@ -328,11 +306,15 @@ public:
                                     array->find(index);
                                     break;
                                 }
+                                case 7:{
+                                    array->show();
+                                    break;
+                                }
                                 default:
                                     cout << "No option found try again ! [Press 0 to Return]" << endl;
                             }
 
-                        } while (operation = operations_interface_array("Array"));
+                        } while (operation = operations_interface("Array"));
                         data_structures_interface();
                         break;
                     }
@@ -344,11 +326,10 @@ public:
 
                         clearScreen();
                         ListTwoDirection *list = new ListTwoDirection(file_name_and_extension);
-                        int operation = operations_interface_list("List");
+                        int operation = operations_interface("List");
 
                         do {
-                            int visit_count = 0;
-                            char add_more = ' ';
+
                             switch (operation) {
                                 //List OPTIONS
 
@@ -450,9 +431,31 @@ public:
                                     }
                                     break;
                                 }
+                                    //#6 Find by index
+                                case 6: {
+                                    int index = 0;
+
+                                    do {
+                                        cout << "Value index: ";
+                                        cin >> index;
+                                        if (index < 0 || index > list->get_size()) {
+                                            cout << "Incorrect index ! Try again" << endl;
+                                        }
+                                    } while (index > list->get_size() || index < 0);
+
+                                    list->find(index);
+                                    break;
+                                }
+                                    //#7 Show List
+                                case 7:
+                                {
+                                    list->show();
+                                    break;
+                                }
+
 
                             }
-                        } while (operation = operations_interface_list("List"));
+                        } while (operation = operations_interface("List"));
                         data_structures_interface();
                         break;
                     }

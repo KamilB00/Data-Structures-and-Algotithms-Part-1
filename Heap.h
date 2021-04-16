@@ -25,7 +25,7 @@ public:
         file.open(file_name, ios::in);
 
         if (!file.good()) {
-            cout << "File "<<file_name<<".txt does not exist !" << endl;
+            cout << "File "<<file_name<<" does not exist !" << endl;
         }else {
 
             getline(file, amount);
@@ -87,13 +87,13 @@ public:
         items[parent_index] = items[child_index];
         items[child_index] = temp;
 
-      //  cout << "Swaped parent index " << parent_index << " with child index " << child_index << endl;
+        cout << "Swaped parent index " << parent_index << " with child index " << child_index << endl;
     }
 
 public:
     void heapify_up(int index) {
 
-        while ((parent(index) < items[index]) && has_parent(index)) {
+        while ((parent(index) < items[index]) && parent(index) != NULL ) {
             swap(get_parent_index(index), index);
             index = get_parent_index(index);
         }
@@ -110,20 +110,20 @@ public:
 
 public:
     void heapify_down(int index) {
-        bool not_terminate = true;
+        bool terminate = false;
 
-        while (has_left_child(index) && not_terminate) {
+        while (has_left_child(index) && !terminate) {
             if (left_child(index) > right_child(index)) {
                 swap(index, get_left_child_index(index));
                 index = get_left_child_index(index);
             } else if (left_child(index) < right_child(index)) {
                 swap(index, get_right_child_index(index));
                 index = get_right_child_index(index);
-            } else if (left_child(index) == right_child(index) && items[index] < left_child(index)) {
+            } else if (left_child(index) == right_child(index)) {
                 swap(index, get_left_child_index(index));
                 index = get_left_child_index(index);
             } else {
-                not_terminate = false;
+                terminate = true;
             }
         }
     }
@@ -152,14 +152,16 @@ public:
                 cin >> times;
                 for (int i = 0; i < times; i++) {
                     auto start = std::chrono::steady_clock::now();// START [HEAP REMOVE]
-                    for (int i = 0; i < index; i++) {
-                        items_new[i] = items[i];
+                    for (int j = 0; j < index; j++) {
+                        items_new[j] = items[j];
                     }
                     items_new[index] = items[size];
 
-                    for (int i = index + 1; i < size; i++) {
-                        items_new[i] = items[i];
+                    for (int k = index + 1; k < size; k++) {
+                        items_new[k] = items[k];
                     }
+                    delete[]items;
+                    items = items_new;
 
                     heapify_down(index);
 
@@ -170,11 +172,8 @@ public:
                     timer->showAvgTime("REMOVE_FROM_HEAP");
                 }
 
-                delete[]items;
-                items = nullptr;
-                items = items_new;
-                items_new = nullptr;
-                delete[] items_new;
+
+
                 cout << "heap[" << index << "] has been removed !" << endl;
             } else {
                 cout << "Heap is empty !" << endl;
@@ -204,8 +203,10 @@ public:
             for (int i = 0; i < size - 1; i++) {
                 items_new[i] = items[i];
             }
-
             items_new[size - 1] = value;
+
+            delete[]items;
+            items = items_new;
 
 
             heapify_up(size - 1);
@@ -215,11 +216,7 @@ public:
             timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_HEAP");
             timer->showAvgTime("ADD_TO_HEAP");
         }
-        delete[]items;
-        items = nullptr;
-        items = items_new;
-        items_new = nullptr;
-        delete[] items_new;
+
     }
 
 public:
@@ -273,10 +270,14 @@ public:
 
 public:
     void show() {
-        for (int i = 0; i < size; i++) {
-            cout << "heap [" << i << "] : " << items[i] << endl;
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                cout << "heap [" << i << "] : " << items[i] << endl;
+            }
+            cout << endl;
+        }else{
+            cout<<"Heap is empty !"<<endl;
         }
-        cout << endl;
     }
 
 };

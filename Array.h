@@ -83,11 +83,10 @@ int times = 0;
                 timer->calculate_average_elapsed_time(elapsed_time, "ADD_TO_ARRAYLIST_BEGINNING");
                 timer->showAvgTime("ADD_TO_ARRAYLIST_BEGINNING");
             }
-            arr_dyn = nullptr;
+
             delete[] arr_dyn;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = nullptr;
-            delete[] arr_dyn_new;
+
         }
 
             //adding element in the middle
@@ -122,10 +121,8 @@ int times = 0;
                 timer->showAvgTime("ADD_TO_ARRAYLIST_MIDDLE");
             }
             delete[] arr_dyn;
-            arr_dyn = nullptr;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = nullptr;
-            delete[] arr_dyn_new;
+
         }
 
 
@@ -157,10 +154,8 @@ int times = 0;
         }
 
         delete[]arr_dyn;
-        arr_dyn = nullptr;
         arr_dyn = arr_dyn_new;
-        arr_dyn_new = nullptr;
-        delete[] arr_dyn_new;
+
     }
 
     void remove(int index) {
@@ -186,10 +181,8 @@ int times = 0;
                     timer->showAvgTime("REMOVE_FROM_ARRAYLIST_BEGINNING");
                 }
                 delete[]arr_dyn;
-                arr_dyn = nullptr;
                 arr_dyn = arr_dyn_new;
-                arr_dyn_new = nullptr;
-                delete[] arr_dyn_new;
+
 
             }
                 //remove in the middle
@@ -216,10 +209,8 @@ int times = 0;
                 }
 
                 delete[]arr_dyn;
-                arr_dyn = nullptr;
                 arr_dyn = arr_dyn_new;
-                arr_dyn_new = nullptr;
-                delete[] arr_dyn_new;
+
             }
         } else {
             cout << "Array is empty !" << endl;
@@ -247,10 +238,8 @@ int times = 0;
                 timer->showAvgTime("REMOVE_FROM_ARRAYLIST_END");
             }
             delete[]arr_dyn;
-            arr_dyn = nullptr;
             arr_dyn = arr_dyn_new;
-            arr_dyn_new = nullptr;
-            delete[] arr_dyn_new;
+
             cout << "Element deleted !" << endl;
 
         } else {
@@ -310,10 +299,16 @@ int times = 0;
     }
 
     void show() {
-        for (int i = 0; i < size; i++) {
-            cout << endl;
-            cout << "array[" << i << "] = " << arr_dyn[i] << endl;
+        if(size>0) {
+            for (int i = 0; i < size; i++) {
+                cout << endl;
+                cout << "array[" << i << "] = " << arr_dyn[i] << endl;
+            }
         }
+        else{
+            cout<<"Array is Empty"<<endl;
+        }
+
     }
 
 };

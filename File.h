@@ -13,7 +13,7 @@ using namespace std;
 class File {
 public:
 
-    File(string file_name) {
+    File(const string &file_name) {
         int amount = 0;
         int lower = 0;
         int upper = 0;
