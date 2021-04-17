@@ -73,25 +73,23 @@ public:
                                 timer->clear_data();
                             }
                         }
-                        cout<<"Type a path to your file directory :"<<endl;
-                        cin>>path;
+                        cout << "Type a path to your file directory :" << endl;
+                        cin >> path;
 
 
-                            file_name_and_extension = path;
-                            fstream file;
-                            file.open(file_name_and_extension, ios::in);
+                        file_name_and_extension = path;
+                        fstream file;
+                        file.open(file_name_and_extension, ios::in);
 
-                            if (!file.good()) {
-                                cout << "File does not exist !" << endl;
-                                mode_interface();
+                        if (!file.good()) {
+                            cout << "File does not exist !" << endl;
+                            mode_interface();
 
-                            } else {
-                                cout<<file_name_and_extension<<endl;
-                                cout <<"File loaded successfully !" << endl;
-                                data_structures_interface();
-                            }
-
-
+                        } else {
+                            cout << file_name_and_extension << endl;
+                            cout << "File loaded successfully !" << endl;
+                            data_structures_interface();
+                        }
                         break;
                     }
                     case 3: {
@@ -205,7 +203,7 @@ public:
         cout << "              4. Remove element by index           " << endl;
         cout << "              5. Find element by value             " << endl;
         cout << "              6. Find element by index             " << endl;
-        cout << "              7. Show " <<name<< endl;
+        cout << "              7. Show " << name << endl;
         cout << "     -------------------------------------------   " << endl;
         cout << endl;
         cout << " Press 0 to Return                            " << endl;
@@ -306,7 +304,7 @@ public:
                                     array->find(index);
                                     break;
                                 }
-                                case 7:{
+                                case 7: {
                                     array->show();
                                     break;
                                 }
@@ -434,21 +432,23 @@ public:
                                     //#6 Find by index
                                 case 6: {
                                     int index = 0;
+                                    if (list->get_size() > 0) {
+                                        do {
+                                            cout << "Value index: ";
+                                            cin >> index;
+                                            if (index < 0 || index > list->get_size()) {
+                                                cout << "Incorrect index ! Try again" << endl;
+                                            }
+                                        } while (index > list->get_size() || index < 0);
 
-                                    do {
-                                        cout << "Value index: ";
-                                        cin >> index;
-                                        if (index < 0 || index > list->get_size()) {
-                                            cout << "Incorrect index ! Try again" << endl;
-                                        }
-                                    } while (index > list->get_size() || index < 0);
-
-                                    list->find(index);
+                                        list->find(index);
+                                    } else {
+                                        cout << "List is empty nothing to find !" << endl;
+                                    }
                                     break;
                                 }
                                     //#7 Show List
-                                case 7:
-                                {
+                                case 7: {
                                     list->show();
                                     break;
                                 }
@@ -500,18 +500,26 @@ public:
                                 }
                                     // #4 Find element [HEAP]
                                 case 4: {
-                                    heap->find();
+                                    if (heap->get_size() > 0) {
+                                        heap->find();
+                                    } else {
+                                        cout << "Heap is empty nothing to find !" << endl;
+                                    }
 
                                     break;
                                 }
                                     //#5 Find element by index [HEAP]
                                 case 5: {
                                     int index = 0;
-                                    cout << "Index: ";
-                                    cin >> index;
+                                    if (heap->get_size() > 0) {
+                                        cout << "Index: ";
+                                        cin >> index;
 
-                                    if (index >= 0 && index < heap->get_size()) {
-                                        heap->find(index);
+                                        if (index >= 0 && index < heap->get_size()) {
+                                            heap->find(index);
+                                        }
+                                    } else {
+                                        cout << "Heap is empty nothing to find !" << endl;
                                     }
                                     break;
                                 }
@@ -576,12 +584,13 @@ public:
                                     cout << "Type a value you want to delete: ";
                                     cin >> data;
 
-                                        rbt->deleteNode(data);
+                                    rbt->deleteNode(data);
 
                                     break;
                                 }
                                 case 3: {
                                     //Find in R-B-tree by value
+
                                     int data = 0;
                                     cout << "Type a value you are looking for: ";
                                     cin >> data;
@@ -591,7 +600,6 @@ public:
                                     cin >> times;
                                     for (int i = 0; i < times; i++) {
                                         auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
-
                                         if (rbt->find(rbt->getRoot(), data)) {
                                             cout << "Value " << data << " is in the RED BLACK TREE" << endl;
                                         } else {

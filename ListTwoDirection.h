@@ -85,7 +85,7 @@ public:
         int i = 0;
         if (temp != nullptr) {
             while (temp != nullptr) {
-                cout <<"list.("<<i++<<")"<< "= " << temp->data<<endl;
+                cout << "list.(" << i++ << ")" << "= " << temp->data << endl;
                 temp = temp->next;
             }
 
@@ -332,36 +332,36 @@ public:
 
     void find() { // find by value
 
-        int value = 0;
-        Element *temp = first;
-        cout << "Value you are looking for: ";
-        cin >> value;
-        int found = 0;
+            int value = 0;
+            Element *temp = first;
+            cout << "Value you are looking for: ";
+            cin >> value;
+            int found = 0;
 
-        temp = first;
-        auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
-        do {
+            temp = first;
+            auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
+            do {
 
-            if (temp->data == value) {
-                cout << "Value " << value << " found in the list" << endl;
-                found++;
-            } else {
+                if (temp->data == value) {
+                    cout << "Value " << value << " found in the list" << endl;
+                    found++;
+                } else {
 
-                temp = temp->next;
+                    temp = temp->next;
+                }
+
+            } while ((found == 0) && (temp != nullptr));
+
+            if (found == 0) {
+                cout << "Value " << value << " was not found in the list " << endl;
             }
 
-        } while ((found == 0) && (temp != nullptr));
+            auto end = std::chrono::steady_clock::now();
+            double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
+            timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
 
-        if (found == 0) {
-            cout << "Value " << value << " was not found in the list " << endl;
-        }
-
-        auto end = std::chrono::steady_clock::now();
-        double elapsed_time = double(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-        timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
-        timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
-
-        delete temp;
+            delete temp;
     }
 };
 
