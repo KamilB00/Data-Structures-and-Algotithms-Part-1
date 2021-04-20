@@ -93,7 +93,7 @@ public:
 public:
     void heapify_up(int index) {
 
-        while ((parent(index) < items[index]) && parent(index) != NULL ) {
+        while ((parent(index) < items[index]) && get_parent_index(index) >= 0) {
             swap(get_parent_index(index), index);
             index = get_parent_index(index);
         }

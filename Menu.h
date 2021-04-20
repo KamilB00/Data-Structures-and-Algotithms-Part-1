@@ -452,7 +452,8 @@ public:
                                     list->show();
                                     break;
                                 }
-
+                                default:
+                                    cout<<"No operation found !"<<endl;
 
                             }
                         } while (operation = operations_interface("List"));

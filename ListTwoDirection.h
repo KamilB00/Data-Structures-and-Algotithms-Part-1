@@ -59,6 +59,7 @@ public:
 
     }
 
+
     ListTwoDirection(const string &file_name) {
         string amount;
         string element;
@@ -333,15 +334,14 @@ public:
     void find() { // find by value
 
             int value = 0;
+            int found = 0;
             Element *temp = first;
             cout << "Value you are looking for: ";
             cin >> value;
-            int found = 0;
 
-            temp = first;
+
             auto start = std::chrono::steady_clock::now(); //START [LIST FIND BY VALUE]
             do {
-
                 if (temp->data == value) {
                     cout << "Value " << value << " found in the list" << endl;
                     found++;
@@ -361,7 +361,6 @@ public:
             timer->calculate_average_elapsed_time(elapsed_time, "FIND_IN_LINKEDLIST_BY_VALUE");
             timer->showAvgTime("FIND_IN_LINKEDLIST_BY_VALUE");
 
-            delete temp;
     }
 };
 
